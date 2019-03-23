@@ -32,6 +32,32 @@ def rootmeansquare( values, avg, stddev, bias):
     return rms
 
 # Calculate the average value
+def averagemax( values ):
+    maxvalues = []
+    prev = 0
+    prevmax = -1
+    
+    
+    for value in values:
+        # Has the AC sinus passed the zero line?
+        if(abs(prev)/prev != abs(value)/value):
+            if(prevmax >= 0):
+                maxvalues.append(prevmax)
+                prevmax = 0
+        
+        if(abs(value) > prevmax):
+            prevmax = value
+        
+        prev = value
+    
+    for m in maxvalues:
+        print(m)
+    
+    avgmax = average(maxvalues)
+    
+    return avgmax
+
+# Calculate the average value
 def average( values ):
     sum = 0
     for value in values:
@@ -61,7 +87,7 @@ def readChannel( adc, chan, g ):
     adc.start_adc(chan, gain=g, data_rate=860)
     # Sample for one second
     start = time.time()
-    while (time.time() - start) <= 0.1:
+    while (time.time() - start) <= 1.0:
         # Read the last ADC conversion value and print it out.
         value = float(adc.get_last_result())
         values.append(value)
@@ -84,6 +110,7 @@ def readAmps( adc, chan, config ):
     ssq = 0
     rms = 0
     max = 0
+    avgmax = 0
     min = 0
     amps = 0
     values = []
@@ -107,11 +134,13 @@ def readAmps( adc, chan, config ):
     # Calculate basic stats on the raw data
     avg = average(values)
     max = maximum(values)
+    avgmax = averagemax(values)
     ssq = sumsquares( values )
     bias = -avg
     print("ssq ", ssq)
     print("avg", avg)
     print("max", max)
+    print("avgmax", avgmax)
     print("bias", bias)
 
     variance = float(ssq)/n - avg*avg
