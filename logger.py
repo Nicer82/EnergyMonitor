@@ -9,7 +9,7 @@ with open('./config.json') as json_data:
 
 # Infinite loop
 while True:
-    try
+    try:
         # Set worker variables and open the DB
         conn = sqlite3.connect(config["Database"])
         c = conn.cursor()
