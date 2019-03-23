@@ -21,7 +21,6 @@ except IOError as e:
     
 # Create an ADS1115 ADC (16-bit) instance.
 adc = Adafruit_ADS1x15.ADS1115()
-adc1 = Adafruit_ADS1x15.ADS1115()
 
 try:
     conn = sqlite3.connect(config["Database"])
@@ -31,18 +30,8 @@ except Exception as e:
     exit()
 
 # Read channels 0 and 1
-thread0 = threading.Thread(target=functions.readAmps, args=(adc, 0, config))
-thread0.daemon = True
-thread0.start()
-thread1 = threading.Thread(target=functions.readAmps, args=(adc1, 1, config))
-thread1.daemon = True
-thread1.start()
-
-thread0.join()
-thread1.join()
-
-#amps0 = functions.readAmps( adc, 0, config)
-#amps1 = functions.readAmps( adc, 1, config)
+amps0 = functions.readAmps( adc, 0, config)
+amps1 = functions.readAmps( adc, 1, config)
 
 #Save to the database
 try:
