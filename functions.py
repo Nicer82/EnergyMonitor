@@ -90,7 +90,7 @@ def readAmps( adc, chan, config ):
     #print("factor", FACTOR)
 
     #Round to 3 decimal places and suppress values below zero
-    amps = round(temp, 3)
+    amps = round(amps, 3)
     if(amps < 0.0):
         amps = 0.0
         
