@@ -44,7 +44,8 @@ def averagemax( values ):
                 maxvalues.append(prevmax)
                 prevmax = 0.0
         
-        if(abs(value) > prevmax):
+        # Only set prevmax when zero line is passed for the first time
+        if(prevmax > 0.0 and abs(value) > prevmax):
             prevmax = value
         
         prev = value
