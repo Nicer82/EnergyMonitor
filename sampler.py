@@ -137,6 +137,7 @@ def readAmps( adc, chan, config ):
     if amps < 0:
         amps = 0.00
     print('Average Reading in Amps: {0}'.format(amps))
+    print('Average Reading in Watt: {0}'.format(amps*235))
     
     return amps
 
