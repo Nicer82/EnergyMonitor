@@ -7,9 +7,14 @@ import datetime
 import array
 import json
 
-class Reader:
+class Reader():
+  def __init__(self,config,chan=0,adc=Adafruit_ADS1x15.ADS1115()):
+    self._adc = adc
+    self._chan = chan
+    self._config = config
+    
   # Calculate the average value
-  def averagemax( values ):
+  def averagemax(self,values):
       maxvalues = []
       prev = 0.0
       prevmax = -1.0
@@ -35,7 +40,7 @@ class Reader:
       return avgmax
 
   # Calculate the average value
-  def average( values ):
+  def average(self,values):
       sum = 0
       for value in values:
           sum = sum + value
@@ -43,37 +48,31 @@ class Reader:
       return avg
 
   # Read an ADC channel with the specified gain at max rate for 1/4 second
-  def readChannel( adc, chan, g ):
+  def readChannel(self):
       values = []
-      adc.start_adc(chan, gain=g, data_rate=860)
+      
+      self._adc.start_adc(self._chan, gain=self._config["Sampler"]["gain"], data_rate=860)
+      
       # Sample for one second
       start = time.time()
       while (time.time() - start) <= 0.25:
           # Read the last ADC conversion value and print it out.
-          value = float(adc.get_last_result())
+          value = float(self._adc.get_last_result())
           values.append(value)
           #print('{0};{1};{2}'.format(time.time(),chan,value))
 
       # Stop continuous conversion.
-      adc.stop_adc()
+      self._adc.stop_adc()
 
       return values
 
   # Read and compute the amperage on the specified channel
-  def readAmps( adc, chan, config ):
-      print("Sampling", chan)
-      GAIN = config["Sampler"]["gain"]
+  def read(self):
       SUBSTRACTOR = config["Sampler"]["substractor"]
       FACTOR = config["Sampler"]["factor"]
 
-      # The inductive sensor returns an AC voltage. Sample at the
-      # maximum rate for 1 second.  Then calculate the RMS of
-      # the sampled readings
-      print("Sampling started.")
-
       try:
-          values = readChannel( adc, chan, GAIN)
-          print("Sampling stopped")
+          values = readChannel()
       except ValueError as e:
           print("ADC configuration error: ", e)
           exit()
@@ -82,20 +81,23 @@ class Reader:
           exit()
 
       avgmax = averagemax(values)
-      print("avgmax:",avgmax)
-
+      
       # Polynomial regression to estimate amps
       # Constants stored in config file.
       amps = (avgmax - SUBSTRACTOR) * FACTOR
-      #print("substractor",SUBSTRACTOR)
-      #print("factor", FACTOR)
-
+      
       #Round to 3 decimal places and suppress values below zero
       amps = round(amps, 3)
       if(amps < 0.0):
           amps = 0.0
+      
+      self._lastCurrent = amps
+      self._lastPower = amps * config["Voltage"]
 
-      print('Average Reading in Amps: {0}'.format(amps))
-      print('Average Reading in Watt: {0}'.format(amps * config["Voltage"]))
-
-      return amps
+      return
+    
+  def getLastCurrent(self):
+    return self._lastCurrent
+  
+  def getLastPower(self):
+    return self._lastPower
