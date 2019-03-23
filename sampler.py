@@ -31,7 +31,7 @@ except Exception as e:
 
 # Read channels 0 - 3
 amps0 = functions.readAmps( adc, 0, config)
-amps1 = functions.readAmps( adc, 1, config)
+#amps1 = functions.readAmps( adc, 1, config)
 #amps2 = functions.readAmps( adc, 2, config)
 #amps3 = functions.readAmps( adc, 3, config)
 
