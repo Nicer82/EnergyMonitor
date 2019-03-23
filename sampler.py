@@ -79,13 +79,10 @@ def readChannel( adc, chan, g ):
 
 # Read and compute the amperage on the specified channel
 def readAmps( adc, chan, config ):
-
-    chanid = "A{}".format(chan)
-    print("Sampling " + chanid)
-    GAIN = config["Sampler"][chanid]["gain"]
-    A = config["Sampler"][chanid]["A"]
-    B = config["Sampler"][chanid]["B"]
-    C = config["Sampler"][chanid]["C"]
+    print("Sampling ", chan)
+    GAIN = config["Sampler"]["gain"]
+    SUBSTRACTOR = config["Sampler"]["substractor"]
+    FACTOR = config["Sampler"]["factor"]
 
     n = 0
     sum = 0.0
@@ -129,12 +126,10 @@ def readAmps( adc, chan, config ):
     rms = rootmeansquare( values, avg, stddev, bias)
 
     # Polynomial regression to estimate amps
-    # Based on experiments from 0 to 13 amps
     # Constants stored in config file.
-    temp = A + B*rms + C*rms*rms
-    print("A", A)
-    print("B", B)
-    print("C", C)
+    temp = (rms - SUBSTRACTOR) * FACTOR
+    print("substractor",SUBSTRACTOR)
+    print("factor", FACTOR)
 
     #Round to 2 decimal places
     amps = round(temp, 2)
@@ -172,13 +167,13 @@ except Exception as e:
 
 # Read channels 0 and 1
 amps0 = readAmps( adc, 0, config)
-amps1 = readAmps( adc, 1, config)
+#amps1 = readAmps( adc, 1, config)
 
 #Save to the database
 try:
     c = conn.cursor()
     dt = datetime.datetime.now()
-    sql = "INSERT INTO currentreading VALUES ( '{0}', '{1}', '{2}', NULL )".format( dt.isoformat(), amps0, amps1)
+    sql = "INSERT INTO currentreading VALUES ( '{0}', '{1}', NULL, NULL )".format( dt.isoformat(), amps0 )
     print( "Saving to database" )
     c.execute(sql)
     conn.commit()
