@@ -36,6 +36,7 @@ def average( values ):
     sum = 0
     for value in values:
         sum = sum + value
+        print(value)
     avg = sum/len(values)    
     return avg
 
@@ -52,7 +53,7 @@ def readChannel( adc, chan, g ):
     adc.start_adc(chan, gain=g, data_rate=860)
     # Sample for one second
     start = time.time()
-    while (time.time() - start) <= 2.0:
+    while (time.time() - start) <= 0.1:
         # Read the last ADC conversion value and print it out.
         value = float(adc.get_last_result())
         values.append(value)
