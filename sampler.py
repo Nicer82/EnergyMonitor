@@ -5,6 +5,7 @@ import sqlite3
 import datetime
 import json
 import functions
+import threading
 
 dt = datetime.datetime.now()
 print("===== sampler.py starting at ", dt.isoformat())
@@ -29,7 +30,11 @@ except Exception as e:
     exit()
 
 # Read channels 0 and 1
-amps0 = functions.readAmps( adc, 0, config)
+thread = threading.Thread(target=functions.readAmps, args=(adc, 0, config))
+thread.daemon = True
+thread.start()
+
+#amps0 = functions.readAmps( adc, 0, config)
 #amps1 = functions.readAmps( adc, 1, config)
 
 #Save to the database
