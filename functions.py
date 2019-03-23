@@ -41,13 +41,13 @@ def average( values ):
     avg = sum/len(values)    
     return avg
 
-# Read an ADC channel with the specified gain at max rate for 1 second
+# Read an ADC channel with the specified gain at max rate for 1/4 second
 def readChannel( adc, chan, g ):
     values = []
     adc.start_adc(chan, gain=g, data_rate=860)
     # Sample for one second
     start = time.time()
-    while (time.time() - start) <= 1.0:
+    while (time.time() - start) <= 0.25:
         # Read the last ADC conversion value and print it out.
         value = float(adc.get_last_result())
         values.append(value)
