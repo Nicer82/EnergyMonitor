@@ -31,9 +31,9 @@ except Exception as e:
 
 # Read channels 0 - 3
 amps0 = functions.readAmps( adc, 0, config)
-#amps1 = functions.readAmps( adc, 1, config)
-#amps2 = functions.readAmps( adc, 2, config)
-#amps3 = functions.readAmps( adc, 3, config)
+amps1 = functions.readAmps( adc, 1, config)
+amps2 = functions.readAmps( adc, 2, config)
+amps3 = functions.readAmps( adc, 3, config)
 
 #Save to the database
 #try:
@@ -49,8 +49,8 @@ amps0 = functions.readAmps( adc, 0, config)
     
 #conn.close()
 #print("Database closed")
-#print("Total Consumption:",(amps0+amps1+amps2)*config["Voltage"])
-#print("Total Production :",(amps3)*config["Voltage"])
+print("Total Consumption:",(amps0+amps1+amps2)*config["Voltage"])
+print("Total Production :",(amps3)*config["Voltage"])
 dt = datetime.datetime.now()
 print("===== sampler.py exiting at ", dt.isoformat())
 
