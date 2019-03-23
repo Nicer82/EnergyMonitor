@@ -30,10 +30,16 @@ except Exception as e:
     exit()
 
 # Read channels 0 and 1
-thread = threading.Thread(target=functions.readAmps, args=(adc, 0, config))
-thread.daemon = True
-thread.start()
-amps0 = thread.join()
+thread0 = threading.Thread(target=functions.readAmps, args=(adc, 0, config))
+thread0.daemon = True
+thread0.start()
+thread1 = threading.Thread(target=functions.readAmps, args=(adc, 1, config))
+thread1.daemon = True
+thread1.start()
+
+thread0.join()
+thread1.join()
+
 #amps0 = functions.readAmps( adc, 0, config)
 #amps1 = functions.readAmps( adc, 1, config)
 
