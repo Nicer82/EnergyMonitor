@@ -33,7 +33,7 @@ except Exception as e:
 thread = threading.Thread(target=functions.readAmps, args=(adc, 0, config))
 thread.daemon = True
 thread.start()
-
+amps0 = thread.join()
 #amps0 = functions.readAmps( adc, 0, config)
 #amps1 = functions.readAmps( adc, 1, config)
 
