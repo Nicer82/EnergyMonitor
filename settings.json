@@ -4,7 +4,7 @@
   "ConsumptionContainsProduction": 1,
   "Sampler":
   {
-     "substractor": 5,
+     "substractor": 4,
      "factor": 0.015709,
      "gain": 1
   },
