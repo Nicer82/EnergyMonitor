@@ -10,7 +10,7 @@ try:
 
     conn = sqlite3.connect(config["Database"])
     c = conn.cursor()
-    sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3})".format(, amps)
+    sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3})"
     r = reader.Reader(config)
 
     r.read(0)
