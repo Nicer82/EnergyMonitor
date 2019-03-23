@@ -49,7 +49,7 @@ def averagemax( values ):
         
         # Only set prevmax when zero line is passed for the first time
         if(startcollection and abs(value) > prevmax):
-            prevmax = value
+            prevmax = abs(value)
         
         prev = value
     
