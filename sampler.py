@@ -1,11 +1,8 @@
 #!/usr/bin/python
 
-#import time
-#import math
 import Adafruit_ADS1x15
 import sqlite3
 import datetime
-#import array
 import json
 import functions
 
@@ -32,8 +29,8 @@ except Exception as e:
     exit()
 
 # Read channels 0 and 1
-amps0 = readAmps( adc, 0, config)
-#amps1 = readAmps( adc, 1, config)
+amps0 = functions.readAmps( adc, 0, config)
+#amps1 = functions.readAmps( adc, 1, config)
 
 #Save to the database
 try:
