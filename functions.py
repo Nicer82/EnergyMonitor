@@ -111,6 +111,7 @@ def readAmps( adc, chan, config ):
     bias = -avg
     print("ssq ", ssq)
     print("avg", avg)
+    print("max", max)
     print("bias", bias)
 
     variance = float(ssq)/n - avg*avg
