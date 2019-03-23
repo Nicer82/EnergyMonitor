@@ -1,24 +1,28 @@
 #!/usr/bin/python
 import reader
 import json
+import sqlite3
 
 #Read configuration
 try:
     with open('./settings.json') as json_data:
         config = json.load(json_data)
-except IOError as e:
-  print("Unable to open configuration file:", e)
-  exit()
-  
-r = reader.Reader(config)
-r.read(0)
-consphase1 = r.getLastPower()
-r.read(1)
-consphase2 = r.getLastPower()
-r.read(2)
-consphase3 = r.getLastPower()
-r.read(3)
-prod = r.getLastPower()
 
-print("Total consumption :",consphase1+consphase2+consphase3)
-print("Total production  :",prod)
+    conn = sqlite3.connect(config["Database"])
+    c = conn.cursor()
+    sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3})".format(, amps)
+    r = reader.Reader(config)
+
+    r.read(0)
+    c.execute(sql.format(r.getLastStart(),0,r.getLastPower(),'NULL'))
+    r.read(1)
+    c.execute(sql.format(r.getLastStart(),1,r.getLastPower(),'NULL'))
+    r.read(2)
+    c.execute(sql.format(r.getLastStart(),2,r.getLastPower(),'NULL'))
+    r.read(3)
+    c.execute(sql.format(r.getLastStart(),3,r.getLastPower(),'NULL'))
+
+    conn.commit()
+    conn.close()
+except Exception as e:
+    print("An error occurred:", e)
