@@ -7,7 +7,7 @@ import sqlite3
 import datetime
 #import array
 import json
-import functions
+import functions.py
 
 dt = datetime.datetime.now()
 print("===== sampler.py starting at ", dt.isoformat())
