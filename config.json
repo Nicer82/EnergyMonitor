@@ -8,12 +8,5 @@
      "substractor": 4,
      "factor": 0.01073,
      "gain": 1
-  },
-  "Transmitter":
-  {
-      "loginURL": "DESTINATION URL HERE",
-      "currentURL": "DESTINATION URL HERE",
-      "userName": "USERNAME HERE",
-      "password": "PASSWORD HERE"
   }
 }
