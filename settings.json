@@ -5,7 +5,7 @@
   "Sampler":
   {
      "substractor": 4,
-     "factor": 0.012,
+     "factor": 0.0115,
      "gain": 1
   },
   "Transmitter":
