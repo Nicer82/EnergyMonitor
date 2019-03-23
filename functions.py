@@ -99,14 +99,14 @@ def readAmps( adc, chan, config ):
     avg = average(values)
     ssq = sumsquares( values )
     bias = -avg
-    #print("ssq ", ssq)
-    #print("avg", avg)
-    #print("bias", bias)
+    print("ssq ", ssq)
+    print("avg", avg)
+    print("bias", bias)
 
     variance = float(ssq)/n - avg*avg
-    #print("variance", variance)
+    print("variance", variance)
     stddev = math.sqrt(variance)
-    #print("stddev", stddev)
+    print("stddev", stddev)
 
     # Calculate the RMS
     rms = rootmeansquare( values, avg, stddev, bias)
