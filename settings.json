@@ -1,6 +1,7 @@
 {
   "Database": "./EnergyMonitor.db",
   "Voltage": 239,
+  "ConsumptionContainsProduction": 1,
   "Sampler":
   {
      "substractor": 5,
