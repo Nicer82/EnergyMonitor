@@ -2,8 +2,9 @@
   "Database": "./EnergyMonitor.db",
   "Sampler":
   {
-     "substractor": 3.15,
+     "substractor": 5,
      "factor": 0.015709,
+     "voltage": 239,
      "gain": 1
   },
   "Transmitter":
