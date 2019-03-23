@@ -85,13 +85,15 @@ def readAmps( adc, chan, config ):
     
     # Polynomial regression to estimate amps
     # Constants stored in config file.
-    temp = (avgmax - SUBSTRACTOR) * FACTOR
+    amps = (avgmax - SUBSTRACTOR) * FACTOR
     #print("substractor",SUBSTRACTOR)
     #print("factor", FACTOR)
 
-    #Round to 3 decimal places
+    #Round to 3 decimal places and suppress values below zero
     amps = round(temp, 3)
-    
+    if(amps < 0.0):
+        amps = 0.0
+        
     print('Average Reading in Amps: {0}'.format(amps))
     print('Average Reading in Watt: {0}'.format(amps * config["Voltage"]))
     
