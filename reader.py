@@ -68,8 +68,8 @@ class Reader():
 
   # Read and compute the amperage on the specified channel
   def read(self):
-      SUBSTRACTOR = config["Sampler"]["substractor"]
-      FACTOR = config["Sampler"]["factor"]
+      SUBSTRACTOR = self._config["Sampler"]["substractor"]
+      FACTOR = self._config["Sampler"]["factor"]
 
       try:
           values = readChannel()
@@ -92,7 +92,7 @@ class Reader():
           amps = 0.0
       
       self._lastCurrent = amps
-      self._lastPower = amps * config["Voltage"]
+      self._lastPower = amps * self._config["Voltage"]
 
       return
     
