@@ -118,7 +118,7 @@ def readAmps( adc, chan, config ):
     print("factor", FACTOR)
 
     #Round to 2 decimal places
-    amps = round(temp, 2)
+    amps = round(temp, 3)
     if amps < 0:
         amps = 0.00
     print('Average Reading in Amps: {0}'.format(amps))
