@@ -8,8 +8,8 @@ import array
 import json
 
 class Reader():
-  def __init__(self,config,chan=0,adc=Adafruit_ADS1x15.ADS1115()):
-    self._adc = adc
+  def __init__(self,config):
+    self._adc = Adafruit_ADS1x15.ADS1115()
     self._chan = chan
     self._config = config
     
@@ -48,18 +48,18 @@ class Reader():
       return avg
 
   # Read an ADC channel with the specified gain at max rate for 1/4 second
-  def readChannel(self):
+  def readChannel(self, chan):
       values = []
       
-      self._adc.start_adc(self._chan, gain=self._config["Sampler"]["gain"], data_rate=860)
+      self._adc.start_adc(chan, gain=self._config["Sampler"]["gain"], data_rate=860)
       
-      # Sample for one second
-      start = time.time()
-      while (time.time() - start) <= 0.25:
+      # Sample for 1/4 second
+      self._lastStart = time.time()
+      while (time.time() - self._lastStart) <= 0.25:
           # Read the last ADC conversion value and print it out.
           value = float(self._adc.get_last_result())
           values.append(value)
-          #print('{0};{1};{2}'.format(time.time(),chan,value))
+          #print('{0};{1};{2}'.format(self._lastStart,chan,value))
 
       # Stop continuous conversion.
       self._adc.stop_adc()
@@ -67,7 +67,8 @@ class Reader():
       return values
 
   # Read and compute the amperage on the specified channel
-  def read(self):
+  def read(self, chan=0):
+      self._chan = chan
       SUBSTRACTOR = self._config["Sampler"]["substractor"]
       FACTOR = self._config["Sampler"]["factor"]
 
@@ -86,8 +87,7 @@ class Reader():
       # Constants stored in config file.
       amps = (avgmax - SUBSTRACTOR) * FACTOR
       
-      #Round to 3 decimal places and suppress values below zero
-      amps = round(amps, 3)
+      # Suppress values below zero
       if(amps < 0.0):
           amps = 0.0
       
@@ -101,3 +101,6 @@ class Reader():
   
   def getLastPower(self):
     return self._lastPower
+  
+  def getLastStart(self):
+    return self._lastStart
