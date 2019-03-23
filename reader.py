@@ -72,7 +72,7 @@ class Reader():
       FACTOR = self._config["Sampler"]["factor"]
 
       try:
-          values = self.readChannel()
+          values = self.readChannel(chan)
       except ValueError as e:
           print("ADC configuration error: ", e)
           exit()
