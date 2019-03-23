@@ -36,16 +36,19 @@ def averagemax( values ):
     maxvalues = []
     prev = 0.0
     prevmax = -1.0
-       
+    zerolinepassed = false
+    
     for value in values:
         # Has the AC sinus passed the zero line?
         if(value*prev < 0.0):
+            zerolinepassed = true
+            
             if(prevmax >= 0.0):
                 maxvalues.append(prevmax)
                 prevmax = 0.0
         
         # Only set prevmax when zero line is passed for the first time
-        if(prevmax > 0.0 and abs(value) > prevmax):
+        if(zerolinepassed and abs(value) > prevmax):
             prevmax = value
         
         prev = value
