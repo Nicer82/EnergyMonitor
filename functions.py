@@ -34,16 +34,16 @@ def rootmeansquare( values, avg, stddev, bias):
 # Calculate the average value
 def averagemax( values ):
     maxvalues = []
-    prev = 0
-    prevmax = -1
+    prev = 0.0
+    prevmax = -1.0
     
     
     for value in values:
         # Has the AC sinus passed the zero line?
-        if(abs(prev)/prev != abs(value)/value):
-            if(prevmax >= 0):
+        if(value*prev < 0.0):
+            if(prevmax >= 0.0):
                 maxvalues.append(prevmax)
-                prevmax = 0
+                prevmax = 0.0
         
         if(abs(value) > prevmax):
             prevmax = value
@@ -51,7 +51,7 @@ def averagemax( values ):
         prev = value
     
     for m in maxvalues:
-        print(m)
+        print("m:",m)
     
     avgmax = average(maxvalues)
     
