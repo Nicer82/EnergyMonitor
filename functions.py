@@ -68,7 +68,6 @@ def average( values ):
 def maximum( values ):
     max = 0
     for value in values:
-        print("v:",value)
         if(abs(value) > max):
             max = abs(value)
     return max
@@ -90,7 +89,7 @@ def readChannel( adc, chan, g ):
         # Read the last ADC conversion value and print it out.
         value = float(adc.get_last_result())
         values.append(value)
-        #print('Channel {0}: {1}'.format(chan,value))
+        print('Channel {0}: {1}'.format(chan,value))
 
     # Stop continuous conversion.
     adc.stop_adc()
