@@ -40,6 +40,14 @@ def average( values ):
     avg = sum/len(values)    
     return avg
 
+# Calculate the maximum absolute value
+def maximum( values ):
+    max = 0
+    for value in values:
+        if(abs(value) > max):
+            max = abs(value)
+    return max
+
 # Calculate sum of squares
 def sumsquares( values ):
     ssq = 0
@@ -98,6 +106,7 @@ def readAmps( adc, chan, config ):
         
     # Calculate basic stats on the raw data
     avg = average(values)
+    max = maximum(values)
     ssq = sumsquares( values )
     bias = -avg
     print("ssq ", ssq)
