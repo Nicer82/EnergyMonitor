@@ -52,7 +52,7 @@ def readChannel( adc, chan, g ):
     adc.start_adc(chan, gain=g, data_rate=860)
     # Sample for one second
     start = time.time()
-    while (time.time() - start) <= 0.5:
+    while (time.time() - start) <= 0.1:
         # Read the last ADC conversion value and print it out.
         value = float(adc.get_last_result())
         values.append(value)
