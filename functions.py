@@ -36,8 +36,7 @@ def averagemax( values ):
     maxvalues = []
     prev = 0.0
     prevmax = -1.0
-    
-    
+       
     for value in values:
         # Has the AC sinus passed the zero line?
         if(value*prev < 0.0):
@@ -62,7 +61,6 @@ def average( values ):
     sum = 0
     for value in values:
         sum = sum + value
-        print(value)
     avg = sum/len(values)    
     return avg
 
@@ -70,6 +68,7 @@ def average( values ):
 def maximum( values ):
     max = 0
     for value in values:
+        print("v:",value)
         if(abs(value) > max):
             max = abs(value)
     return max
