@@ -174,7 +174,7 @@ amps0 = readAmps( adc, 0, config)
 try:
     c = conn.cursor()
     dt = datetime.datetime.now()
-    sql = "INSERT INTO currentreading VALUES ( '{0}', '{1}', NULL, NULL )".format( dt.isoformat(), amps0 )
+    sql = "INSERT INTO ReadingData VALUES ( '{0}', {1}, {2}, {3} )".format( dt.isoformat(), 0, amps0, NULL)
     print( "Saving to database" )
     c.execute(sql)
     conn.commit()
