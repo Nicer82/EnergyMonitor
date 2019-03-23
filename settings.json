@@ -1,0 +1,16 @@
+{
+  "Database": "./EnergyMonitor.db",
+  "Sampler":
+  {
+     "substractor": 3.98,
+     "factor": 0.025575,
+     "gain": 1
+  },
+  "Transmitter":
+  {
+      "loginURL": "DESTINATION URL HERE",
+      "currentURL": "DESTINATION URL HERE",
+      "userName": "USERNAME HERE",
+      "password": "PASSWORD HERE"
+  }
+}
