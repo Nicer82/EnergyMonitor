@@ -35,7 +35,7 @@ class Reader():
 
           prev = value
 
-      avgmax = self._average(maxvalues)
+      avgmax = self.average(maxvalues)
 
       return avgmax
 
@@ -72,7 +72,7 @@ class Reader():
       FACTOR = self._config["Sampler"]["factor"]
 
       try:
-          values = self._readChannel()
+          values = self.readChannel()
       except ValueError as e:
           print("ADC configuration error: ", e)
           exit()
@@ -80,7 +80,7 @@ class Reader():
           print("Unexpected ADC error: ", e)
           exit()
 
-      avgmax = self._averagemax(values)
+      avgmax = self.averagemax(values)
       
       # Polynomial regression to estimate amps
       # Constants stored in config file.
