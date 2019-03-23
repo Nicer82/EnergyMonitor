@@ -28,10 +28,7 @@ def averagemax( values ):
             prevmax = abs(value)
         
         prev = value
-    
-    for m in maxvalues:
-        print("m:",m)
-    
+   
     avgmax = average(maxvalues)
     
     return avgmax
@@ -54,7 +51,7 @@ def readChannel( adc, chan, g ):
         # Read the last ADC conversion value and print it out.
         value = float(adc.get_last_result())
         values.append(value)
-        print('{0};{1};{2}'.format(time.time(),chan,value))
+        #print('{0};{1};{2}'.format(time.time(),chan,value))
 
     # Stop continuous conversion.
     adc.stop_adc()
