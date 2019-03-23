@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -------------------------------------------------------------------------
 # Program: Reads current from ADS115 ADC and saves to database
 #
