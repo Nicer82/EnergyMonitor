@@ -2,6 +2,7 @@
 import reader
 import json
 import sqlite3
+import time
 
 # Read configuration
 with open('./config.json') as json_data:
