@@ -2,7 +2,7 @@
 
 #import time
 #import math
-#import Adafruit_ADS1x15
+import Adafruit_ADS1x15
 import sqlite3
 import datetime
 #import array
