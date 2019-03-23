@@ -10,7 +10,6 @@ import json
 class Reader():
   def __init__(self,config):
     self._adc = Adafruit_ADS1x15.ADS1115()
-    self._chan = chan
     self._config = config
     
   # Calculate the average value
