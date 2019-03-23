@@ -49,7 +49,8 @@ amps3 = functions.readAmps( adc, 3, config)
     
 #conn.close()
 #print("Database closed")
-
+print("Total Consumption:",(amps0+amps1+amps2)*235)
+print("Total Production :",(amps3)*235)
 dt = datetime.datetime.now()
 print("===== sampler.py exiting at ", dt.isoformat())
 
