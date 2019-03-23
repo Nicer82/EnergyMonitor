@@ -2,6 +2,7 @@
   "Database": "./EnergyMonitor.db",
   "Voltage": 239,
   "ConsumptionContainsProduction": 1,
+  "LoopWaitSeconds": 5.0,
   "Sampler":
   {
      "substractor": 4,
