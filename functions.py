@@ -81,6 +81,7 @@ def readAmps( adc, chan, config ):
         exit()
         
     avgmax = averagemax(values)
+    print("avgmax:",avgmax)
     
     # Polynomial regression to estimate amps
     # Constants stored in config file.
