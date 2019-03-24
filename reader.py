@@ -6,6 +6,7 @@ import sqlite3
 import datetime
 import array
 import json
+import statistics
 
 class Reader():
   def __init__(self,config):
@@ -37,6 +38,25 @@ class Reader():
       avgmax = self.average(maxvalues)
 
       return avgmax
+  
+  def rootmeansquare(self,values):
+    ssq = 0.0
+    sum = 0.0
+    avg = statistics.mean(values)
+    
+    for value in values:
+        newValue = value - avg
+        ssq = ssq + newValue * newValue
+        sum = sum + newValue
+
+    # Figure the RMS, which is the square root of the average of the
+    # sum of squares figured above
+    if len(values) == 0:
+        rms = 0.0
+    else:
+        rms = math.sqrt(float(ssq)/len(values))
+    
+    return rms
 
   # Calculate the average value
   def average(self,values):
@@ -80,7 +100,7 @@ class Reader():
           print("Unexpected ADC error: ", e)
           exit()
 
-      avgmax = self.averagemax(values)
+      avgmax = self.rootmeansquare(values)
       amps = (avgmax - SUBSTRACTOR) * FACTOR
       
       # Suppress values below zero
