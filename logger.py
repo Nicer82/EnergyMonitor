@@ -6,7 +6,7 @@ import time
 import statistics
 
 # Read configuration
-with open('./config.json') as json_data:
+with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
 
 # Settings
