@@ -16,7 +16,7 @@ while(True):
         connServer = mysql.connector.connect(user=config["Uploader"]["User"],
                                              password=config["Uploader"]["Password"],
                                              host=config["Uploader"]["Host"],
-                                             port=config["Uploader"]["Port"]
+                                             port=config["Uploader"]["Port"],
                                              database=config["Uploader"]["Database"])
         connLocal = sqlite3.connect(config["Logger"]["Database"])
         connLocal.row_factory = sqlite3.Row
