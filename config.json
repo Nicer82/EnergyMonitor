@@ -4,8 +4,8 @@
     "Voltage": 240,
     "Substractor": 3.4,
     "Factor": 0.0152,
-    "Gain": 1
-    "DataRate": 860
+    "Gain": 1,
+    "DataRate": 860,
     "ReadTime": 0.25
   },
   "Logger":
