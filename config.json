@@ -16,6 +16,7 @@
   "Uploader":
   {
     "Host": "192.168.1.2",
+    "Port": 3307,
     "Database": "EnergyMonitor",
     "User": "EnergyMonitor",
     "Password": "MVmIVKdWl69QQMjR",
