@@ -18,13 +18,13 @@ with open('./config.json') as json_data:
 r = reader.Reader(config)
 
 # Read the channels
-r.read(0)
+#r.read(0)
 #c.execute(sql.format(r.getLastStart(),0,r.getLastPower(),'NULL'))
 #r.read(1)
 #c.execute(sql.format(r.getLastStart(),1,r.getLastPower(),'NULL'))
 #r.read(2)
 #c.execute(sql.format(r.getLastStart(),2,r.getLastPower(),'NULL'))
-#r.read(3)
+r.read(3)
 #c.execute(sql.format(r.getLastStart(),3,r.getLastPower(),'NULL'))
 
 # Close the DB
