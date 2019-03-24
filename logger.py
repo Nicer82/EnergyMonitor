@@ -24,9 +24,11 @@ while(True):
 
         # Reset statistics
         totalWh = [0,0,0,0]
-        minW = [99999,99999,99999,99999]
-        maxW = [0,0,0,0]
-        count = [0,0,0,0]
+        valuesW = [[],[],[],[]]
+        #minW = [99999,99999,99999,99999]
+        #maxW = [0,0,0,0]
+        #avgW = [0,0,0,0]
+        #count = [0,0,0,0]
 
         while(True):
             # collect data for all channels
@@ -38,9 +40,11 @@ while(True):
                 # calculate statistics, exclude the first measurement
                 if(prevtimestamp[channel] > 0.0):
                     totalWh[channel] = totalWh[channel]+(valueW*(timestamp-prevtimestamp[channel])/3600)
-                    minW[channel] = min(minW[channel],valueW)
-                    maxW[channel] = max(maxW[channel],valueW)
-                    count[channel] = count[channel]+1
+                    valuesW[channel].append(valueW)
+                    #minW[channel] = min(minW[channel],valueW)
+                    #maxW[channel] = max(maxW[channel],valueW)
+                    #avgW[channel] = (avgW[channel]*count[channel]+valueW)/count[channel]+1
+                    #count[channel] = count[channel]+1
 
                 # save last measurement timestamp for the channel
                 prevtimestamp[channel] = timestamp
@@ -52,9 +56,15 @@ while(True):
         #output data when something is collected
         for channel in channels:
             print("{0}: {1}: totalWh: {2}".format(nextlog,channel,totalWh[channel]))
-            print("{0}: {1}: minW: {2}".format(nextlog,channel,minW[channel]))
-            print("{0}: {1}: maxW: {2}".format(nextlog,channel,maxW[channel]))
-            print("{0}: {1}: count: {2}".format(nextlog,channel,count[channel]))
+            print("{0}: {1}: minW: {2}".format(nextlog,channel,min(valuesW[channel])))
+            print("{0}: {1}: maxW: {2}".format(nextlog,channel,max(valuesW[channel])))
+            print("{0}: {1}: avgW: {2}".format(nextlog,channel,sum(valuesW[channel])/len(valuesW[channel])))
+            print("{0}: {1}: stdevW: {2}".format(nextlog,channel,max(valuesW[channel])))
+            print("{0}: {1}: count: {2}".format(nextlog,channel,len(valuesW[channel])))
+            #print("{0}: {1}: totalWh: {2}".format(nextlog,channel,totalWh[channel]))
+            #print("{0}: {1}: minW: {2}".format(nextlog,channel,minW[channel]))
+            #print("{0}: {1}: maxW: {2}".format(nextlog,channel,maxW[channel]))
+            #print("{0}: {1}: count: {2}".format(nextlog,channel,count[channel]))
         #conn = sqlite3.connect(config["Database"])
         #c = conn.cursor()
         #sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3})"
