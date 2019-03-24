@@ -1,11 +1,11 @@
 {
   "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
-  "Voltage": 1,
+  "Voltage": 240,
   "ConsumptionContainsProduction": 1,
   "LoopWaitSeconds": 5.0,
   "Sampler":
   {
-     "substractor": 0,
+     "substractor": 3.3,
      "factor": 1,
      "gain": 1
   }
