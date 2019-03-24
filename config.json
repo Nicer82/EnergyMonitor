@@ -2,9 +2,11 @@
   "Reader":
   {
     "Voltage": 240,
-    "substractor": 3.4,
-    "factor": 0.0152,
-    "gain": 1
+    "Substractor": 3.4,
+    "Factor": 0.0152,
+    "Gain": 1
+	  "DataRate": 860
+    "ReadTime": 0.25
   },
   "Logger":
   {
