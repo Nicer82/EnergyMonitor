@@ -2,10 +2,17 @@
   "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
   "Voltage": 240,
   "LogInterval": 60,
-  "Sampler":
+  "Logger":
   {
-     "substractor": 3.4,
-     "factor": 0.0152,
-     "gain": 1
+    "substractor": 3.4,
+    "factor": 0.0152,
+    "gain": 1
+  },
+  "Uploader":
+  {
+    "Server": "192.168.1.2",
+    "Database": "EnergyMonitor",
+    "User": "EnergyMonitor",
+    "Password": "Energy4All!"
   }
 }
