@@ -80,10 +80,7 @@ class Reader():
           print("Unexpected ADC error: ", e)
           exit()
 
-      #avgmax = self.averagemax(values)
-      
-      # Polynomial regression to estimate amps
-      # Constants stored in config file.
+      avgmax = self.averagemax(values)
       amps = (avgmax - SUBSTRACTOR) * FACTOR
       
       # Suppress values below zero
