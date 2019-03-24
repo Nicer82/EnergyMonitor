@@ -25,6 +25,7 @@ r = reader.Reader(config)
 #r.read(2)
 #c.execute(sql.format(r.getLastStart(),2,r.getLastPower(),'NULL'))
 r.read(3)
+print(r.getLastPower())
 #c.execute(sql.format(r.getLastStart(),3,r.getLastPower(),'NULL'))
 
 # Close the DB
