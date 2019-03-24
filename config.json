@@ -1,5 +1,5 @@
 {
-  "Database": "./EnergyMonitor.db",
+  "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
   "Voltage": 239,
   "ConsumptionContainsProduction": 1,
   "LoopWaitSeconds": 5.0,
