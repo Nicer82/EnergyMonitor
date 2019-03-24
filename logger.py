@@ -3,6 +3,7 @@ import reader
 import json
 import sqlite3
 import time
+import statistics
 
 # Read configuration
 with open('./config.json') as json_data:
@@ -58,8 +59,8 @@ while(True):
             print("{0}: {1}: totalWh: {2}".format(nextlog,channel,totalWh[channel]))
             print("{0}: {1}: minW: {2}".format(nextlog,channel,min(valuesW[channel])))
             print("{0}: {1}: maxW: {2}".format(nextlog,channel,max(valuesW[channel])))
-            print("{0}: {1}: avgW: {2}".format(nextlog,channel,sum(valuesW[channel])/len(valuesW[channel])))
-            print("{0}: {1}: stdevW: {2}".format(nextlog,channel,max(valuesW[channel])))
+            print("{0}: {1}: avgW: {2}".format(nextlog,channel,statistics.mean(valuesW[channel])))
+            print("{0}: {1}: stdevW: {2}".format(nextlog,channel,statistics.stdev(valuesW[channel])))
             print("{0}: {1}: count: {2}".format(nextlog,channel,len(valuesW[channel])))
             #print("{0}: {1}: totalWh: {2}".format(nextlog,channel,totalWh[channel]))
             #print("{0}: {1}: minW: {2}".format(nextlog,channel,minW[channel]))
