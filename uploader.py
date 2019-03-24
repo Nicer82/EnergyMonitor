@@ -11,7 +11,7 @@ with open('/home/pi/EnergyMonitor/config.json') as json_data:
 
 # Infinite loop
 while(True):
-    try:
+    #try:
         # Set up DB connections
         connServer = mysql.connector.connect(user=config["Uploader"]["User"],
                                              password=config["Uploader"]["Password"],
@@ -46,8 +46,8 @@ while(True):
         connServer.close()
         connLocal.commit()
         connLocal.close()    
-    except Exception as e:
-        print("An error occurred:", e)
-    finally:
+    #except Exception as e:
+    #    print("An error occurred:", e)
+    #finally:
         # Wait x seconds to upload next set of data
         time.sleep(config["Uploader"]["UploadInterval"])
