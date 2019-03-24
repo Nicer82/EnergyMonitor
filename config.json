@@ -1,12 +1,15 @@
 {
-  "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
-  "Voltage": 240,
-  "LogInterval": 60,
   "Reader":
   {
+    "Voltage": 240,
     "substractor": 3.4,
     "factor": 0.0152,
     "gain": 1
+  },
+  "Logger":
+  {
+    "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
+    "LogInterval": 60
   },
   "Uploader":
   {
