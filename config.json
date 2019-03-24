@@ -2,7 +2,7 @@
   "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
   "Voltage": 240,
   "LogInterval": 60,
-  "Logger":
+  "Reader":
   {
     "substractor": 3.4,
     "factor": 0.0152,
