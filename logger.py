@@ -46,35 +46,19 @@ while(True):
             if(timestamp >= nextlog):
                 break
 
-        #output data when something is collected
+        # output data when something is collected
+        conn = sqlite3.connect(config["Database"])
+        c = conn.cursor()
+        sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3},{4},{5},{6},{7},NULL)"
         for channel in channels:
+            c.execute(sql.format(nextlog,channel,totalWh[channel],min(valuesW[channel]),max(valuesW[channel]),statistics.mean(valuesW[channel]),statistics.stdev(valuesW[channel]),len(valuesW[channel])))
             print("{0}: {1}: totalWh: {2}".format(nextlog,channel,totalWh[channel]))
             print("{0}: {1}: minW: {2}".format(nextlog,channel,min(valuesW[channel])))
             print("{0}: {1}: maxW: {2}".format(nextlog,channel,max(valuesW[channel])))
             print("{0}: {1}: avgW: {2}".format(nextlog,channel,statistics.mean(valuesW[channel])))
             print("{0}: {1}: stdevW: {2}".format(nextlog,channel,statistics.stdev(valuesW[channel])))
             print("{0}: {1}: count: {2}".format(nextlog,channel,len(valuesW[channel])))
-        #conn = sqlite3.connect(config["Database"])
-        #c = conn.cursor()
-        #sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3})"
+        conn.commit()
+        conn.close()
     except Exception as e:
         print("An error occurred:", e)
-    
-
-# Read the channels
-#r.read(0)
-#c.execute(sql.format(r.getLastStart(),0,r.getLastPower(),'NULL'))
-#r.read(1)
-#c.execute(sql.format(r.getLastStart(),1,r.getLastPower(),'NULL'))
-#r.read(2)
-#c.execute(sql.format(r.getLastStart(),2,r.getLastPower(),'NULL'))
-#r.read(3)
-#print(r.getLastPower())
-#c.execute(sql.format(r.getLastStart(),3,r.getLastPower(),'NULL'))
-
-# Close the DB
-#conn.commit()
-#conn.close()
-
-    # Wait 5 seconds
-#    time.sleep(config["LoopWaitSeconds"])
