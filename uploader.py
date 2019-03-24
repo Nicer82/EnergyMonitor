@@ -1,23 +1,52 @@
-#import mysql.connector
+import mysql.connector
 import sqlite3
 import json
+import time
+import socket
+from datetime import datetime
 
 # Read configuration
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
 
-# Set up DB connection    
-#connServer = mysql.connector.connect(user='EnergyMonitor', password='Energy4All!',
-#                              host='192.168.1.2',
-#                              database='EnergyMonitor')
-connLocal = sqlite3.connect(config["Database"])
-connLocal.row_factory = sqlite3.Row
+# Infinite loop
+while(True):
+    try:
+        # Set up DB connections
+        connServer = mysql.connector.connect(user=config["Uploader"]["User"],
+                                             password=config["Uploader"]["Password"],
+                                             host=config["Uploader"]["Host"],
+                                             database=config["Uploader"]["Database"])
+        connLocal = sqlite3.connect(config["Logger"]["Database"])
+        connLocal.row_factory = sqlite3.Row
 
-curLocal = connLocal.cursor()
-curLocal.execute("SELECT TimeStamp,Channel,ConsumptionWh,PowerMinW,PowerMaxW,PowerAvgW,PowerStDevW,Measurements FROM ReadingData WHERE UploadedTimeStamp IS NULL")
+        # Worker variables
+        uploadedTimeStamp = time.time()
+        curServer = connServer.cursor()
+        curLocal = connLocal.cursor()
+        curLocal.execute("SELECT TimeStamp,Channel,ConsumptionWh,PowerMinW,PowerMaxW,PowerAvgW,PowerStDevW,Measurements FROM ReadingData WHERE UploadedTimeStamp IS NULL")
 
-for row in curLocal:
-  print(row['TimeStamp'],row['Channel'])
-    
-connLocal.close()
-#connServer.close()
+        # Loop through rows from local DB and insert them into the server DB
+        for row in curLocal:
+            curServer.execute("INSERT INTO ReadingData ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},'{10}')".format(datetime.fromtimestamp(row['TimeStamp']),
+                                                                                                                socket.gethostname(),
+                                                                                                                row['Channel'],
+                                                                                                                row['ConsumptionWh'],
+                                                                                                                row['PowerMinW'],
+                                                                                                                row['PowerMaxW'],
+                                                                                                                row['PowerAvgW'],
+                                                                                                                row['PowerStDevW'],
+                                                                                                                row['Measurements'],
+                                                                                                                datetime.fromtimestamp(uploadedTimeStamp)))
+            curLocal.execute("UPDATE ReadingData SET UploadedTimeStamp={0} WHERE Timestamp = {1} AND Channel = {2}".format(uploadedTimeStamp,
+                                                                                                                           row['TimeStamp'],
+                                                                                                                           row['Channel']))
+        connServer.commit()
+        connServer.close()
+        connLocal.commit()
+        connLocal.close()    
+    except Exception as e:
+        print("An error occurred:", e)
+    finally:
+        # Wait x seconds to upload next set of data
+        time.sleep(config["Uploader"]["UploadInterval"])
