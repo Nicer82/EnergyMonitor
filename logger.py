@@ -10,7 +10,6 @@ with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
 
 # Settings
-loginterval = 60 # log interval in seconds
 channels = [0,1,2,3]
 
 # Set worker variables
@@ -21,7 +20,7 @@ r = reader.Reader(config)
 # Infinite loop
 while(True):
     try:
-        nextlog = (time.time() // loginterval + 1) * loginterval
+        nextlog = (time.time() // config["loginterval"] + 1) * config["loginterval"]
 
         # Reset statistics
         totalWh = [0,0,0,0]
