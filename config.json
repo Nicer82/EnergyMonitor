@@ -5,7 +5,7 @@
   "LoopWaitSeconds": 5.0,
   "Sampler":
   {
-     "substractor": 3.3,
+     "substractor": 3.4,
      "factor": 0.0152,
      "gain": 1
   }
