@@ -29,9 +29,9 @@ while(True):
         curLocal = connLocal.cursor()
         print("execute local fetch")
         curLocal.execute("SELECT TimeStamp,Channel,ConsumptionWh,PowerMinW,PowerMaxW,PowerAvgW,PowerStDevW,Measurements FROM ReadingData WHERE UploadedTimeStamp IS NULL")
-        curLocal.fetchall()
+        rows = curLocal.fetchall()
         # Loop through rows from local DB and insert them into the server DB
-        for row in curLocal:
+        for row in rows:
             print("execute server insert")
             curServer.execute("INSERT INTO ReadingData VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},'{9}')".format(datetime.fromtimestamp(row['TimeStamp']),
                                                                                                                 socket.gethostname(),
