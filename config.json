@@ -3,7 +3,7 @@
   "Voltage": 240,
   "ConsumptionContainsProduction": 1,
   "LoopWaitSeconds": 5.0,
-  "LogInterval": 10,
+  "LogInterval": 60,
   "Sampler":
   {
      "substractor": 3.4,
