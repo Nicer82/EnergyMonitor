@@ -11,7 +11,7 @@ with open('/home/pi/EnergyMonitor/config.json') as json_data:
 
 # Infinite loop
 while(True):
-    #try:
+    try:
         # Set up DB connections
         connServer = mysql.connector.connect(user=config["Uploader"]["User"],
                                              password=config["Uploader"]["Password"],
@@ -39,15 +39,14 @@ while(True):
                                                                                                                 row['PowerStDevW'],
                                                                                                                 row['Measurements'],
                                                                                                                 datetime.fromtimestamp(uploadedTimeStamp)))
-            curLocal.execute("UPDATE ReadingData SET UploadedTimeStamp={0} WHERE Timestamp = {1} AND Channel = {2}".format(uploadedTimeStamp,
-                                                                                                                           row['TimeStamp'],
-                                                                                                                           row['Channel']))
+            curLocal.execute("DELETE FROM ReadingData WHERE Timestamp = {0} AND Channel = {1}".format(row['TimeStamp'],
+                                                                                                      row['Channel']))
         connServer.commit()
         connServer.close()
         connLocal.commit()
         connLocal.close()    
-    #except Exception as e:
-    #    print("An error occurred:", e)
-    #finally:
+    except Exception as e:
+        print("An error occurred:", e)
+    finally:
         # Wait x seconds to upload next set of data
         time.sleep(config["Uploader"]["UploadInterval"])
