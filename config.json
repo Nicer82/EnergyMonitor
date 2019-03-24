@@ -1,8 +1,6 @@
 {
   "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
   "Voltage": 240,
-  "ConsumptionContainsProduction": 1,
-  "LoopWaitSeconds": 5.0,
   "LogInterval": 60,
   "Sampler":
   {
