@@ -20,6 +20,7 @@
     "Database": "EnergyMonitor",
     "User": "EnergyMonitor",
     "Password": "MVmIVKdWl69QQMjR",
-    "UploadInterval": 10
+    "UploadInterval": 10,
+    "LocalDataKeepDays": 1.0
   }
 }
