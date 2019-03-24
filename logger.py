@@ -20,7 +20,7 @@ r = reader.Reader(config)
 # Infinite loop
 while(True):
     try:
-        nextlog = (time.time() // config["loginterval"] + 1) * config["loginterval"]
+        nextlog = (time.time() // config["LogInterval"] + 1) * config["LogInterval"]
 
         # Reset statistics
         totalWh = [0,0,0,0]
