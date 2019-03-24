@@ -17,7 +17,7 @@ curLocal = connLocal.cursor()
 curLocal.execute("SELECT TimeStamp,Channel,ConsumptionWh,PowerMinW,PowerMaxW,PowerAvgW,PowerStDevW,Measurements FROM ReadingData WHERE UploadedTimeStamp IS NULL")
 
 for row in curLocal:
-  print(r['TimeStamp'],r['Channel'])
+  print(row['TimeStamp'],row['Channel'])
     
 connLocal.close()
 #connServer.close()
