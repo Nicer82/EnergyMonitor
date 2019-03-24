@@ -58,7 +58,7 @@ class Reader():
           # Read the last ADC conversion value and print it out.
           value = float(self._adc.get_last_result())
           values.append(value)
-          print('{0};{1};{2}'.format(value,self._lastStart,chan))
+          #print('{0};{1};{2}'.format(value,self._lastStart,chan))
 
       # Stop continuous conversion.
       self._adc.stop_adc()
