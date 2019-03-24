@@ -58,7 +58,7 @@ class Reader():
           # Read the last ADC conversion value and print it out.
           value = float(self._adc.get_last_result())
           values.append(value)
-          #print('{0};{1};{2}'.format(self._lastStart,chan,value))
+          print('{0};{1};{2}'.format(value,self._lastStart,chan))
 
       # Stop continuous conversion.
       self._adc.stop_adc()
@@ -80,7 +80,7 @@ class Reader():
           print("Unexpected ADC error: ", e)
           exit()
 
-      avgmax = self.averagemax(values)
+      #avgmax = self.averagemax(values)
       
       # Polynomial regression to estimate amps
       # Constants stored in config file.
