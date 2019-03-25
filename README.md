@@ -21,34 +21,24 @@ A Raspberry Pi.  I did my development on a Raspberry Pi Model 3B+. Should work o
 ##Configuration
 Configuration is stored in the config.json file. There is a section for every python script.
 
-- test
-  - test
-{
-  "Reader":
-  {
-    "Voltage": 240, --> average voltage of the measured installation
-    "Substractor": 3.4, --> the value the sensors pick up when no current is flowing. This corrects hardware offsets. Can be positive or negative.
-    "Factor": 0.0152, --> depending on the type of sensors, resistors you use, a different multiplication needs to be done to go from the read value to the actual Amps. The right value for your implementation should be determined by testing.
-    "Gain": 1, --> ADS1115 Gain value
-    "DataRate": 860, --> ADS1115 Data rate value
-    "ReadTime": 0.25 --> Time in seconds you want to read the sine wave from the sensor
-  },
-  "Logger":
-  {
-    "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db", --> Location of the local SQLite DB
-    "LogInterval": 60 --> A record per channel per x seconds is created in the ReadingData table
-  },
-  "Uploader":
-  {
-    "Host": "mySqlServer", --> Location of the remote MySQL DB
-    "Port": 3307, --> Port of the remote MySQL DB
-    "Database": "EnergyMonitor", --> DB Name of the remote MySQL DB
-    "User": "EnergyMonitor", --> Credentials to connect to the remote MySQL DB
-    "Password": "MVmIVKdWl69QQMjR", --> Credentials to connect to the remote MySQL DB
-    "UploadInterval": 10, --> Time in seconds to check for records in the local DB to upload.
-    "LocalDataKeepDays": 1 --> Number of days of data you want to keep in the local DB before erasing it.
-  }
-}
+- Reader
+  - Voltage: average voltage of the measured installation
+  - Substractor: the value the sensors pick up when no current is flowing. This corrects hardware offsets. Can be positive or negative.
+  - Factor:  depending on the type of sensors, resistors you use, a different multiplication needs to be done to go from the read value to the actual Amps. The right value for your implementation should be determined by testing.
+  - Gain: ADS1115 Gain value
+  - DataRate: ADS1115 Data rate value
+  - ReadTime: Time in seconds you want to read the sine wave from the sensor
+- Logger
+  - Database: Location of the local SQLite DB
+  - LogInterval: A record per channel per x seconds is created in the ReadingData table
+- Uploader
+  - Host: Location of the remote MySQL DB
+  - Port: Port of the remote MySQL DB
+  - Database: DB Name of the remote MySQL DB
+  - User: Credentials to connect to the remote MySQL DB
+  - Password: Credentials to connect to the remote MySQL DB
+  - UploadInterval: Time in seconds to check for records in the local DB to upload.
+  - LocalDataKeepDays: Number of days of data you want to keep in the local DB before erasing it.
 
 ##logger.py
 
