@@ -21,6 +21,8 @@ A Raspberry Pi.  I did my development on a Raspberry Pi Model 3B+. Should work o
 ##Configuration
 Configuration is stored in the config.json file. There is a section for every python script.
 
+- test
+  - test
 {
   "Reader":
   {
