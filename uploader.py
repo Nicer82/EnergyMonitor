@@ -65,7 +65,7 @@ while(True):
                                                                                                                              row['Channel']))
             
         # Remove data from local DB
-        curLocal.execute("DELETE FROM ReadingData WHERE Timestamp < {0}".format(uploadedTimeStamp - (config["Uploader"]["LocalDataKeepDays"]*24*3600)))
+        curLocal.execute("DELETE FROM ReadingData WHERE UploadedTimeStamp IS NOT NULL AND Timestamp < {0}".format(uploadedTimeStamp - (config["Uploader"]["LocalDataKeepDays"]*24*3600)))
         
         # Close Databases
         connServer.commit()
