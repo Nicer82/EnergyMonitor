@@ -38,7 +38,10 @@ while(True):
                                              host=config["Uploader"]["Host"],
                                              port=config["Uploader"]["Port"],
                                              database=config["Uploader"]["Database"])
+        connServer.autocommit = false
+        
         connLocal = sqlite3.connect(config["Logger"]["Database"])
+        connLocal.autocommit = false
         connLocal.row_factory = sqlite3.Row
 
         # Worker variables
@@ -69,8 +72,9 @@ while(True):
         
         # Close Databases
         connServer.commit()
-        connServer.close()
         connLocal.commit()
+        
+        connServer.close()
         connLocal.close()    
     except Exception as e:
         print("An error occurred:", e)
