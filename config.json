@@ -21,6 +21,6 @@
     "User": "EnergyMonitor",
     "Password": "MVmIVKdWl69QQMjR",
     "UploadInterval": 10,
-    "LocalDataKeepDays": 0.003472222
+    "LocalDataKeepDays": 3.0
   }
 }
