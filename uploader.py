@@ -52,7 +52,7 @@ while(True):
         
         # Loop through rows from local DB and insert them into the server DB
         for row in rows:
-            curServer.execute("INSERT INTO ReadingData VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},'{9}')".format(datetime.fromtimestamp(row['TimeStamp']),
+            curServer.execute("INSERT INTO ReadingData VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},'{9}')".format(datetime.utcfromtimestamp(row['TimeStamp']),
                                                                                                                 socket.gethostname(),
                                                                                                                 row['Channel'],
                                                                                                                 row['ConsumptionWh'],
@@ -61,7 +61,7 @@ while(True):
                                                                                                                 row['PowerAvgW'],
                                                                                                                 row['PowerStDevW'],
                                                                                                                 row['Measurements'],
-                                                                                                                datetime.fromtimestamp(uploadedTimeStamp)))
+                                                                                                                datetime.utcfromtimestamp(uploadedTimeStamp)))
             curLocal.execute("UPDATE ReadingData SET UploadedTimeStamp = {0} WHERE Timestamp = {1} AND Channel = {2}".format(uploadedTimeStamp,
                                                                                                                              row['TimeStamp'],
                                                                                                                              row['Channel']))
