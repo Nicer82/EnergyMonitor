@@ -51,7 +51,6 @@ while(True):
         rows = curLocal.fetchall()
         
         # Begin transaction
-        connServer.begin()
         connLocal.begin()
 
         # Loop through rows from local DB and insert them into the server DB
