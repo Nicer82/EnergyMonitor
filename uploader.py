@@ -50,6 +50,10 @@ while(True):
         curLocal = connLocal.cursor()
         curLocal.execute("SELECT TimeStamp,Channel,ConsumptionWh,PowerMinW,PowerMaxW,PowerAvgW,PowerStDevW,Measurements FROM ReadingData WHERE UploadedTimeStamp IS NULL")
         rows = curLocal.fetchall()
+        
+        # Begin transaction
+        connServer.begin()
+        connLocal.begin()
 
         # Loop through rows from local DB and insert them into the server DB
         for row in rows:
@@ -70,10 +74,11 @@ while(True):
         # Remove data from local DB
         curLocal.execute("DELETE FROM ReadingData WHERE UploadedTimeStamp IS NOT NULL AND Timestamp < {0}".format(uploadedTimeStamp - (config["Uploader"]["LocalDataKeepDays"]*24*3600)))
         
-        # Close Databases
+        # Commit transaction
         connServer.commit()
         connLocal.commit()
         
+        # Close Databases
         connServer.close()
         connLocal.close()    
     except Exception as e:
