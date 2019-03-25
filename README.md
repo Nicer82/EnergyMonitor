@@ -1,91 +1,57 @@
-#Monitoring Home Energy with your Raspberry Pi
+##Monitoring Energy with your Raspberry Pi
 
-This software is designed to work with a hardware project [documented at Hackster.io](https://www.hackster.io/michael-nigbor/homeenergy-pi-cecfdf)
+The centerpiece of the design is an ADC1115 analog-to-digital controller, which used I2C to communicate with the RPi.
 
-The centerpice of the design is an ADC1115 analog-to-digital controller, which used I2C to communicate with the RPi.
+The software consists of two scripts that should run continuously on your RPi and that you probably want to start automatically from /etc/rc.local or through another way.
 
-The software consists of three parts
-
-1. A python script that measures current and saves the readings to a database
-
-2. A python script that transmits measurements to a destination in the cloud
-
-3. A simple sqlite3 database
+1. logger.py: A python script that reads out the current sensors and saves the reading data to a local database on the RPi
+2. uploader.py: A python script that uploads the reading data to a remote MySQL DB and cleans up the local DB
 
 ![Here is a photo of what the prototype looks like](./HomeEnergyPrototype.jpg)
 
 ##Prerequisites
 
-A Raspberry Pi.  I did my development on a Raspberry Pi Model 2 B. I suspect this will work fine on newer models.
+A Raspberry Pi.  I did my development on a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 
-Python 3 - This is probably already installed.  If not, use sudo apt-get install python3 
-
-SQLite 3 - Install this using sudo apt-get install sqlite3 
+- Python 3 - This is probably already installed.  If not, use sudo apt-get install python3 
+- SQLite 3 - Install this using sudo apt-get install sqlite3 
+- ADS1115 module - sudo pip3 install <TODO>
+- MySQL module - sudo pip3 install <TODO>
 
 ##Configuration
-Configuration is stored in the HomeEnergy.json file. There are two sections, one for the sampler and another for
-transmitter.
+Configuration is stored in the config.json file. There is a section for every python script.
 
-The A, B, C and gain values are calibration values that convert the voltages read by the ADC into amps.  They
-should be close, but if you use a different current sensor or your readings are off, you may need to adjust them.
-The values are the coefficients for a polynomial regression.
-
-```
 {
-  "Database": "/home/pi/HomeEnergy/HomeEnergy.db",
-  "Sampler": 
+  "Reader":
   {
-    "A": 0.1051,
-    "B": 0.00324,
-    "C": 0.0000011614,
-    "gain": 1
+    "Voltage": 240, --> average voltage of the measured installation
+    "Substractor": 3.4, --> the value the sensors pick up when no current is flowing. This corrects hardware offsets. Can be positive or negative.
+    "Factor": 0.0152, --> depending on the type of sensors, resistors you use, a different multiplication needs to be done to go from the read value to the actual Amps. The right value for your implementation should be determined by testing.
+    "Gain": 1, --> ADS1115 Gain value
+    "DataRate": 860, --> ADS1115 Data rate value
+    "ReadTime": 0.25 --> Time in seconds you want to read the sine wave from the sensor
   },
-  "Transmitter":
+  "Logger":
   {
-      "loginURL": "DESTINATION URL HERE",
-      "currentURL": "DESTINATION URL HERE",
-      "userName": "USERNAME HERE",
-      "password": "PASSWORD HERE"
+    "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db", --> Location of the local SQLite DB
+    "LogInterval": 60 --> A record per channel per x seconds is created in the ReadingData table
+  },
+  "Uploader":
+  {
+    "Host": "mySqlServer", --> Location of the remote MySQL DB
+    "Port": 3307, --> Port of the remote MySQL DB
+    "Database": "EnergyMonitor", --> DB Name of the remote MySQL DB
+    "User": "EnergyMonitor", --> Credentials to connect to the remote MySQL DB
+    "Password": "MVmIVKdWl69QQMjR", --> Credentials to connect to the remote MySQL DB
+    "UploadInterval": 10, --> Time in seconds to check for records in the local DB to upload.
+    "LocalDataKeepDays": 1 --> Number of days of data you want to keep in the local DB before erasing it.
   }
 }
-```
-##Sampler.py
-The sampler Python script is designed to be run by cron. Fortunately, the Pi has a GUI for configuring cron jobs.
 
-The sampler takes measurements from the ADC, calculates RMS and then saves the resulting value into the database. 
-It takes one sample and then exits. 
+##logger.py
 
-On my system, the sampler runs every minute.
+<TODO>
+  
+##uploader.py
 
-##Transmitter.py
-
-The transmitter Python script is also designed to by run as a cron job.  It reads up to 20 records from the databases
-and transmits them to the web destination.  It sends JSON that looks like this:
-```
-{
-   'readingdate' : '2018-03-03T16:12:00',
-   'current1' : 0.0,
-   'current2' : 0.0
-}
-```
-The readingdate field is in ISO format.  Most homes have two hot leg, so there are two current readings.
-
-The transmitter expects to send a user ID and password to a web service and get an access token in return.  It sends
-the token on all subsequent requests.
-
-##Web Destination
-The idea behind the web destination is that you'll want to see the values produced by the system as graphs, gauges
-charts.
-
-If you want to build your own web destination, the only requirements are:
-1. A web service that accepts a user ID/password and returns an access token
-2) A web service that accepts an HTTP POST and a body of the format shown above.
-
-I'm working on a Node-based web application that will do this. This application is designed to run on
-a "micro" server on Amazon, Google or Azure. This will make readings accessible on your phone or web browser no 
-matter where you are.  The application shows the current readings but also produces several graphs and bar charts.
-
-This application should also run fine right on your Pi, though it won't be accessible to the Internet 
-unless you open holes in your firewall (something I didn't want to do).
-
-It should be published in another repo soon.
+<TODO>
