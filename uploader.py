@@ -41,7 +41,6 @@ while(True):
         connServer.autocommit = False
         
         connLocal = sqlite3.connect(config["Logger"]["Database"])
-        connLocal.autocommit = False
         connLocal.row_factory = sqlite3.Row
 
         # Worker variables
