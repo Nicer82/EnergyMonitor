@@ -2,6 +2,8 @@
 # -------------------------------------------------------------------------
 # Program: Script to continuously read out the current sensors and save
 #          the results in a local SQLite DB.
+#          This script should be setup to run at boot of the 
+#          monitoring device.
 #
 # Copyright (C) 2019 Bjorn Douchy
 #
