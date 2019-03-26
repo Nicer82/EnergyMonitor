@@ -2,8 +2,8 @@
   "Reader":
   {
     "Voltage": 240,
-    "Substractor": 3.4,
-    "Factor": 0.0152,
+    "Substractor": 3.62,
+    "Factor": 0.015867,
     "Gain": 1,
     "DataRate": 860,
     "ReadTime": 0.25
