@@ -11,7 +11,7 @@
   "Logger":
   {
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
-    "LogInterval": 60
+    "LogInterval": 15
   },
   "Uploader":
   {
@@ -20,7 +20,7 @@
     "Database": "EnergyMonitor",
     "User": "EnergyMonitor",
     "Password": "MVmIVKdWl69QQMjR",
-    "UploadInterval": 10,
+    "UploadInterval": 5,
     "LocalDataKeepDays": 3.0
   }
 }
