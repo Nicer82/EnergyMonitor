@@ -24,7 +24,7 @@ Configuration is stored in the config.json file. There is a section for every py
 - Reader
   - Voltage: average voltage of the measured installation
   - Substractor: the value the sensors pick up when no current is flowing. This corrects hardware offsets. Can be positive or negative.
-  - Factor:  depending on the type of sensors, resistors you use, a different multiplication needs to be done to go from the read value to the actual Amps. The right value for your implementation should be determined by testing.
+  - AmpFactor:  depending on the type of sensors, resistors you use, a different multiplication needs to be done to go from the read value to the actual Amps. The right value for your implementation should be determined by testing.
   - Gain: ADS1115 Gain value
   - DataRate: ADS1115 Data rate value
   - ReadTime: Time in seconds you want to read the sine wave from the sensor
