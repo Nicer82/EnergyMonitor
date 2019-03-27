@@ -74,13 +74,14 @@ while(True):
         # Remove data from local DB
         curLocal.execute("DELETE FROM ReadingData WHERE UploadedTimeStamp IS NOT NULL AND Timestamp < {0}".format(uploadedTimeStamp - (config["Uploader"]["LocalDataKeepDays"]*24*3600)))
         
-        # Commit transaction
+        # Close the server DB
         connServer.commit()
-        connLocal.commit()
-        
-        # Close Databases
         connServer.close()
-        connLocal.close()    
+
+        # Close the local DB
+        connLocal.commit()
+        connLocal.close() 
+           
     except Exception as e:
         print("An error occurred:", e)
     finally:
