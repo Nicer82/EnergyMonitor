@@ -35,7 +35,7 @@ class Reader():
     avg = statistics.mean(values)
     
     for value in values:
-        sumsquares = ssq + (value-avg)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
+        sumsquares = sumsquares + (value-avg)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
 
     if len(values) == 0:
         rms = 0.0
