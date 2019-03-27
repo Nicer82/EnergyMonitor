@@ -64,7 +64,7 @@ while(True):
                                                                                                                     row['Measurements'],
                                                                                                                     datetime.utcfromtimestamp(uploadedTimeStamp)))
             # Ignore duplicate key exceptions, since they are most likely because the script was terminated unorthodox previously.
-            except mysql.connector.IntegrityError as err
+            except mysql.connector.IntegrityError as err:
                 pass
             
             curLocal.execute("UPDATE ReadingData SET UploadedTimeStamp = {0} WHERE Timestamp = {1} AND Channel = {2}".format(uploadedTimeStamp,
