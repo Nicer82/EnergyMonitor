@@ -30,21 +30,17 @@ class Reader():
     self._config = config
     
   def rootmeansquare(self,values):
-    ssq = 0.0
-    sum = 0.0
+    # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
+    sumsquares = 0.0
     avg = statistics.mean(values)
     
     for value in values:
-        newValue = value - avg
-        ssq = ssq + newValue * newValue
-        sum = sum + newValue
+        sumsquares = ssq + (value-avg)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
 
-    # Figure the RMS, which is the square root of the average of the
-    # sum of squares figured above
     if len(values) == 0:
         rms = 0.0
     else:
-        rms = math.sqrt(float(ssq)/len(values))
+        rms = math.sqrt(float(sumsquares)/len(values))
     
     return rms
 
@@ -80,8 +76,8 @@ class Reader():
           print("Unexpected ADC error: ", e)
           exit()
 
-      avgmax = self.rootmeansquare(values)
-      amps = (avgmax - self._config["Reader"]["Substractor"]) * self._config["Reader"]["Factor"]
+      rms = self.rootmeansquare(values)
+      amps = (rms - self._config["Reader"]["Substractor"]) * self._config["Reader"]["AmpFactor"]
       
       # Suppress values below zero
       if(amps < 0.0):
