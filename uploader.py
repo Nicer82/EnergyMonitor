@@ -52,16 +52,21 @@ while(True):
         
         # Loop through rows from local DB and insert them into the server DB
         for row in rows:
-            curServer.execute("INSERT INTO ReadingData VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},'{9}')".format(datetime.utcfromtimestamp(row['TimeStamp']),
-                                                                                                                socket.gethostname(),
-                                                                                                                row['Channel'],
-                                                                                                                row['ConsumptionWh'],
-                                                                                                                row['PowerMinW'],
-                                                                                                                row['PowerMaxW'],
-                                                                                                                row['PowerAvgW'],
-                                                                                                                row['PowerStDevW'],
-                                                                                                                row['Measurements'],
-                                                                                                                datetime.utcfromtimestamp(uploadedTimeStamp)))
+            try:
+                curServer.execute("INSERT INTO ReadingData VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},'{9}')".format(datetime.utcfromtimestamp(row['TimeStamp']),
+                                                                                                                    socket.gethostname(),
+                                                                                                                    row['Channel'],
+                                                                                                                    row['ConsumptionWh'],
+                                                                                                                    row['PowerMinW'],
+                                                                                                                    row['PowerMaxW'],
+                                                                                                                    row['PowerAvgW'],
+                                                                                                                    row['PowerStDevW'],
+                                                                                                                    row['Measurements'],
+                                                                                                                    datetime.utcfromtimestamp(uploadedTimeStamp)))
+            # Ignore duplicate key exceptions, since they are most likely because the script was terminated unorthodox previously.
+            except mysql.connector.IntegrityError as err
+                pass
+            
             curLocal.execute("UPDATE ReadingData SET UploadedTimeStamp = {0} WHERE Timestamp = {1} AND Channel = {2}".format(uploadedTimeStamp,
                                                                                                                              row['TimeStamp'],
                                                                                                                              row['Channel']))
