@@ -3,7 +3,7 @@
   {
     "Voltage": 230,
     "Substractor": 3.7,
-    "Factor": 0.015867,
+    "AmpFactor": 0.015867,
     "Gain": 1,
     "DataRate": 860,
     "ReadTime": 0.20
