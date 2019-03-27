@@ -17,6 +17,7 @@ A Raspberry Pi.  I did my development on a Raspberry Pi Model 3B+. Should work o
 - SQLite 3 - Install this using sudo apt-get install sqlite3 
 - ADS1115 module - sudo pip3 install <TODO>
 - MySQL module - sudo pip3 install <TODO>
+- A MySQL server to persist and report on the data (from multiple devices if desired)
 
 ##Configuration
 Configuration is stored in the config.json file. There is a section for every python script.
@@ -39,6 +40,10 @@ Configuration is stored in the config.json file. There is a section for every py
   - Password: Credentials to connect to the remote MySQL DB
   - UploadInterval: Time in seconds to check for records in the local DB to upload.
   - LocalDataKeepDays: Number of days of data you want to keep in the local DB before erasing it.
+
+## Installation
+
+<TODO>
 
 ##logger.py
 
