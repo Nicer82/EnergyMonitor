@@ -26,7 +26,7 @@ import statistics
 
 class Reader():
   def __init__(self,config):
-    self._adc = Adafruit_ADS1x15.ADS1115()
+    self._adc = Adafruit_ADS1x15.ADS1115(address=0x49, busnum=1)
     self._config = config
     
   def rootmeansquare(self,values):
