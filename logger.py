@@ -39,7 +39,7 @@ r = reader.Reader(config)
 # Infinite loop
 while(True):
     try:
-        raise('testerror')
+        raise Exception('testerror')
         curlog = (time.time() // config["Logger"]["LogInterval"]) * config["Logger"]["LogInterval"]
         nextlog = (curlog // config["Logger"]["LogInterval"] + 1) * config["Logger"]["LogInterval"]
 
