@@ -81,7 +81,7 @@ while(True):
         msg = logging.exception("{0}: An error occurred".format(time.strftime('%Y-%m-%d %H:%M:%S')))
         print(msg)
         errorlog = open('error.log','a+')
-        errorlog.write(msg + '\n')
+        errorlog.write(msg)
         errorlog.close()
         
         # Reset worker variables
