@@ -77,9 +77,9 @@ while(True):
         conn.commit()
         conn.close()
     except Exception as e:
-        msg = ("An error occurred: {0}".format(e))
+        msg = ("{0}: An error occurred: {1}".format(time.time(),e))
         print(msg)
-        errorlog = open('errorlog.txt','w+')
+        errorlog = open('errorlog.txt','a+')
         errorlog.write(msg)
         errorlog.close()
         
@@ -88,4 +88,5 @@ while(True):
         timestamp = 0.0
         r = reader.Reader(config)
         
+        # wait 5 seconds to avoid flooding the error log too much
         time.sleep(1)
