@@ -36,6 +36,10 @@ channels = [0,1,2,3]
 prevtimestamp = [0.0,0.0,0.0,0.0]
 timestamp = 0.0
 r = reader.Reader(config)
+logging.basicConfig(filename='error.log', level=logging.DEBUG, 
+                    format='%(asctime)s %(levelname)s %(name)s %(message)s %(call_stack)s')
+logger=logging.getLogger(__name__)
+
 
 # Infinite loop
 while(True):
@@ -80,9 +84,7 @@ while(True):
     except Exception as e:
         msg = logging.exception("{0}: An error occurred".format(time.strftime('%Y-%m-%d %H:%M:%S')))
         print(msg)
-        errorlog = open('error.log','a+')
-        errorlog.write(repr(msg)+"\n")
-        errorlog.close()
+        logger.error(e);
         
         # Reset worker variables
         prevtimestamp = [0.0,0.0,0.0,0.0]
