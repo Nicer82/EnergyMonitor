@@ -67,15 +67,7 @@ class Reader():
   def read(self, chan=0):
       self._chan = chan
 
-      try:
-          values = self.readChannel(chan)
-      except ValueError as e:
-          print("ADC configuration error: ", e)
-          exit()
-      except Exception as e:
-          print("Unexpected ADC error: ", e)
-          exit()
-
+      values = self.readChannel(chan)
       rms = self.rootmeansquare(values)
       amps = (rms - self._config["Reader"]["Substractor"]) * self._config["Reader"]["AmpFactor"]
       
