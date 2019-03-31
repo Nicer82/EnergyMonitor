@@ -77,7 +77,7 @@ while(True):
         conn.commit()
         conn.close()
     except Exception as e:
-        msg = ("An error occurred:", e)
+        msg = ("An error occurred: {0}".format(e))
         print(msg)
         errorlog = open('errorlog.txt','w+')
         errorlog.write(msg)
