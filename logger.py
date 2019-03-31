@@ -23,6 +23,7 @@ import json
 import sqlite3
 import time
 import statistics
+import logging
 
 # Read configuration
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
@@ -77,10 +78,10 @@ while(True):
         conn.commit()
         conn.close()
     except Exception as e:
-        msg = ("{0}: An error occurred: {1}\n".format(time.strftime('%Y-%m-%d %H:%M:%S'),e))
+        msg = logging.exception("{0}: An error occurred".format(time.strftime('%Y-%m-%d %H:%M:%S')))
         print(msg)
-        errorlog = open('errorlog.txt','a+')
-        errorlog.write(msg)
+        errorlog = open('error.log','a+')
+        errorlog.write(msg + '\n')
         errorlog.close()
         
         # Reset worker variables
