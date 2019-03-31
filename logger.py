@@ -77,3 +77,8 @@ while(True):
         conn.close()
     except Exception as e:
         print("An error occurred:", e)
+        
+        # Reset worker variables
+        prevtimestamp = [0.0,0.0,0.0,0.0]
+        timestamp = 0.0
+        r = reader.Reader(config)
