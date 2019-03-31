@@ -39,6 +39,7 @@ r = reader.Reader(config)
 # Infinite loop
 while(True):
     try:
+        raise('testerror')
         curlog = (time.time() // config["Logger"]["LogInterval"]) * config["Logger"]["LogInterval"]
         nextlog = (curlog // config["Logger"]["LogInterval"] + 1) * config["Logger"]["LogInterval"]
 
@@ -76,9 +77,15 @@ while(True):
         conn.commit()
         conn.close()
     except Exception as e:
-        print("An error occurred:", e)
+        msg = ("An error occurred:", e)
+        print(msg)
+        errorlog = open('errorlog.txt','w+')
+        errorlog.write(msg)
+        errorlog.close()
         
         # Reset worker variables
         prevtimestamp = [0.0,0.0,0.0,0.0]
         timestamp = 0.0
         r = reader.Reader(config)
+        
+        time.sleep(1)
