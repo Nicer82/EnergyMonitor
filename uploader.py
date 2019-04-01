@@ -85,7 +85,7 @@ while(True):
         connServer.close()
 
         # Vacuum the local db if next time is reached.
-        if(time.time() > nextVacuum)
+        if(time.time() >= nextVacuum):
             curLocal.execute("VACUUM;")
             nextVacuum = (time.time() // config["Uploader"]["VacuumInterval"] + 1) * config["Uploader"]["VacuumInterval"]
 
