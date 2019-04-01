@@ -21,6 +21,7 @@
     "User": "MyUser",
     "Password": "MyPassword",
     "UploadInterval": 5,
+    "VacuumInterval": 3600,
     "LocalDataKeepDays": 3.0
   }
 }
