@@ -28,6 +28,12 @@ from datetime import datetime
 # Read configuration
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
+    
+logging.basicConfig(filename='/home/pi/EnergyMonitor/uploader.log', level=logging.ERROR, 
+                    format='%(asctime)s %(levelname)s %(message)s')
+
+nextVacuum = (time.time() // config["Uploader"]["VacuumInterval"] + 1) * config["Uploader"]["VacuumInterval"]
+
 
 # Infinite loop
 while(True):
@@ -78,12 +84,19 @@ while(True):
         connServer.commit()
         connServer.close()
 
+        # Vacuum the local db if next time is reached.
+        if(time.time() > nextVacuum)
+            curLocal.execute("VACUUM;")
+            nextVacuum = (time.time() // config["Uploader"]["VacuumInterval"] + 1) * config["Uploader"]["VacuumInterval"]
+
         # Close the local DB
         connLocal.commit()
         connLocal.close() 
            
     except Exception as e:
-        print("An error occurred:", e)
+        msg = ("An error occurred: {0}".format(e))
+        print(msg)
+        logging.error(e);
     finally:
         # Wait x seconds to upload next set of data
         time.sleep(config["Uploader"]["UploadInterval"])
