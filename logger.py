@@ -36,7 +36,7 @@ channels = [0,1,2,3]
 prevtimestamp = [0.0,0.0,0.0,0.0]
 timestamp = 0.0
 r = reader.Reader(config)
-logging.basicConfig(filename='/home/pi/EnergyMonitor/debug.log', level=logging.ERROR, 
+logging.basicConfig(filename='/home/pi/EnergyMonitor/logger.log', level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
 # Infinite loop
 while(True):
