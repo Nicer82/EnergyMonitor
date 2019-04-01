@@ -41,7 +41,6 @@ logging.basicConfig(filename='/home/pi/EnergyMonitor/debug.log', level=logging.E
 # Infinite loop
 while(True):
     try:
-        raise Exception('Failed!')
         curlog = (time.time() // config["Logger"]["LogInterval"]) * config["Logger"]["LogInterval"]
         nextlog = (curlog // config["Logger"]["LogInterval"] + 1) * config["Logger"]["LogInterval"]
 
