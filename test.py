@@ -54,7 +54,7 @@ class Reader():
       self._lastStart = time.time()
       while (time.time() - self._lastStart) <= self._config["Reader"]["ReadTime"]:
           # Read the last ADC conversion value and print it out.
-          value = float(self._adc.get_last_result())
+          value = float(self._adc.get_last_result())-15775
           values.append(value)
           print('{0};{1};{2}'.format(value,self._lastStart,chan))
 
