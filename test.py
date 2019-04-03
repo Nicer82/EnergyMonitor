@@ -31,7 +31,7 @@ volt = 230
 while(True):
     adc.start_adc(channel=0, gain=1, data_rate=860)
     start = time.time()
-    end = start + 0.5
+    end = start + 0.25
     values = []
 
     while (time.time() < end):
@@ -45,7 +45,7 @@ while(True):
     
     # measurements are only accurate starting around 15 mA, so lower values are considered 0
     
-    if(amps < ampMinimum)
+    if(amps < ampMinimum):
         amps = 0
         
     #print("Mean : {0}".format(statistics.mean(values)))
