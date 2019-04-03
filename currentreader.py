@@ -31,7 +31,7 @@ class CurrentReader():
         self._adcGain = 1 # gain factor, for reading lower currents
         self._adcDataRate = 860 # samples per second
     
-    def rootmeansquare(self, values):
+    def _rootmeansquare(self, values):
         # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
         sumsquares = 0.0
         avg = statistics.mean(values)
@@ -56,7 +56,7 @@ class CurrentReader():
             readValues.append(self._adc.get_last_result())
             
         self._adc.stop_adc()
-        self._lastAmps = rootmeansquare(readValues)*self._ampFactor
+        self._lastAmps = self._rootmeansquare(readValues)*self._ampFactor
         
         # measurements might only be accurate from a certain value, so lower values are considered 0
         if(self._lastAmps < self._ampMinimum):
