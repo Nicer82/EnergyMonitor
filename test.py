@@ -31,7 +31,7 @@ volt = 230
 while(True):
     adc.start_adc(channel=0, gain=1, data_rate=860)
     start = time.time()
-    end = start + 0.25
+    end = start + 0.5
     values = []
 
     while (time.time() < end):
