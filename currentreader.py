@@ -22,9 +22,10 @@ import statistics
 import time
 
 class CurrentReader():
-    def __init__(self,ampFactor,ampMinimum=0,voltage=230):
+    def __init__(self,ampFactor,ampExponent=1,ampMinimum=0,voltage=230):
         self._adc = Adafruit_ADS1x15.ADS1115()
         self._ampFactor = ampFactor
+        self._ampExponent = ampExponent
         self._ampMinimum = ampMinimum
         self._voltage = voltage
         self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
@@ -56,7 +57,7 @@ class CurrentReader():
             readValues.append(self._adc.get_last_result())
             
         self._adc.stop_adc()
-        self._lastAmps = self._rootmeansquare(readValues)*self._ampFactor
+        self._lastAmps = (mat.self._rootmeansquare(readValues)*self._ampFactor)**self._ampExponent
         
         # measurements might only be accurate from a certain value, so lower values are considered 0
         if(self._lastAmps < self._ampMinimum):
