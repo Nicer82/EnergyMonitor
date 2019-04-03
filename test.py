@@ -32,8 +32,12 @@ adc.start_adc(channel=0, gain=1, data_rate=860)
 while (time.time() < end):
     value = adc.get_last_result()
     values.append(value)
-    print(value)
+    #print(value)
 
 adc.stop_adc()
 
-#print(rootmeansquare(values))
+print("Mean : {0}".format(statistics.mean(values)))
+print("Min  : {0}".format(min(values)))
+print("Max  : {0}".format(max(values)))
+print("Stdev: {0}".format(statistics.stdev(values)))
+print("Rms  : {0}".format(rootmeansquare(values)))
