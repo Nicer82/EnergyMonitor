@@ -23,13 +23,13 @@ import statistics
 #ampMinimum = 0.015
 class CurrentReader():
     def __init__(self,ampFactor,ampMinimum=0,voltage=230):
-    self._adc = Adafruit_ADS1x15.ADS1115()
-    self._ampFactor = ampFactor
-    self._ampMinimum = ampMinimum
-    self._voltage = voltage
-    self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
-    self._adcGain = 1 # gain factor, for reading lower currents
-    self._adcDataRate = 860 # samples per second
+        self._adc = Adafruit_ADS1x15.ADS1115()
+        self._ampFactor = ampFactor
+        self._ampMinimum = ampMinimum
+        self._voltage = voltage
+        self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
+        self._adcGain = 1 # gain factor, for reading lower currents
+        self._adcDataRate = 860 # samples per second
     
     def rootmeansquare(self, values):
         # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
