@@ -29,6 +29,8 @@ end = start + 1
 
 adc.start_adc(channel=0, gain=1, data_rate=860)
 
+time.sleep(1)
+
 while (time.time() < end):
     value = adc.get_last_result()
     values.append(value)
