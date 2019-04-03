@@ -23,23 +23,22 @@ def rootmeansquare(values):
     return rms
 
 adc = Adafruit_ADS1x15.ADS1115()
-values = []
 
-adc.start_adc(channel=0, gain=1, data_rate=860)
+while(True):
+    adc.start_adc(channel=0, gain=1, data_rate=860)
+    start = time.time()
+    end = start + 1
+    values = []
 
-time.sleep(10)
-start = time.time()
-end = start + 1
+    while (time.time() < end):
+        value = adc.get_last_result()
+        values.append(value)
+        #print(value)
 
-while (time.time() < end):
-    value = adc.get_last_result()
-    values.append(value)
-    #print(value)
+    adc.stop_adc()
 
-adc.stop_adc()
-
-print("Mean : {0}".format(statistics.mean(values)))
-print("Min  : {0}".format(min(values)))
-print("Max  : {0}".format(max(values)))
-print("Stdev: {0}".format(statistics.stdev(values)))
-print("Rms  : {0}".format(rootmeansquare(values)))
+    #print("Mean : {0}".format(statistics.mean(values)))
+    #print("Min  : {0}".format(min(values)))
+    #print("Max  : {0}".format(max(values)))
+    #print("Stdev: {0}".format(statistics.stdev(values)))
+    print("Rms  : {0}".format(rootmeansquare(values)))
