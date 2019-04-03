@@ -27,7 +27,7 @@ adc = Adafruit_ADS1x15.ADS1115()
 while(True):
     adc.start_adc(channel=0, gain=1, data_rate=860)
     start = time.time()
-    end = start + 1
+    end = start + 0.5
     values = []
 
     while (time.time() < end):
@@ -42,5 +42,5 @@ while(True):
     #print("Max  : {0}".format(max(values)))
     #print("Stdev: {0}".format(statistics.stdev(values)))
     #print("Rms  : {0}".format(rootmeansquare(values)))
-    print("Current: {0}".format(rootmeansquare(values)*0.002667))
+    #print("Current: {0}".format(rootmeansquare(values)*0.002667))
     print("Power: {0}".format(rootmeansquare(values)*0.002667*230))
