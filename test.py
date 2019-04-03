@@ -27,7 +27,7 @@ values = []
 
 adc.start_adc(channel=0, gain=1, data_rate=860)
 
-time.sleep(5)
+time.sleep(10)
 start = time.time()
 end = start + 1
 
