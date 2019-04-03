@@ -65,9 +65,9 @@ while(True):
                 timestamp = reader.lastStart()
 
                 # calculate statistics, exclude the first measurement
-                if(prevtimestamp[channel] > 0.0):
-                    totalWh[channel] = totalWh[channel]+(power*(timestamp-prevtimestamp[channel])/3600)
-                    valuesW[channel].append(power)
+                if(prevtimestamp[chan] > 0.0):
+                    totalWh[chan] = totalWh[chan]+(power*(timestamp-prevtimestamp[chan])/3600)
+                    valuesW[chan].append(power)
 
                 # save last measurement timestamp for the channel
                 prevtimestamp[channel] = timestamp
@@ -82,7 +82,14 @@ while(True):
         sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3},{4},{5},{6},{7},NULL)"
         
         for chan in channels:
-            c.execute(sql.format(logStart,chan,totalWh[channel],min(valuesW[channel]),max(valuesW[channel]),statistics.mean(valuesW[channel]),statistics.stdev(valuesW[channel]),len(valuesW[channel])))
+            c.execute(sql.format(logStart,
+                                 chan,
+                                 totalWh[chan],
+                                 min(valuesW[chan]),
+                                 max(valuesW[chan]),
+                                 statistics.mean(valuesW[chan]),
+                                 statistics.stdev(valuesW[chan]),
+                                 len(valuesW[chan])))
         
         conn.commit()
         conn.close()
