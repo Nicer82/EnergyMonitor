@@ -30,8 +30,8 @@ import logging
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
 
-# Create a log file for this run    
-logFileName = "/home/pi/EnergyMonitor/logger_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
+# Create a log file per day
+logFileName = "/home/pi/EnergyMonitor/logger_{0}.log".format(datetime.now().strftime("%Y%m%d"))
 logging.basicConfig(filename=logFileName, 
                     level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
@@ -88,8 +88,7 @@ while(True):
         conn.commit()
         conn.close()
     except Exception as e:
-        msg = ("An error occurred: {0}".format(e))
-        logging.exception(msg);
+        logging.exception("Exception occurred, waiting 10 seconds before continueing");
         
         # Reset reader object
         reader = CurrentReader(voltage=config["Logger"]["Voltage"])
