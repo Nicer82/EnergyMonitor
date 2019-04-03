@@ -6,25 +6,25 @@
     "Voltage": 230,
     "Channels":
     {
-      0:
+      "0":
       {
         "AmpFactor": 0.0026,
         "AmpExponent": 1.0206,
         "AmpMinimum": 0.020
       },
-      1:
+      "1":
       {
         "AmpFactor": 0.0026,
         "AmpExponent": 1.0206,
         "AmpMinimum": 0.020
       },
-      2:
+      "2":
       {
         "AmpFactor": 0.0026,
         "AmpExponent": 1.0206,
         "AmpMinimum": 0.020
       },
-      3:
+      "3":
       {
         "AmpFactor": 0.0026,
         "AmpExponent": 1.0206,
