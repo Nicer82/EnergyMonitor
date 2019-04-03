@@ -46,8 +46,6 @@ reader = CurrentReader(voltage=config["Logger"]["Voltage"])
 # Infinite loop
 while(True):
     try:
-        raise Exception("testerror")
-
         # Reset statistics
         totalWh = [0,0,0,0]
         valuesW = [[],[],[],[]]
