@@ -1,6 +1,6 @@
 import currentreader
 
-reader = currentreader.CurrentReader(ampFactor=0.0026,ampExponent=1.01,ampMinimum=0.015,voltage=230)
+reader = currentreader.CurrentReader(ampFactor=0.0026,ampExponent=1.015,ampMinimum=0.015,voltage=230)
 
 while(True):
     reader.readChannel(0)
