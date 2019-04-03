@@ -1,58 +1,79 @@
-import time
+#!/usr/bin/python3
+# -------------------------------------------------------------------------
+# Program: Class that handles reading out AC current sensors over the ADS1115
+#
+# Copyright (C) 2019 Bjorn Douchy
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License at https://www.gnu.org/licenses
+#    for more details.
+# -------------------------------------------------------------------------import time
 import math
 import Adafruit_ADS1x15
-import sqlite3
-import datetime
 import array
-import json
 import statistics
-
-class currentReader:
-def rootmeansquare(values):
-    # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
-    sumsquares = 0.0
-    avg = statistics.mean(values)
+#ampFactor = 0.002667
+#ampMinimum = 0.015
+class CurrentReader():
+    def __init__(self,ampFactor,ampMinimum=0,voltage=230):
+    self._adc = Adafruit_ADS1x15.ADS1115()
+    self._ampFactor = ampFactor
+    self._ampMinimum = ampMinimum
+    self._voltage = voltage
+    self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
+    self._adcGain = 1 # gain factor, for reading lower currents
+    self._adcDataRate = 860 # samples per second
     
-    for value in values:
-        sumsquares = sumsquares + (value-avg)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
+    def rootmeansquare(self, values):
+        # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
+        sumsquares = 0.0
+        avg = statistics.mean(values)
 
-    if len(values) == 0:
-        rms = 0.0
-    else:
-        rms = math.sqrt(float(sumsquares)/len(values))
+        for value in values:
+            sumsquares = sumsquares + (value-avg)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
+
+        if len(values) == 0:
+            rms = 0.0
+        else:
+            rms = math.sqrt(float(sumsquares)/len(values))
+
+        return rms
     
-    return rms
-
-adc = Adafruit_ADS1x15.ADS1115()
-
-ampFactor = 0.002667
-ampMinimum = 0.015
-volt = 230
-
-while(True):
-    adc.start_adc(channel=0, gain=1, data_rate=860)
-    start = time.time()
-    end = start + 0.5
-    values = []
-
-    while (time.time() < end):
-        value = adc.get_last_result()
-        values.append(value)
-        #print(value)
-
-    adc.stop_adc()
-
-    amps = rootmeansquare(values)*ampFactor
-    
-    # measurements are only accurate starting around 15 mA, so lower values are considered 0
-    
-    if(amps < ampMinimum):
-        amps = 0
+    def readChannel(self, chan=0)
+        readValues = []
+        self._lastStart = time.time()
+        self._lastEnd = self._lastStart + self._adcReadTime
+        self._adc.start_adc(channel=chan, gain=self._adcGain, data_rate=self._adcDataRate)
         
-    #print("Mean : {0}".format(statistics.mean(values)))
-    #print("Min  : {0}".format(min(values)))
-    #print("Max  : {0}".format(max(values)))
-    #print("Stdev: {0}".format(statistics.stdev(values)))
-    #print("Rms  : {0}".format(rootmeansquare(values)))
-    print("Current: {0}".format(amps))
-    print("Power: {0}".format(amps*volt))
+        while (time.time() < self._lastEnd):
+            readValues.append(self._adc.get_last_result())
+            
+        self._adc.stop_adc()
+        self._lastAmps = rootmeansquare(readValues)*self._ampFactor
+        
+        # measurements might only be accurate from a certain value, so lower values are considered 0
+        if(self._lastAmps < self._ampMinimum):
+            self._lastAmps = 0
+            
+        self._lastWatts = self._lastAmps*self._voltage
+        
+        return
+    
+    def lastCurrent(self):
+        return self._lastAmps
+
+    def lastPower(self):
+        return self._lastWatts
+
+    def lastStart(self):
+        return self._lastStart
+
+    def lastEnd(self):
+        return self._lastEnd
