@@ -51,7 +51,7 @@ while(True):
         valuesW = [[],[],[],[]]
 
         logStart = (time.time() // config["Logger"]["LogInterval"]) * config["Logger"]["LogInterval"]
-        logEnd = (curlog // config["Logger"]["LogInterval"] + 1) * config["Logger"]["LogInterval"]
+        logEnd = (logStart // config["Logger"]["LogInterval"] + 1) * config["Logger"]["LogInterval"]
 
         while(True):
             # collect data for all channels
