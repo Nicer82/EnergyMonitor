@@ -70,7 +70,7 @@ while(True):
                     valuesW[chan].append(power)
 
                 # save last measurement timestamp for the channel
-                prevtimestamp[channel] = timestamp
+                prevtimestamp[chan] = timestamp
 
             # stop measuring if next log timestamp is reached
             if(timestamp >= logEnd):
