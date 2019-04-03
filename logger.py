@@ -36,9 +36,6 @@ logging.basicConfig(filename=logFileName,
                     level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
 
-# Settings
-channels = [0,1,2,3]
-
 # Set worker variables
 prevtimestamp = [0.0,0.0,0.0,0.0]
 reader = CurrentReader(voltage=config["Logger"]["Voltage"])
@@ -55,22 +52,22 @@ while(True):
 
         while(True):
             # collect data for all channels
-            for chan in channels:
-                channelKey = "Channel{0}".format(chan)
-                reader.readChannel(chan=chan,
-                                   ampFactor=config["Logger"][channelKey]["AmpFactor"],
-                                   ampExponent=config["Logger"][channelKey]["AmpExponent"],
-                                   ampMinimum=config["Logger"][channelKey]["AmpMinimum"])
+            for chan in config["Logger"]["Channels"]:
+                chanInt = int(chan)
+                reader.readChannel(chan=chanInt,
+                                   ampFactor=config["Logger"]["Channels"][chan]["AmpFactor"],
+                                   ampExponent=config["Logger"]["Channels"][chan]["AmpExponent"],
+                                   ampMinimum=config["Logger"]["Channels"][chan]["AmpMinimum"])
                 power = reader.lastPower()
                 timestamp = reader.lastStart()
 
                 # calculate statistics, exclude the first measurement
-                if(prevtimestamp[chan] > 0.0):
-                    totalWh[chan] = totalWh[chan]+(power*(timestamp-prevtimestamp[chan])/3600)
-                    valuesW[chan].append(power)
+                if(prevtimestamp[chanInt] > 0.0):
+                    totalWh[chanInt] = totalWh[chanInt]+(power*(timestamp-prevtimestamp[chanInt])/3600)
+                    valuesW[chanInt].append(power)
 
                 # save last measurement timestamp for the channel
-                prevtimestamp[chan] = timestamp
+                prevtimestamp[chanInt] = timestamp
 
             # stop measuring if next log timestamp is reached
             if(timestamp >= logEnd):
@@ -81,15 +78,16 @@ while(True):
         c = conn.cursor()
         sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3},{4},{5},{6},{7},NULL)"
         
-        for chan in channels:
+        for chan in config["Logger"]["Channels"]:
+            chanInt = int(chan)
             c.execute(sql.format(logStart,
-                                 chan,
-                                 totalWh[chan],
-                                 min(valuesW[chan]),
-                                 max(valuesW[chan]),
-                                 statistics.mean(valuesW[chan]),
-                                 statistics.stdev(valuesW[chan]),
-                                 len(valuesW[chan])))
+                                 chanInt,
+                                 totalWh[chanInt],
+                                 min(valuesW[chanInt]),
+                                 max(valuesW[chanInt]),
+                                 statistics.mean(valuesW[chanInt]),
+                                 statistics.stdev(valuesW[chanInt]),
+                                 len(valuesW[chanInt])))
         
         conn.commit()
         conn.close()
