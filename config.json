@@ -1,17 +1,33 @@
 {
-  "Reader":
-  {
-    "Voltage": 230,
-    "Substractor": 3.7,
-    "AmpFactor": 0.01686,
-    "Gain": 1,
-    "DataRate": 860,
-    "ReadTime": 0.20
-  },
   "Logger":
   {
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
-    "LogInterval": 15
+    "LogInterval": 15,
+    "Voltage": 230,
+    "0"
+    {
+      "AmpFactor": 0.0026,
+      "AmpExponent": 1.01,
+      "AmpMinimum": 0.015
+    },
+    "1"
+    {
+      "AmpFactor": 0.0026,
+      "AmpExponent": 1.01,
+      "AmpMinimum": 0.015
+    },
+    "2"
+    {
+      "AmpFactor": 0.0026,
+      "AmpExponent": 1.01,
+      "AmpMinimum": 0.015
+    },
+    "3"
+    {
+      "AmpFactor": 0.0026,
+      "AmpExponent": 1.01,
+      "AmpMinimum": 0.015
+    }
   },
   "Uploader":
   {
@@ -22,6 +38,6 @@
     "Password": "MyPassword",
     "UploadInterval": 5,
     "VacuumInterval": 3600,
-    "LocalDataKeepDays": 3.0
+    "LocalDataKeepDays": 0.1
   }
 }
