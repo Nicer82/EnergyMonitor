@@ -17,18 +17,6 @@
         "AmpFactor": 0.0026,
         "AmpExponent": 1.0206,
         "AmpMinimum": 0.020
-      },
-      "2":
-      {
-        "AmpFactor": 0.0026,
-        "AmpExponent": 1.0206,
-        "AmpMinimum": 0.020
-      },
-      "3":
-      {
-        "AmpFactor": 0.0026,
-        "AmpExponent": 1.0206,
-        "AmpMinimum": 0.020
       }
     }
   },
