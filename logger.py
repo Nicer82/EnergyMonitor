@@ -18,7 +18,8 @@
 #    GNU General Public License at https://www.gnu.org/licenses
 #    for more details.
 # -------------------------------------------------------------------------
-import currentreader
+from currentreader import CurrentReader
+from datetime import datetime
 import json
 import sqlite3
 import time
@@ -29,42 +30,51 @@ import logging
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
 
+# Create a log file for this run    
+logFileName = "/home/pi/EnergyMonitor/logger_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
+logging.basicConfig(filename=logFileName, 
+                    level=logging.ERROR, 
+                    format='%(asctime)s %(levelname)s %(message)s')
+
 # Settings
 channels = [0,1,2,3]
 
 # Set worker variables
 prevtimestamp = [0.0,0.0,0.0,0.0]
-timestamp = 0.0
-reader = currentreader.CurrentReader(ampFactor=config["Logger"]["],ampExponent=1,ampMinimum=0,voltage=230)
-logging.basicConfig(filename='/home/pi/EnergyMonitor/logger.log', level=logging.ERROR, 
-                    format='%(asctime)s %(levelname)s %(message)s')
+reader = CurrentReader(voltage=config["Logger"]["Voltage"])
+
 # Infinite loop
 while(True):
     try:
-        curlog = (time.time() // config["Logger"]["LogInterval"]) * config["Logger"]["LogInterval"]
-        nextlog = (curlog // config["Logger"]["LogInterval"] + 1) * config["Logger"]["LogInterval"]
+        raise Exception("testerror")
 
         # Reset statistics
         totalWh = [0,0,0,0]
         valuesW = [[],[],[],[]]
 
+        logStart = (time.time() // config["Logger"]["LogInterval"]) * config["Logger"]["LogInterval"]
+        logEnd = (curlog // config["Logger"]["LogInterval"] + 1) * config["Logger"]["LogInterval"]
+
         while(True):
             # collect data for all channels
-            for channel in channels:
-                r.read(channel)
-                valueW = r.getLastPower()
-                timestamp = r.getLastStart()
+            for chan in channels:
+                reader.readChannel(channel=chan,
+                                   ampFactor=config["Logger"][chan][AmpFactor],
+                                   ampExponent=config["Logger"][chan][AmpExponent],
+                                   ampMinimum=config["Logger"][chan][AmpMinimum])
+                power = reader.lastPower()
+                timestamp = reader.lastStart()
 
                 # calculate statistics, exclude the first measurement
                 if(prevtimestamp[channel] > 0.0):
-                    totalWh[channel] = totalWh[channel]+(valueW*(timestamp-prevtimestamp[channel])/3600)
-                    valuesW[channel].append(valueW)
+                    totalWh[channel] = totalWh[channel]+(power*(timestamp-prevtimestamp[channel])/3600)
+                    valuesW[channel].append(power)
 
                 # save last measurement timestamp for the channel
                 prevtimestamp[channel] = timestamp
 
             # stop measuring if next log timestamp is reached
-            if(timestamp >= nextlog):
+            if(timestamp >= logEnd):
                 break
 
         # output data when something is collected
@@ -72,20 +82,17 @@ while(True):
         c = conn.cursor()
         sql = "INSERT INTO ReadingData VALUES ({0},{1},{2},{3},{4},{5},{6},{7},NULL)"
         
-        for channel in channels:
-            c.execute(sql.format(curlog,channel,totalWh[channel],min(valuesW[channel]),max(valuesW[channel]),statistics.mean(valuesW[channel]),statistics.stdev(valuesW[channel]),len(valuesW[channel])))
+        for chan in channels:
+            c.execute(sql.format(logStart,chan,totalWh[channel],min(valuesW[channel]),max(valuesW[channel]),statistics.mean(valuesW[channel]),statistics.stdev(valuesW[channel]),len(valuesW[channel])))
         
         conn.commit()
         conn.close()
     except Exception as e:
         msg = ("An error occurred: {0}".format(e))
-        print(msg)
-        logging.error(e);
+        logging.exception(msg);
         
-        # Reset worker variables
-        prevtimestamp = [0.0,0.0,0.0,0.0]
-        timestamp = 0.0
-        r = reader.Reader(config)
+        # Reset reader object
+        reader = CurrentReader(voltage=config["Logger"]["Voltage"])
         
-        # wait 5 seconds to avoid flooding the error log too much
-        time.sleep(5)
+        # Wait 10 seconds to avoid flooding the error log too much
+        time.sleep(10)
