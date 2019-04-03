@@ -22,7 +22,7 @@ import statistics
 import time
 
 class CurrentReader():
-    def __init__(self,ampFactor,ampExponent=1,ampMinimum=0,voltage=230):
+    def __init__(self,voltage=230):
         self._adc = Adafruit_ADS1x15.ADS1115()
         self._ampFactor = ampFactor
         self._ampExponent = ampExponent
@@ -47,7 +47,7 @@ class CurrentReader():
 
         return rms
     
-    def readChannel(self, chan=0):
+    def readChannel(self, chan,ampFactor,ampExponent=1,ampMinimum=0):
         readValues = []
         self._lastStart = time.time()
         self._lastEnd = self._lastStart + self._adcReadTime
