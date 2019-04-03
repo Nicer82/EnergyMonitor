@@ -4,25 +4,25 @@
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
     "LogInterval": 15,
     "Voltage": 230,
-    "0":
+    "Channel0":
     {
       "AmpFactor": 0.0026,
       "AmpExponent": 1.0206,
       "AmpMinimum": 0.015
     },
-    "1":
+    "Channel1":
     {
       "AmpFactor": 0.0026,
       "AmpExponent": 1.0206,
       "AmpMinimum": 0.015
     },
-    "2":
+    "Channel2":
     {
       "AmpFactor": 0.0026,
       "AmpExponent": 1.0206,
       "AmpMinimum": 0.015
     },
-    "3":
+    "Channel3":
     {
       "AmpFactor": 0.0026,
       "AmpExponent": 1.0206,
