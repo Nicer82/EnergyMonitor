@@ -30,7 +30,10 @@ from datetime import datetime
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
     
-logging.basicConfig(filename='/home/pi/EnergyMonitor/uploader.log', level=logging.ERROR, 
+# Create a log file per day
+logFileName = "/home/pi/EnergyMonitor/uploader_{0}.log".format(datetime.now().strftime("%Y%m%d"))
+logging.basicConfig(filename=logFileName, 
+                    level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
 
 nextVacuum = (time.time() // config["Uploader"]["VacuumInterval"] + 1) * config["Uploader"]["VacuumInterval"]
@@ -95,9 +98,8 @@ while(True):
         connLocal.close() 
            
     except Exception as e:
-        msg = ("An error occurred: {0}".format(e))
-        print(msg)
-        logging.error(e);
+        print(e)
+        logging.exception("Exception occurred")
     finally:
         # Wait x seconds to upload next set of data
         time.sleep(config["Uploader"]["UploadInterval"])
