@@ -4,29 +4,32 @@
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
     "LogInterval": 15,
     "Voltage": 230,
-    "Channel0":
+    "Channels":
     {
-      "AmpFactor": 0.0026,
-      "AmpExponent": 1.0206,
-      "AmpMinimum": 0.015
-    },
-    "Channel1":
-    {
-      "AmpFactor": 0.0026,
-      "AmpExponent": 1.0206,
-      "AmpMinimum": 0.015
-    },
-    "Channel2":
-    {
-      "AmpFactor": 0.0026,
-      "AmpExponent": 1.0206,
-      "AmpMinimum": 0.015
-    },
-    "Channel3":
-    {
-      "AmpFactor": 0.0026,
-      "AmpExponent": 1.0206,
-      "AmpMinimum": 0.015
+      0:
+      {
+        "AmpFactor": 0.0026,
+        "AmpExponent": 1.0206,
+        "AmpMinimum": 0.020
+      },
+      1:
+      {
+        "AmpFactor": 0.0026,
+        "AmpExponent": 1.0206,
+        "AmpMinimum": 0.020
+      },
+      2:
+      {
+        "AmpFactor": 0.0026,
+        "AmpExponent": 1.0206,
+        "AmpMinimum": 0.020
+      },
+      3:
+      {
+        "AmpFactor": 0.0026,
+        "AmpExponent": 1.0206,
+        "AmpMinimum": 0.020
+      }
     }
   },
   "Uploader":
