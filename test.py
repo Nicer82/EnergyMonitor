@@ -32,7 +32,8 @@ adc.start_adc(channel=0, gain=1, data_rate=860)
 while (time.time() < end):
     value = adc.get_last_result()
     values.append(value)
+    print(value)
 
 adc.stop_adc()
 
-print(rootmeansquare(values))
+#print(rootmeansquare(values))
