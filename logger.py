@@ -58,9 +58,9 @@ while(True):
             for chan in channels:
                 channelKey = "Channel{0}".format(chan)
                 reader.readChannel(channel=chan,
-                                   ampFactor=config["Logger"][channelKey][AmpFactor],
-                                   ampExponent=config["Logger"][channelKey][AmpExponent],
-                                   ampMinimum=config["Logger"][channelKey][AmpMinimum])
+                                   ampFactor=config["Logger"][channelKey]["AmpFactor"],
+                                   ampExponent=config["Logger"][channelKey]["AmpExponent"],
+                                   ampMinimum=config["Logger"][channelKey]["AmpMinimum"])
                 power = reader.lastPower()
                 timestamp = reader.lastStart()
 
