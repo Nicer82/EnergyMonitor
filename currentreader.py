@@ -46,7 +46,7 @@ class CurrentReader():
 
         return rms
     
-    def readChannel(self, chan=0)
+    def readChannel(self, chan=0):
         readValues = []
         self._lastStart = time.time()
         self._lastEnd = self._lastStart + self._adcReadTime
