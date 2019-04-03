@@ -12,7 +12,7 @@ adc = Adafruit_ADS1x15.ADS1115()
 start = time.time()
 end = start + 0.1
 
-adc.start(channel=0, gain=1, data_rate=860)
+adc.start_adc(channel=0, gain=1, data_rate=860)
 
 while (time.time() < end):
     value = adc.get_last_result()
