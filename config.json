@@ -7,25 +7,25 @@
     "0"
     {
       "AmpFactor": 0.0026,
-      "AmpExponent": 1.01,
+      "AmpExponent": 1.0206,
       "AmpMinimum": 0.015
     },
     "1"
     {
       "AmpFactor": 0.0026,
-      "AmpExponent": 1.01,
+      "AmpExponent": 1.0206,
       "AmpMinimum": 0.015
     },
     "2"
     {
       "AmpFactor": 0.0026,
-      "AmpExponent": 1.01,
+      "AmpExponent": 1.0206,
       "AmpMinimum": 0.015
     },
     "3"
     {
       "AmpFactor": 0.0026,
-      "AmpExponent": 1.01,
+      "AmpExponent": 1.0206,
       "AmpMinimum": 0.015
     }
   },
