@@ -24,9 +24,6 @@ import time
 class CurrentReader():
     def __init__(self,voltage=230):
         self._adc = Adafruit_ADS1x15.ADS1115()
-        self._ampFactor = ampFactor
-        self._ampExponent = ampExponent
-        self._ampMinimum = ampMinimum
         self._voltage = voltage
         self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
         self._adcGain = 1 # gain factor, for reading lower currents
@@ -47,7 +44,7 @@ class CurrentReader():
 
         return rms
     
-    def readChannel(self, chan,ampFactor,ampExponent=1,ampMinimum=0):
+    def readChannel(self, chan, ampFactor,ampExponent=1,ampMinimum=0):
         readValues = []
         self._lastStart = time.time()
         self._lastEnd = self._lastStart + self._adcReadTime
@@ -57,10 +54,10 @@ class CurrentReader():
             readValues.append(self._adc.get_last_result())
             
         self._adc.stop_adc()
-        self._lastAmps = (self._rootmeansquare(readValues)*self._ampFactor)**self._ampExponent
+        self._lastAmps = (self._rootmeansquare(readValues)*ampFactor)**ampExponent
         
         # measurements might only be accurate from a certain value, so lower values are considered 0
-        if(self._lastAmps < self._ampMinimum):
+        if(self._lastAmps < ampMinimum):
             self._lastAmps = 0
             
         self._lastWatts = self._lastAmps*self._voltage
