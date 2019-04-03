@@ -41,4 +41,5 @@ while(True):
     #print("Min  : {0}".format(min(values)))
     #print("Max  : {0}".format(max(values)))
     #print("Stdev: {0}".format(statistics.stdev(values)))
-    print("Rms  : {0}".format(rootmeansquare(values)))
+    #print("Rms  : {0}".format(rootmeansquare(values)))
+    print("Power: {0}".format(rootmeansquare(values)*0.65))
