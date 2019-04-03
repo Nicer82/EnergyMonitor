@@ -94,7 +94,7 @@ while(True):
     except Exception as e:
         print(e)
         
-        logging.exception("Exception occurred, waiting 10 seconds before continueing");
+        logging.exception("Exception occurred, waiting 10 seconds before continueing")
         
         # Reset reader object
         reader = CurrentReader(voltage=config["Logger"]["Voltage"])
