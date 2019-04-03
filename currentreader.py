@@ -19,8 +19,8 @@ import math
 import Adafruit_ADS1x15
 import array
 import statistics
-#ampFactor = 0.002667
-#ampMinimum = 0.015
+import time
+
 class CurrentReader():
     def __init__(self,ampFactor,ampMinimum=0,voltage=230):
         self._adc = Adafruit_ADS1x15.ADS1115()
