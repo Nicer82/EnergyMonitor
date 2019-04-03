@@ -18,7 +18,7 @@
 #    GNU General Public License at https://www.gnu.org/licenses
 #    for more details.
 # -------------------------------------------------------------------------
-import reader
+import currentreader
 import json
 import sqlite3
 import time
@@ -35,7 +35,7 @@ channels = [0,1,2,3]
 # Set worker variables
 prevtimestamp = [0.0,0.0,0.0,0.0]
 timestamp = 0.0
-r = reader.Reader(config)
+reader = currentreader.CurrentReader(ampFactor=config["Logger"]["],ampExponent=1,ampMinimum=0,voltage=230)
 logging.basicConfig(filename='/home/pi/EnergyMonitor/logger.log', level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
 # Infinite loop
