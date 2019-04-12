@@ -26,8 +26,9 @@ class CurrentReader():
         self._adc = Adafruit_ADS1x15.ADS1115()
         self._voltage = voltage
         self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
-        self._adcGain = 4 # gain factor, for reading lower currents
+        self._adcGain = 1 # gain factor, for reading lower currents
         self._adcDataRate = 860 # samples per second
+        self._adcPause = 0.050 # how long to wait before making new measurements between different reads
     
     def _rootmeansquare(self, values):
         # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
@@ -46,6 +47,10 @@ class CurrentReader():
     
     def readChannel(self, chan, ampFactor,ampExponent=1,ampMinimum=0):
         readValues = []
+        
+        # Wait to avoid interference from previous reads
+        time.sleep(self._adcPause)
+        
         self._lastStart = time.time()
         self._lastEnd = self._lastStart + self._adcReadTime
         self._adc.start_adc(channel=chan, gain=self._adcGain, data_rate=self._adcDataRate)
