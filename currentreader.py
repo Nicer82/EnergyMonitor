@@ -26,7 +26,7 @@ class CurrentReader():
         self._adc = Adafruit_ADS1x15.ADS1115()
         self._voltage = voltage
         self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
-        self._adcGain = 1 # gain factor, for reading lower currents
+        self._adcGain = 4 # gain factor, for reading lower currents
         self._adcDataRate = 860 # samples per second
     
     def _rootmeansquare(self, values):
