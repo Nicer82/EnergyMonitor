@@ -73,7 +73,7 @@ while(True):
             except mysql.connector.IntegrityError as err:
                 pass
             
-            curLocal.execute("UPDATE ReadingData SET UploadedTimeStamp = {0} WHERE Timestamp = {1} AND Channel = {2}".format(uploadedTimeStamp,
+            curLocal.execute("UPDATE ReadingData SET Uploaded = {0} WHERE Timestamp = {1} AND Channel = {2}".format(uploadedTimeStamp,
                                                                                                                              row['TimeStamp'],
                                                                                                                              row['Channel']))
             
