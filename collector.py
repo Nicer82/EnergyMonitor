@@ -39,37 +39,43 @@ logging.basicConfig(filename=logFileName,
 reader = CurrentReader(frequency=config["Collector"]["Frequency"])
 
 nextSave = time.time()+config["Collector"]["SaveInterval"]
+lastTimeStamp = time.time() // config["Collector"]["ReadInterval"]
+lastTimeStamps = [lastTimeStamp,lastTimeStamp,lastTimeStamp,lastTimeStamp]
 unsaved = []
 
 # Infinite loop
-while(True):
-    for chan in config["Collector"]["Channels"]:
-        try:
+while(True)
+    try:
+        for chan in config["Collector"]["Channels"]:
             chanInt = int(chan)
             reader.readChannel(chan=chanInt,
                                ampFactor=config["Collector"]["Channels"][chan]["AmpFactor"],
                                ampExponent=config["Collector"]["Channels"][chan]["AmpExponent"],
                                ampMinimum=config["Collector"]["Channels"][chan]["AmpMinimum"])
-            unsaved.append([reader.lastStart(), chanInt, reader.lastCurrent()*config["Collector"]["Voltage"]])
-        
-            if(time.time() >= nextSave):
-                conn = sqlite3.connect(config["Collector"]["Database"])
-                c = conn.cursor()
-                sql = "INSERT INTO ReadingData (TimeStamp,Channel,Power) VALUES ({0},{1},{2})"
-
-                for unsavedrow in unsaved:
-                    c.execute(sql.format(unsavedrow[0],unsavedrow[1],unsavedrow[2]))
-                              
-                conn.commit()
-                conn.close()
-                              
-                unsaved = []
-        except Exception as e:
-            print(e)
-            logging.exception("Exception occurred, waiting 10 seconds before continueing")
+            power = reader.lastCurrent()*config["Collector"]["Voltage"]
             
-            # Reset reader object
-            reader = CurrentReader(frequency=config["Collector"]["Frequency"])
+            while(lastTimeStamps[chanInt] < reader.lastStart())
+                unsaved.append([lastTimeStamps[chanInt], chanInt, power])
+                lastTimeStamps[chanInt] = lastTimeStamps[chanInt] + config["Collector"]["ReadInterval"]
+        
+        if(time.time() >= nextSave):
+            conn = sqlite3.connect(config["Collector"]["Database"])
+            c = conn.cursor()
+            sql = "INSERT INTO ReadingData (TimeStamp,Channel,Power) VALUES ({0},{1},{2})"
 
-            # Wait 10 seconds to avoid flooding the error log too much
-            time.sleep(10)
+            for unsavedrow in unsaved:
+                c.execute(sql.format(unsavedrow[0],unsavedrow[1],unsavedrow[2]))
+
+            conn.commit()
+            conn.close()
+
+            unsaved = []
+    except Exception as e:
+        print(e)
+        logging.exception("Exception occurred, waiting 10 seconds before continueing")
+
+        # Reset reader object
+        reader = CurrentReader(frequency=config["Collector"]["Frequency"])
+
+        # Wait 10 seconds to avoid flooding the error log too much
+        time.sleep(10)
