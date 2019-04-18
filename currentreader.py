@@ -55,11 +55,11 @@ class CurrentReader():
             index = 0
 
             for value in useablevalues:
-                mavalues = values[index:index+self._movingAverageValues]
+                maValues = values[index:index+self._movingAverageValues]
                 sumsquares = sumsquares + (value-statistics.mean(maValues))**2
                 index = index + 1
         
-            rmas = math.sqrt(float(sumsquares)/numsquares)
+            rmas = math.sqrt(float(sumsquares)/len(useablevalues))
         else:
             rmas = 0.0
             
