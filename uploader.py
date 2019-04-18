@@ -63,7 +63,7 @@ while(True):
         # Loop through rows from local DB and insert them into the server DB
         for row in rows:
             try:
-                curServer.execute("INSERT INTO ReadingData (TimeStamp,Device,Channel,Power,Uploaded) VALUES ('{0}','{1}',{2},{3},'{4}'".format(
+                curServer.execute("INSERT INTO ReadingData (TimeStamp,Device,Channel,Power,Uploaded) VALUES ('{0}','{1}',{2},{3},'{4}')".format(
                                                             datetime.utcfromtimestamp(row['TimeStamp']),
                                                             socket.gethostname(),
                                                             row['Channel'],
