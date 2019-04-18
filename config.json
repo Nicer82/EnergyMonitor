@@ -11,29 +11,25 @@
       {
         "AmpFactor": 0.00285,
         "AmpExponent": 1.0,
-        "AmpMinimum": 0.0,
-        "Type": "Consumption"
+        "AmpMinimum": 0.0
       },
       "1":
       {
         "AmpFactor": 0.00285,
         "AmpExponent": 1.0,
-        "AmpMinimum": 0.0,
-        "Type": "Consumption"
+        "AmpMinimum": 0.0
       },
       "2":
       {
         "AmpFactor": 0.00285,
         "AmpExponent": 1.0,
-        "AmpMinimum": 0.0,
-        "Type": "Consumption"
+        "AmpMinimum": 0.0
       },
       "3":
       {
         "AmpFactor": 0.00285,
         "AmpExponent": 1.0,
-        "AmpMinimum": 0.0,
-        "Type": "Production"
+        "AmpMinimum": 0.0
       },
     }
   },
