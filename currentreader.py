@@ -53,7 +53,7 @@ class CurrentReader():
         
         while (time.time() < self._lastEnd):
             val = self._adc.get_last_result()
-            print("{0};{1}".format(channel,val))
+            print("{0};{1}".format(chan,val))
             readValues.append(val)
             
         self._adc.stop_adc()
