@@ -38,7 +38,7 @@ logging.basicConfig(filename=logFileName,
 
 # Set worker variables
 prevtimestamp = [0.0,0.0,0.0,0.0]
-reader = CurrentReader(voltage=config["Logger"]["Voltage"])
+reader = CurrentReader(voltage=config["Logger"]["Voltage"],frequency=config["Logger"]["Frequency"])
 
 # Infinite loop
 while(True):
