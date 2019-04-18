@@ -22,8 +22,8 @@ import statistics
 import time
 
 class CurrentReader():
-    def __init__(self,voltage=230,frequency=50):
-        self._voltage = voltage
+    def __init__(self,voltage=230,frequency=50): #TODO Remove voltage 
+        self._voltage = voltage #TODO Remove voltage
         self._frequency = frequency
         self._movingAverageWaves = 3 # the number of sine waves to take into account to calculate the moving average. Should be a whole number.
 
@@ -94,15 +94,15 @@ class CurrentReader():
         if(self._lastAmps < ampMinimum):
             self._lastAmps = 0
             
-        self._lastWatts = self._lastAmps*self._voltage
+        self._lastWatts = self._lastAmps*self._voltage #TODO Remove voltage
         
         return
     
     def lastCurrent(self):
-        return self._lastAmps
+        return self._lastAmps 
 
-    def lastPower(self):
-        return self._lastWatts
+    def lastPower(self): #TODO Remove voltage
+        return self._lastWatts #TODO Remove voltage
 
     def lastStart(self):
         return self._lastStart
