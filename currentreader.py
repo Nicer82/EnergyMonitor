@@ -85,8 +85,8 @@ class CurrentReader():
             #i=i+1
             
         self._adc.stop_adc()
-        #self._lastAmps = (self._rootmeansquare(readValues)*ampFactor)**ampExponent
-        self._lastAmps = (self._rootmovingaveragesquare(readValues)*ampFactor)**ampExponent
+        self._lastAmps = (self._rootmeansquare(readValues)*ampFactor)**ampExponent
+        #self._lastAmps = (self._rootmovingaveragesquare(readValues)*ampFactor)**ampExponent
         
         # measurements might only be accurate from a certain value, so lower values are considered 0
         if(self._lastAmps < ampMinimum):
