@@ -77,16 +77,13 @@ class CurrentReader():
         self._lastStart = time.time()
         self._lastEnd = self._lastStart + self._adcReadTime
         self._adc.start_adc(channel=chan, gain=self._adcGain, data_rate=self._adcDataRate)
-        #i=0
+
         while (time.time() < self._lastEnd):
             val = self._adc.get_last_result()
-            #print("{0};{1};{2};{3}".format(cycle,chan,i,val))
             readValues.append(val)
-            #i=i+1
             
         self._adc.stop_adc()
-        self._lastAmps = (self._rootmeansquare(readValues)*ampFactor)**ampExponent
-        #self._lastAmps = (self._rootmovingaveragesquare(readValues)*ampFactor)**ampExponent
+        self._lastAmps = (self._rootmovingaveragesquare(readValues)*ampFactor)**ampExponent
         
         # measurements might only be accurate from a certain value, so lower values are considered 0
         if(self._lastAmps < ampMinimum):
