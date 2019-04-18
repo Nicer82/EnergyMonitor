@@ -50,7 +50,7 @@ while(True):
                                              database=config["Uploader"]["Database"])
         connServer.autocommit = False
         
-        connLocal = sqlite3.connect(config["Logger"]["Database"])
+        connLocal = sqlite3.connect(config["Collector"]["Database"])
         connLocal.row_factory = sqlite3.Row
 
         # Worker variables
