@@ -3,6 +3,7 @@
   {
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
     "SaveInterval": 60,
+    "ReadInterval": 1,
     "Voltage": 230,
     "Frequency": 50,
     "Channels":
