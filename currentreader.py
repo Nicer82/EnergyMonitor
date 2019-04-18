@@ -77,10 +77,20 @@ class CurrentReader():
         self._lastStart = time.time()
         self._lastEnd = self._lastStart + self._adcReadTime
         self._adc.start_adc(channel=chan, gain=self._adcGain, data_rate=self._adcDataRate)
+        interval = 1/self._adcDataRate
+        nextRead = self._lastStart
 
         while (time.time() < self._lastEnd):
             val = self._adc.get_last_result()
-            print("{0}:{1}".format(time.time(),val))
+            
+            nextRead = nextRead+interval
+            sleep = nextRead-time.time()
+            
+            if sleep > 0:
+                time.sleep(sleep)
+            
+            print("{0}:{1}".format(nextRead,val))
+            
             readValues.append(val)
             
         self._adc.stop_adc()
