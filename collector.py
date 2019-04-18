@@ -30,7 +30,7 @@ with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
 
 # Create a new log file per start
-logFileName = "/home/pi/EnergyMonitor/logger_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
+logFileName = "/home/pi/EnergyMonitor/collector_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
 logging.basicConfig(filename=logFileName, 
                     level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
