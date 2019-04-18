@@ -30,9 +30,9 @@ class CurrentReader():
         self._adc = Adafruit_ADS1x15.ADS1115()
         self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
         self._adcGain = 1 # gain factor, for reading lower currents
-        self._adcDataRate = 860 // frequency * frequency # samples per second: Set the rate as close as possible to the max rate (860), but make sure it maps the sine wave perfectly.
+        self._adcDataRate = 860 # samples per second
 
-        self._movingAverageValues = self._adcDataRate / self._frequency * self._movingAverageWaves # the number of values to take into account for moving average calculation.
+        self._movingAverageValues = round(self._adcDataRate / self._frequency * self._movingAverageWaves) # the number of values to take into account for moving average calculation.
     def _rootmeansquare(self, values):
         # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
         sumsquares = 0.0
