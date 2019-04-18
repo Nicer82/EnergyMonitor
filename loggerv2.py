@@ -30,8 +30,8 @@ import logging
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
 
-# Create a log file per day
-logFileName = "/home/pi/EnergyMonitor/logger_{0}.log".format(datetime.now().strftime("%Y%m%d"))
+# Create a new log file per start
+logFileName = "/home/pi/EnergyMonitor/logger_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
 logging.basicConfig(filename=logFileName, 
                     level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
@@ -43,6 +43,7 @@ reader = CurrentReader(voltage=config["Logger"]["Voltage"],frequency=config["Log
 # Infinite loop
 while(True):
     try:
+        
         # Reset statistics
         totalWh = [0,0,0,0]
         valuesW = [[],[],[],[]]
