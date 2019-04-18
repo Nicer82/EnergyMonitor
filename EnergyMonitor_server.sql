@@ -17,14 +17,7 @@ CREATE TABLE `ReadingData` (
   `TimeStamp` datetime NOT NULL,
   `Device` varchar(30) NOT NULL,
   `Channel` tinyint(4) NOT NULL,
-  `ConsumptionWh` double NOT NULL,
-  `PowerMinW` double NOT NULL,
-  `PowerMaxW` double NOT NULL,
-  `PowerAvgW` double NOT NULL,
-  `PowerStDevW` double NOT NULL,
-  `Measurements` int(11) NOT NULL,
-  `UploadedTimeStamp` datetime NOT NULL,
+  `Power` double NOT NULL,
+  `Uploaded` datetime NOT NULL,
   PRIMARY KEY (`TimeStamp`,`Device`,`Channel`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
