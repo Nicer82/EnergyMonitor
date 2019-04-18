@@ -2,7 +2,7 @@
   "Logger":
   {
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
-    "LogInterval": 60,
+    "SaveInterval": 60,
     "Voltage": 230,
     "Frequency": 50,
     "Channels":
@@ -46,6 +46,6 @@
     "Password": "MyPassword",
     "UploadInterval": 5,
     "VacuumInterval": 3600,
-    "LocalDataKeepInterval": 3600
+    "LocalDataKeepInterval": 900
   }
 }
