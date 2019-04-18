@@ -52,7 +52,9 @@ class CurrentReader():
         self._adc.start_adc(channel=chan, gain=self._adcGain, data_rate=self._adcDataRate)
         
         while (time.time() < self._lastEnd):
-            readValues.append(self._adc.get_last_result())
+            val = self._adc.get_last_result()
+            print(val)
+            readValues.append(val)
             
         self._adc.stop_adc()
         self._lastAmps = (self._rootmeansquare(readValues)*ampFactor)**ampExponent
