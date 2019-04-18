@@ -44,7 +44,7 @@ lastTimeStamps = [lastTimeStamp,lastTimeStamp,lastTimeStamp,lastTimeStamp]
 unsaved = []
 
 # Infinite loop
-while(True)
+while(True):
     try:
         for chan in config["Collector"]["Channels"]:
             chanInt = int(chan)
