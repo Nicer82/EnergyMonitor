@@ -44,7 +44,7 @@ class CurrentReader():
 
         return rms
     
-    def readChannel(self, chan, ampFactor,ampExponent=1,ampMinimum=0):
+    def readChannel(self, chan, ampFactor,ampExponent=1,ampMinimum=0,cycle=0):
         readValues = []
         
         self._lastStart = time.time()
@@ -53,7 +53,7 @@ class CurrentReader():
         
         while (time.time() < self._lastEnd):
             val = self._adc.get_last_result()
-            print("{0};{1}".format(chan,val))
+            print("{0};{1};{2}".format(cycle,chan,val))
             readValues.append(val)
             
         self._adc.stop_adc()
