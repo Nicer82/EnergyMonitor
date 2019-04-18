@@ -80,7 +80,7 @@ class CurrentReader():
 
         while (time.time() < self._lastEnd):
             val = self._adc.get_last_result()
-            print(val)
+            print("{0}:{1}".format(time.time(),val))
             readValues.append(val)
             
         self._adc.stop_adc()
