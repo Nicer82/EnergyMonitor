@@ -2,22 +2,39 @@
   "Logger":
   {
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
-    "LogInterval": 15,
+    "LogInterval": 60,
     "Voltage": 230,
+    "Frequency": 50,
     "Channels":
     {
       "0":
       {
-        "AmpFactor": 0.0026,
-        "AmpExponent": 1.0206,
-        "AmpMinimum": 0.020
+        "AmpFactor": 0.00285,
+        "AmpExponent": 1.0,
+        "AmpMinimum": 0.0,
+        "Type": "Consumption"
       },
       "1":
       {
-        "AmpFactor": 0.0026,
-        "AmpExponent": 1.0206,
-        "AmpMinimum": 0.020
-      }
+        "AmpFactor": 0.00285,
+        "AmpExponent": 1.0,
+        "AmpMinimum": 0.0,
+        "Type": "Consumption"
+      },
+      "2":
+      {
+        "AmpFactor": 0.00285,
+        "AmpExponent": 1.0,
+        "AmpMinimum": 0.0,
+        "Type": "Consumption"
+      },
+      "3":
+      {
+        "AmpFactor": 0.00285,
+        "AmpExponent": 1.0,
+        "AmpMinimum": 0.0,
+        "Type": "Production"
+      },
     }
   },
   "Uploader":
@@ -29,6 +46,6 @@
     "Password": "MyPassword",
     "UploadInterval": 5,
     "VacuumInterval": 3600,
-    "LocalDataKeepDays": 0.1
+    "LocalDataKeepInterval": 3600
   }
 }
