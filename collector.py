@@ -58,7 +58,7 @@ while(True):
                 sql = "INSERT INTO ReadingData (TimeStamp,Channel,Power) VALUES ({0},{1},{2})"
 
                 for unsavedrow in unsaved:
-                    c.execute(sql.format(unsavedrow[0],unsavedrow[1],unsavedrow[2])
+                    c.execute(sql.format(unsavedrow[0],unsavedrow[1],unsavedrow[2]))
                               
                 conn.commit()
                 conn.close()
