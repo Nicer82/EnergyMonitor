@@ -89,7 +89,7 @@ class CurrentReader():
             if sleep > 0:
                 time.sleep(sleep)
             
-            print("{0}:{1}".format(nextRead,val))
+            #print("{0}:{1}".format(nextRead,val))
             
             readValues.append(val)
             
