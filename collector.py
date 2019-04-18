@@ -39,7 +39,7 @@ logging.basicConfig(filename=logFileName,
 reader = CurrentReader(frequency=config["Collector"]["Frequency"])
 
 nextSave = time.time()+config["Collector"]["SaveInterval"]
-lastTimeStamp = time.time() // config["Collector"]["ReadInterval"]
+lastTimeStamp = (time.time() // config["Collector"]["ReadInterval"] * config["Collector"]["ReadInterval"])
 lastTimeStamps = [lastTimeStamp,lastTimeStamp,lastTimeStamp,lastTimeStamp]
 unsaved = []
 
