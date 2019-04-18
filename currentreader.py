@@ -22,13 +22,17 @@ import statistics
 import time
 
 class CurrentReader():
-    def __init__(self,voltage=230):
-        self._adc = Adafruit_ADS1x15.ADS1115()
+    def __init__(self,voltage=230,frequency=50):
         self._voltage = voltage
+        self._frequency = frequency
+        self._movingAverageWaves = 1 # the number of sine waves to take into account to calculate the moving average. Should be a whole number.
+
+        self._adc = Adafruit_ADS1x15.ADS1115()
         self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
         self._adcGain = 1 # gain factor, for reading lower currents
-        self._adcDataRate = 860 # samples per second
-    
+        self._adcDataRate = 860 // frequency * frequency # samples per second: Set the rate as close as possible to the max rate (860), but make sure it maps the sine wave perfectly.
+
+        self._movingAverageValues = self._adcDataRate / self._frequency * self._movingAverageWaves # the number of values to take into account for moving average calculation.
     def _rootmeansquare(self, values):
         # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
         sumsquares = 0.0
@@ -43,6 +47,29 @@ class CurrentReader():
             rms = math.sqrt(float(sumsquares)/len(values))
 
         return rms
+    def _rootmovingaveragesquare(self, values):
+        sumsquares = 0.0
+        numsquares = 0
+        maValues = []
+        
+        #avg = statistics.mean(values)
+
+        for value in values:
+            maValues.append(value)
+            
+            if len(maValues) > self._movingAverageValues:
+                maValues.pop(0)  
+                
+            if len(maValues) == self._movingAverageValues:
+                sumsquares = sumsquares + (value-statistics.mean(maValues))**2
+                numsquares = numsquares + 1
+
+        if numsquares == 0:
+            rmas = 0.0
+        else:
+            rmas = math.sqrt(float(sumsquares)/numsquares)
+
+        return rmas
     
     def readChannel(self, chan, ampFactor,ampExponent=1,ampMinimum=0,cycle=0):
         readValues = []
@@ -50,15 +77,16 @@ class CurrentReader():
         self._lastStart = time.time()
         self._lastEnd = self._lastStart + self._adcReadTime
         self._adc.start_adc(channel=chan, gain=self._adcGain, data_rate=self._adcDataRate)
-        i=0
+        #i=0
         while (time.time() < self._lastEnd):
             val = self._adc.get_last_result()
-            print("{0};{1};{2};{3}".format(cycle,chan,i,val))
+            #print("{0};{1};{2};{3}".format(cycle,chan,i,val))
             readValues.append(val)
-            i=i+1
+            #i=i+1
             
         self._adc.stop_adc()
-        self._lastAmps = (self._rootmeansquare(readValues)*ampFactor)**ampExponent
+        #self._lastAmps = (self._rootmeansquare(readValues)*ampFactor)**ampExponent
+        self._lastAmps = (self._rootmovingaveragesquare(readValues)*ampFactor)**ampExponent
         
         # measurements might only be accurate from a certain value, so lower values are considered 0
         if(self._lastAmps < ampMinimum):
