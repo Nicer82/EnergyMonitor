@@ -25,7 +25,7 @@ class CurrentReader():
     def __init__(self,voltage=230,frequency=50):
         self._voltage = voltage
         self._frequency = frequency
-        self._movingAverageWaves = 1 # the number of sine waves to take into account to calculate the moving average. Should be a whole number.
+        self._movingAverageWaves = 3 # the number of sine waves to take into account to calculate the moving average. Should be a whole number.
 
         self._adc = Adafruit_ADS1x15.ADS1115()
         self._adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
@@ -49,26 +49,20 @@ class CurrentReader():
         return rms
     def _rootmovingaveragesquare(self, values):
         sumsquares = 0.0
-        numsquares = 0
-        maValues = []
         
-        #avg = statistics.mean(values)
+        if len(values) > self._movingAverageValues:
+            useablevalues = values[int(self._movingAverageValues/2):int(len(values)-self._movingAverageValues/2)+1]
+            index = 0
 
-        for value in values:
-            maValues.append(value)
-            
-            if len(maValues) > self._movingAverageValues:
-                maValues.pop(0)  
-                
-            if len(maValues) == self._movingAverageValues:
+            for value in useablevalues:
+                mavalues = values[index:index+_movingAverageValues]
                 sumsquares = sumsquares + (value-statistics.mean(maValues))**2
-                numsquares = numsquares + 1
-
-        if numsquares == 0:
-            rmas = 0.0
-        else:
+                index = index + 1
+        
             rmas = math.sqrt(float(sumsquares)/numsquares)
-
+        else:
+            rmas = 0.0
+            
         return rmas
     
     def readChannel(self, chan, ampFactor,ampExponent=1,ampMinimum=0,cycle=0):
