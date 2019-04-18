@@ -55,7 +55,7 @@ class CurrentReader():
             index = 0
 
             for value in useablevalues:
-                mavalues = values[index:index+_movingAverageValues]
+                mavalues = values[index:index+self._movingAverageValues]
                 sumsquares = sumsquares + (value-statistics.mean(maValues))**2
                 index = index + 1
         
@@ -83,7 +83,7 @@ class CurrentReader():
             if sleep > 0:
                 time.sleep(sleep)
             
-            print(val)
+            #print(val)
             
             readValues.append(val)
             
