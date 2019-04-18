@@ -54,7 +54,7 @@ while(True):
                                ampMinimum=config["Collector"]["Channels"][chan]["AmpMinimum"])
             power = reader.lastCurrent()*config["Collector"]["Voltage"]
             
-            while(lastTimeStamps[chanInt] < reader.lastStart())
+            while(lastTimeStamps[chanInt] < reader.lastStart()):
                 unsaved.append([lastTimeStamps[chanInt], chanInt, power])
                 lastTimeStamps[chanInt] = lastTimeStamps[chanInt] + config["Collector"]["ReadInterval"]
         
