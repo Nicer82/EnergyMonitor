@@ -31,7 +31,7 @@ with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
     
 # Create a log file per day
-logFileName = "/home/pi/EnergyMonitor/uploader_{0}.log".format(datetime.now().strftime("%Y%m%d"))
+logFileName = "/home/pi/EnergyMonitor/uploader_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
 logging.basicConfig(filename=logFileName, 
                     level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
@@ -57,22 +57,18 @@ while(True):
         uploadedTimeStamp = time.time()
         curServer = connServer.cursor()
         curLocal = connLocal.cursor()
-        curLocal.execute("SELECT TimeStamp,Channel,ConsumptionWh,PowerMinW,PowerMaxW,PowerAvgW,PowerStDevW,Measurements FROM ReadingData WHERE UploadedTimeStamp IS NULL")
+        curLocal.execute("SELECT TimeStamp,Channel,Power FROM ReadingData WHERE Uploaded IS NULL")
         rows = curLocal.fetchall()
         
         # Loop through rows from local DB and insert them into the server DB
         for row in rows:
             try:
-                curServer.execute("INSERT INTO ReadingData VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},'{9}')".format(datetime.utcfromtimestamp(row['TimeStamp']),
-                                                                                                                    socket.gethostname(),
-                                                                                                                    row['Channel'],
-                                                                                                                    row['ConsumptionWh'],
-                                                                                                                    row['PowerMinW'],
-                                                                                                                    row['PowerMaxW'],
-                                                                                                                    row['PowerAvgW'],
-                                                                                                                    row['PowerStDevW'],
-                                                                                                                    row['Measurements'],
-                                                                                                                    datetime.utcfromtimestamp(uploadedTimeStamp)))
+                curServer.execute("INSERT INTO ReadingData (TimeStamp,Device,Channel,Power,Uploaded) VALUES ('{0}','{1}',{2},{3},'{4}'".format(
+                                                            datetime.utcfromtimestamp(row['TimeStamp']),
+                                                            socket.gethostname(),
+                                                            row['Channel'],
+                                                            row['Power'],
+                                                            datetime.utcfromtimestamp(uploadedTimeStamp)))
             # Ignore duplicate key exceptions, since they are most likely because the script was terminated unorthodox previously.
             except mysql.connector.IntegrityError as err:
                 pass
@@ -82,7 +78,7 @@ while(True):
                                                                                                                              row['Channel']))
             
         # Remove data from local DB
-        curLocal.execute("DELETE FROM ReadingData WHERE UploadedTimeStamp IS NOT NULL AND Timestamp < {0}".format(uploadedTimeStamp - (config["Uploader"]["LocalDataKeepDays"]*24*3600)))
+        curLocal.execute("DELETE FROM ReadingData WHERE Uploaded IS NOT NULL AND Timestamp < {0}".format(uploadedTimeStamp - config["Uploader"]["LocalDataKeepInterval"]))
         
         # Close the server DB
         connServer.commit()
