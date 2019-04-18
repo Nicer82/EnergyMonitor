@@ -1,5 +1,5 @@
 {
-  "Gatherer":
+  "Collector":
   {
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
     "SaveInterval": 60,
