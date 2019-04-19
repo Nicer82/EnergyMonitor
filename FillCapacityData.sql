@@ -1,7 +1,10 @@
 SET time_zone='+00:00';
-SET @CapInterval := 3600;
+SET @CapInterval := 60;
+
 SELECT @TotalChannels := COUNT(*) FROM ChannelSetup;
+
 SELECT @LastCapTimeStamp := CAST(COALESCE(MAX(TimeStamp),'1970-01-01') AS DATETIME) FROM CapacityData;
+
 SELECT @LastReadTimeStamp := rd.TimeStamp
 FROM ReadingData rd
 	INNER JOIN ChannelSetup cs
@@ -13,13 +16,21 @@ HAVING COUNT(*) = @TotalChannels
 ORDER BY rd.TimeStamp DESC
 LIMIT 1;
 
+SELECT @PenultimateReadTimeStamp := rd.TimeStamp
+FROM ReadingData rd
+WHERE rd.TimeStamp < @LastReadTimeStamp 
+ORDER BY rd.TimeStamp DESC
+LIMIT 1;
+
+SELECT @ReadInterval := TIMESTAMPDIFF(SECOND,@PenultimateReadTimeStamp,@LastReadTimeStamp);
+
 INSERT INTO CapacityData (TimeStamp,Type,InstallationWh,GridWh)
 WITH InstallationData AS
 (
 	SELECT
 		rd.TimeStamp AS TimeStamp,
 		cs.Type AS Type,
-		SUM(rd.ConsumptionWh) AS InstallationWh
+		SUM(rd.Power) * @ReadInterval / 3600 AS InstallationWh
 	FROM ReadingData AS rd
 		INNER JOIN ChannelSetup AS cs
 		ON cs.Device = rd.Device
