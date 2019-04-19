@@ -2,8 +2,8 @@
   "Collector":
   {
     "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
-    "SaveInterval": 60,
-    "ReadInterval": 1,
+    "SaveInterval": 10,
+    "ReadInterval": 3,
     "Voltage": 230,
     "Frequency": 50,
     "Channels":
@@ -30,7 +30,7 @@
       {
         "AmpFactor": 0.00285,
         "AmpExponent": 1.0,
-        "AmpMinimum": 0.0
+        "AmpMinimum": 0.1
       }
     }
   },
