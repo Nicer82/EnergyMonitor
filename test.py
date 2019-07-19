@@ -10,7 +10,7 @@ RATE = 860
 SAMPLES = 1000
 
 # Create the I2C bus with a fast frequency
-i2c = busio.I2C(board.SCL, board.SDA, frequency=1000000)
+i2c = busio.I2C(board.SCL, board.SDA)
 
 # Create the ADC object using the I2C bus
 ads = ADS.ADS1115(i2c)
