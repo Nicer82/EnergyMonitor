@@ -1,32 +1,23 @@
-import math
-import Adafruit_ADS1x15
-import array
-import statistics
 import time
+import board
+import busio
+import adafruit_ads1x15.ads1015 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
 
-_adc = Adafruit_ADS1x15.ADS1115()
-_adcChannel = 0
-_adcReadTime = 15 # how long do we read out the sine wave in seconds to get a reliable and stable readout
-_adcGain = 1 # gain factor, for reading lower currents
-_adcDataRate = 860 # samples per second
+# Create the I2C bus
+i2c = busio.I2C(board.SCL, board.SDA)
 
-readValues = []
-        
-_lastStart = time.time()
-_lastEnd = _lastStart + _adcReadTime
-_adc.start_adc(channel=_adcChannel, gain=_adcGain, data_rate=_adcDataRate)
-interval = 1/_adcDataRate
-nextRead = _lastStart
+# Create the ADC object using the I2C bus
+ads = ADS.ADS1015(i2c)
 
-while (time.time() < _lastEnd):
-    val = _adc.get_last_result()
+# Create single-ended input on channel 0
+chan = AnalogIn(ads, ADS.P0)
 
-    nextRead = nextRead+interval
-    sleep = nextRead-time.time()
+# Create differential input between channel 0 and 1
+#chan = AnalogIn(ads, ADS.P0, ADS.P1)
 
-    if sleep > 0:
-        time.sleep(sleep)
+print("{:>5}\t{:>5}".format('raw', 'v'))
 
-    print(val)
-
-_adc.stop_adc()
+while True:
+    print("{:>5}\t{:>5.3f}".format(chan.value, chan.voltage))
+    time.sleep(0.5)
