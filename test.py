@@ -20,7 +20,7 @@ chan0 = AnalogIn(ads, ADS.P0)
 
 # ADC Configuration
 ads.mode = Mode.CONTINUOUS
-ads.data_rate = RATE
+#ads.data_rate = RATE
 
 data = [None]*SAMPLES
 
