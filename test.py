@@ -13,12 +13,12 @@ _adcDataRate = 860 # samples per second
 readValues = []
         
 _lastStart = time.time()
-_lastEnd = self._lastStart + _adcReadTime
+_lastEnd = _lastStart + _adcReadTime
 _adc.start_adc(channel=_adcChannel, gain=_adcGain, data_rate=_adcDataRate)
 interval = 1/_adcDataRate
 nextRead = _lastStart
 
-while (time.time() < self._lastEnd):
+while (time.time() < _lastEnd):
     val = _adc.get_last_result()
 
     nextRead = nextRead+interval
