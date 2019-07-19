@@ -16,7 +16,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 ads = ADS.ADS1115(i2c)
 
 # Create single-ended input on channel 0
-chan0 = AnalogIn(ads, ADS.P0)
+chan0 = AnalogIn(ads, ADS.P1)
 
 # ADC Configuration
 #ads.mode = Mode.CONTINUOUS
