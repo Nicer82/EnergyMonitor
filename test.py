@@ -1,15 +1,22 @@
-import currentreader
+import math
+import Adafruit_ADS1x15
+import array
+import statistics
+import time
 
-reader = currentreader.CurrentReader(voltage=230)
-#print("Channel?")
-#chan = int(input())
-reader.readChannel(0,ampFactor=0.00285,ampExponent=1,ampMinimum=0)
-chan0 = reader.lastPower()
-reader.readChannel(1,ampFactor=0.00285,ampExponent=1,ampMinimum=0)
-chan1 = reader.lastPower()
-reader.readChannel(2,ampFactor=0.00285,ampExponent=1,ampMinimum=0)
-chan2 = reader.lastPower()
-reader.readChannel(3,ampFactor=0.00285,ampExponent=1,ampMinimum=0)
-chan3 = reader.lastPower()
+_adc = Adafruit_ADS1x15.ADS1115()
+_adcChannel = 0
+_adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
+_adcGain = 1 # gain factor, for reading lower currents
+_adcDataRate = 860 # samples per second
 
-print(chan0+chan1+chan2-chan3)
+_adc.start_adc(channel=_adcChannel, gain=_adcGain, data_rate=_adcDataRate)
+
+_start = time.time()
+
+while (time.time() < _start + 0.5):
+  val = _adc.get_last_result()
+
+  print(val)
+
+self._adc.stop_adc()
