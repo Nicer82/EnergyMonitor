@@ -19,8 +19,8 @@ ads = ADS.ADS1115(i2c)
 chan0 = AnalogIn(ads, ADS.P1)
 
 # ADC Configuration
-#ads.mode = Mode.CONTINUOUS
-#ads.data_rate = RATE
+ads.mode = Mode.CONTINUOUS
+ads.data_rate = RATE
 
 data = [None]*SAMPLES
 
