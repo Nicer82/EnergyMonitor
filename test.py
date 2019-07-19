@@ -14,7 +14,7 @@ _adc.start_adc(channel=_adcChannel, gain=_adcGain, data_rate=_adcDataRate)
 
 _start = time.time()
 
-while (time.time() < _start + 0.5):
+while (time.time() < _start + 1):
   val = _adc.get_last_result()
 
   print(val)
