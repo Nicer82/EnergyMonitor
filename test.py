@@ -28,7 +28,9 @@ start = time.monotonic()
 
 # Read the same channel over and over
 for i in range(SAMPLES):
-    data[i] = chan0.value
+    val = chan0.value
+    print(val)
+    data[i] = val
 
 end = time.monotonic()
 total_time = end - start
