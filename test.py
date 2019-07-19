@@ -6,17 +6,27 @@ import time
 
 _adc = Adafruit_ADS1x15.ADS1115()
 _adcChannel = 0
-_adcReadTime = 0.5 # how long do we read out the sine wave in seconds to get a reliable and stable readout
+_adcReadTime = 1 # how long do we read out the sine wave in seconds to get a reliable and stable readout
 _adcGain = 1 # gain factor, for reading lower currents
 _adcDataRate = 860 # samples per second
 
+readValues = []
+        
+_lastStart = time.time()
+_lastEnd = self._lastStart + _adcReadTime
 _adc.start_adc(channel=_adcChannel, gain=_adcGain, data_rate=_adcDataRate)
+interval = 1/_adcDataRate
+nextRead = _lastStart
 
-_start = time.time()
+while (time.time() < self._lastEnd):
+    val = _adc.get_last_result()
 
-while (time.time() < _start + 1):
-  val = _adc.get_last_result()
+    nextRead = nextRead+interval
+    sleep = nextRead-time.time()
 
-  print(val)
+    if sleep > 0:
+        time.sleep(sleep)
 
-self._adc.stop_adc()
+    print(val)
+
+_adc.stop_adc()
