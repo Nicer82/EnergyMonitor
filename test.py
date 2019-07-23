@@ -50,31 +50,31 @@ ads.data_rate = RATE
 data = []
 
 timebetweenreads = 1/RATE
-#while(True):
-start = time.perf_counter()
-end = start+MEASURETIME
-nextRead = start
+while(True):
+    start = time.perf_counter()
+    end = start+MEASURETIME
+    nextRead = start
 
-# Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
-# Read the same channel over and over
-while(nextRead < end):
-    data.append(chan0.voltage)
+    # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
+    # Read the same channel over and over
+    while(nextRead < end):
+        data.append(chan0.voltage)
 
-    nextRead += timebetweenreads
-    sleep = nextRead-time.perf_counter()
-    if sleep > 0:
-        time.sleep(sleep)
+        nextRead += timebetweenreads
+        sleep = nextRead-time.perf_counter()
+        if sleep > 0:
+            time.sleep(sleep)
 
 
-end = time.perf_counter()
-total_time = end - start
+    end = time.perf_counter()
+    total_time = end - start
 
-data = normalize(data)
+    data = normalize(data)
 
-#for i in range(len(data)):
-#    print(data[i])
+    #for i in range(len(data)):
+    #    print(data[i])
 
-power = rootmeansquare(data)/100*2000*230
-#print("Time of capture: {}s".format(total_time))
-#print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
-print("Power: {} Watt".format(power))
+    power = rootmeansquare(data)/100*2000*230
+    #print("Time of capture: {}s".format(total_time))
+    #print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
+    print("Power: {} Watt".format(power))
