@@ -44,27 +44,27 @@ data0 = [None]*SAMPLES
 timebetweenreads = 1/RATE
 #while(True):
 start = time.perf_counter()
-nextRead = start
+#nextRead = start
 
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 for i in range(SAMPLES):
     data0[i] = chan0.voltage
-    if(data0[i] == data0[i-1]):
+    while(data0[i] == data0[i-1]):
        data0[i] = chan0.voltage
     
     now = time.perf_counter()
     
     print("{}\t{}".format(now,data0[i]))
 
-    nextRead += timebetweenreads
-    sleep = nextRead-time.perf_counter()
-    if sleep > 0:
-      time.sleep(sleep)
+    #nextRead += timebetweenreads
+    #sleep = nextRead-time.perf_counter()
+    #if sleep > 0:
+    #  time.sleep(sleep)
 
 end = time.perf_counter()
 total_time = end - start
 power = rootmeansquare(data0)/100*2000*230
 #print("Time of capture: {}s".format(total_time))
-#print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
+print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
 print("Power: {} Watt".format(power))
