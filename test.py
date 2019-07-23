@@ -22,6 +22,13 @@ def rootmeansquare(values):
 
     return rms
 
+def normalize(values):
+    for i in range(len(values)):
+        if i > 1 and i < len(values)-1 and values[i] == values[i-1]:
+            values[i-1] =  (values[i-2] + values[i-1]*2)/3
+            values[i] = (values[i+1] + values[i]*2)/3
+        
+    
 # Data collection setup
 RATE = 860
 MEASURETIME = 1
@@ -50,15 +57,17 @@ nextRead = start
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 while(nextRead < end):
-    value = chan0.voltage
-    data.append(value)
-    
-    print("{}\t{}".format(nextRead, value))
+    data.append(chan0.voltage)
 
     nextRead += timebetweenreads
     sleep = nextRead-time.perf_counter()
     if sleep > 0:
         time.sleep(sleep)
+
+data = normalize(data)
+
+for i in range(len(data)):
+    print(data[i])
 
 end = time.perf_counter()
 total_time = end - start
