@@ -47,10 +47,9 @@ chan0 = AnalogIn(ads, ADS.P0)
 ads.mode = Mode.CONTINUOUS 
 ads.data_rate = RATE
 
-data = []
-
 timebetweenreads = 1/RATE
 while(True):
+    data = []
     start = time.perf_counter()
     end = start+MEASURETIME
     nextRead = start
