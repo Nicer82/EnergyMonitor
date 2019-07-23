@@ -40,7 +40,7 @@ i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
 # Create the ADC object using the I2C bus
 ads = ADS.ADS1115(i2c)
 
-chan0 = AnalogIn(ads, ADS.P1)
+chan0 = AnalogIn(ads, ADS.P0)
 
 # ADC Configuration
 ads.mode = Mode.CONTINUOUS 
@@ -72,7 +72,7 @@ while(True):
     #for i in range(len(data)):
     #    print(data[i])
     
-    power = rootmeansquare(data)/100*2000*230
+    power = rootmeansquare(data)/98.6*2000*230
     #print("Time of capture: {}s".format(total_time))
     #print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
     print("Power: {} Watt".format(power))
