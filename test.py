@@ -24,7 +24,7 @@ def rootmeansquare(values):
 
 # Data collection setup
 RATE = 860
-MEASURETIME = 0.2
+MEASURETIME = 1
 PRECISION = 0.001516 # 2x the stdev of a large testgroup when measured with 0v at input
 
 # Create the I2C bus with a fast frequency
@@ -44,15 +44,16 @@ data = []
 timebetweenreads = 1/RATE
 #while(True):
 start = time.perf_counter()
+end = start+MEASURETIME
 nextRead = start
 
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
-while(nextRead < start+MEASURETIME):
+while(nextRead < end):
     value = chan0.voltage
-    data.append(chan0.voltage)
+    data.append(value)
     
-    print("{}\t{}".format(nextRead, data[len(data)-1]))
+    print("{}\t{}".format(nextRead, value))
 
     nextRead += timebetweenreads
     sleep = nextRead-time.perf_counter()
