@@ -33,7 +33,7 @@ nextRead = start
 # Read the same channel over and over
 for i in range(SAMPLES):
     data0[i] = chan0.voltage
-    while(data0[i]=data1[i-1])
+    while(data0[i]==data1[i-1])
         data0[i] = chan0.voltage
     print(data0[i])
     
@@ -43,7 +43,7 @@ for i in range(SAMPLES):
 #      time.sleep(sleep)
 
     data1[i] = chan1.voltage
-    while(data1[i]=data0[i])
+    while(data1[i]==data0[i])
         data1[i] = chan1.voltage
     print(data1[i])
 
