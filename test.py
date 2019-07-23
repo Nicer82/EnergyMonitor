@@ -24,7 +24,7 @@ def rootmeansquare(values):
 
 # Data collection setup
 RATE = 860
-SAMPLES = 170
+MEASURETIME = 0.2
 PRECISION = 0.001516 # 2x the stdev of a large testgroup when measured with 0v at input
 
 # Create the I2C bus with a fast frequency
@@ -39,7 +39,7 @@ chan0 = AnalogIn(ads, ADS.P0)
 ads.mode = Mode.CONTINUOUS 
 ads.data_rate = RATE
 
-data0 = [None]*SAMPLES
+data = []
 
 timebetweenreads = 1/RATE
 #while(True):
@@ -48,14 +48,16 @@ start = time.perf_counter()
 
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
-for i in range(SAMPLES):
-    data0[i] = chan0.voltage
-    while(data0[i] == data0[i-1]):
-       data0[i] = chan0.voltage
+while(start+MEASURETIME < last):
+    value = chan0.voltage
+    while(value == data[data.count()-1]):
+       value = chan0.voltage
     
-    now = time.perf_counter()
+    data.append(value)
     
-    print("{}\t{}".format(now,data0[i]))
+    last = time.perf_counter()
+    
+    print("{}\t{}".format(last,value))
 
     #nextRead += timebetweenreads
     #sleep = nextRead-time.perf_counter()
@@ -65,6 +67,6 @@ for i in range(SAMPLES):
 end = time.perf_counter()
 total_time = end - start
 power = rootmeansquare(data0)/100*2000*230
-#print("Time of capture: {}s".format(total_time))
+print("Time of capture: {}s".format(total_time))
 print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
 print("Power: {} Watt".format(power))
