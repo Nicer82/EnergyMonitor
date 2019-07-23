@@ -18,8 +18,6 @@ ads = ADS.ADS1115(i2c)
 
 chan0 = AnalogIn(ads, ADS.P0)
 chan1 = AnalogIn(ads, ADS.P1)
-#chan2 = AnalogIn(ads, ADS.P2)
-#chan3 = AnalogIn(ads, ADS.P3)
 
 # ADC Configuration
 ads.mode = Mode.CONTINUOUS
@@ -29,7 +27,6 @@ data0 = [None]*SAMPLES
 data1 = [None]*SAMPLES
 
 timebetweenreads = 1/RATE
-print(timebetweenreads)
 start = time.perf_counter()
 nextRead = start
 
@@ -43,12 +40,12 @@ for i in range(SAMPLES):
     if sleep > 0:
       time.sleep(sleep)
 
-    data1[i] = chan1.voltage;
+#    data1[i] = chan1.voltage;
 
-    nextRead += timebetweenreads
-    sleep = nextRead-time.perf_counter()
-    if sleep > 0:
-      time.sleep(sleep)
+#    nextRead += timebetweenreads
+#    sleep = nextRead-time.perf_counter()
+#    if sleep > 0:
+#      time.sleep(sleep)
 
 end = time.perf_counter()
 total_time = end - start
