@@ -49,7 +49,7 @@ nextRead = start
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 for i in range(SAMPLES):
-    data0[i] = int(chan0.voltage/PRECISION)*PRECISION
+    data0[i] = int((chan0.voltage+(PRECISION/2))/PRECISION)*PRECISION
     print(data0[i])
 
     nextRead += timebetweenreads
