@@ -41,7 +41,11 @@ for i in range(SAMPLES):
 #    print(chan0.voltage) 
     print(chan1.voltage)
     nextRead += timebetweenreads
-    time.sleep(nextRead-time.perf_counter())
+    
+    sleep = nextRead-time.perf_counter()
+         
+    if sleep > 0:
+      time.sleep(sleep)
 #    print(chan2.voltage)
 #    print(chan3.voltage)
 
