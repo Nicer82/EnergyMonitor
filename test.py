@@ -51,7 +51,7 @@ last = start
 # Read the same channel over and over
 while(last < start+MEASURETIME):
     value = chan0.voltage
-    while(len(data) != 0 && value == data[len(data)-1]):
+    while(len(data) != 0 and value == data[len(data)-1]):
        value = chan0.voltage
     
     data.append(value)
