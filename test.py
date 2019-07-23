@@ -50,7 +50,7 @@ nextRead = start
 # Read the same channel over and over
 for i in range(SAMPLES):
     data0[i] = chan0.voltage
-    if(data0[i] == data0[i-1]
+    if(data0[i] == data0[i-1]):
        data0[i] = chan0.voltage
     
     now = time.perf_counter()
