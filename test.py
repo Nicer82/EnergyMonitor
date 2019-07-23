@@ -58,8 +58,8 @@ while(True):
 
     end = time.perf_counter()
     total_time = end - start
-    power = rootmeansquare(data0)/98.6*2000*230
-    power = (int(power/0.50337))*0.50337
+    power = rootmeansquare(data0)/100*2000*230
+    power = (int(power/0.49632))*0.49632
     #print("Time of capture: {}s".format(total_time))
     #print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
     print("Power: {} Watt".format(power))
