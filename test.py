@@ -49,7 +49,7 @@ while(True):
     # Read the same channel over and over
     for i in range(SAMPLES):
         data0[i] = chan0.voltage
-        #print(data0[i])
+        print(data0[i])
 
         nextRead += timebetweenreads
         sleep = nextRead-time.perf_counter()
