@@ -27,7 +27,8 @@ def normalize(values):
         if i > 1 and i < len(values)-1 and values[i] == values[i-1]:
             values[i-1] =  (values[i-2] + values[i-1]*2)/3
             values[i] = (values[i+1] + values[i]*2)/3
-        
+    
+    return values
     
 # Data collection setup
 RATE = 860
