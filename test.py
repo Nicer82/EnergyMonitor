@@ -29,7 +29,10 @@ data = [None]*SAMPLES
 
 start = time.monotonic()
 
-print(time.monotonic())
+start = time.perf_counter()
+time.sleep(1)
+end = time.perf_counter()
+print(end-start)
 
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
