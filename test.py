@@ -25,7 +25,8 @@ chan1 = AnalogIn(ads, ADS.P1)
 ads.mode = Mode.CONTINUOUS
 ads.data_rate = RATE
 
-data = [None]*SAMPLES
+data0 = [None]*SAMPLES
+data1 = [None]*SAMPLES
 
 timebetweenreads = 1/RATE
 print(timebetweenreads)
@@ -35,21 +36,21 @@ nextRead = start
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 for i in range(SAMPLES):
-    print("0;{}".format(chan0.voltage))
+    data0[i] = chan0.voltage;
 
     nextRead += timebetweenreads
     sleep = nextRead-time.perf_counter()
     if sleep > 0:
       time.sleep(sleep)
 
-    print("1;{}".format(chan1.voltage))
+    data1[i] = chan1.voltage;
 
     nextRead += timebetweenreads
     sleep = nextRead-time.perf_counter()
     if sleep > 0:
       time.sleep(sleep)
 
-end = time.monotonic()
+end = time.perf_counter()
 total_time = end - start
 
 print("Time of capture: {}s".format(total_time))
