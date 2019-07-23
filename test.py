@@ -42,10 +42,10 @@ for i in range(SAMPLES):
 #    if sleep > 0:
 #      time.sleep(sleep)
 
-    data1[i] = chan1.voltage
-    while(data1[i]==data0[i]):
-        data1[i] = chan1.voltage
-    print(data1[i])
+#    data1[i] = chan1.voltage
+#    while(data1[i]==data0[i]):
+#        data1[i] = chan1.voltage
+#    print(data1[i])
 
 #    nextRead += timebetweenreads
 #    sleep = nextRead-time.perf_counter()
