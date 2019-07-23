@@ -16,7 +16,7 @@ i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
 ads = ADS.ADS1115(i2c)
 
 
-chan0 = AnalogIn(ads, ADS.P0)
+#chan0 = AnalogIn(ads, ADS.P0)
 chan1 = AnalogIn(ads, ADS.P1)
 #chan2 = AnalogIn(ads, ADS.P2)
 #chan3 = AnalogIn(ads, ADS.P3)
@@ -32,7 +32,7 @@ start = time.monotonic()
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 for i in range(SAMPLES):
-    print("0;{}".format(chan0.voltage))
+#    print("0;{}".format(chan0.voltage))
     print("1;{}".format(chan1.voltage))
 #    print(chan0.voltage) 
 #    print(chan1.voltage)
