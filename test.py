@@ -65,13 +65,15 @@ while(nextRead < end):
     if sleep > 0:
         time.sleep(sleep)
 
+
+end = time.perf_counter()
+total_time = end - start
+
 data = normalize(data)
 
 for i in range(len(data)):
     print(data[i])
 
-end = time.perf_counter()
-total_time = end - start
 power = rootmeansquare(data)/100*2000*230
 print("Time of capture: {}s".format(total_time))
 print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
