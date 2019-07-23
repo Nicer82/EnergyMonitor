@@ -41,7 +41,7 @@ ads.data_rate = RATE
 
 data0 = [None]*SAMPLES
 
-timebetweenreads = 1/850
+timebetweenreads = 1/RATE
 #while(True):
 start = time.perf_counter()
 nextRead = start
