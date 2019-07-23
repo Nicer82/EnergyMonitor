@@ -61,4 +61,4 @@ total_time = end - start
 
 print("Time of capture: {}s".format(total_time))
 print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
-print("RMS: {}".format(rootmeansquare(data0)))
+print("Power: {} Watt".format(rootmeansquare(data0)/100*2000))
