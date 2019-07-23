@@ -49,8 +49,12 @@ nextRead = start
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 for i in range(SAMPLES):
-    now = time.perf_counter()
     data0[i] = chan0.voltage
+    if(data0[i] == data0[i-1]
+       data0[i] = chan0.voltage
+    
+    now = time.perf_counter()
+    
     print("{}\t{}".format(now,data0[i]))
 
     nextRead += timebetweenreads
