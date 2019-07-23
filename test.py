@@ -15,8 +15,11 @@ i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
 # Create the ADC object using the I2C bus
 ads = ADS.ADS1115(i2c)
 
-# Create single-ended input on channel 0
+
 chan0 = AnalogIn(ads, ADS.P1)
+chan1 = AnalogIn(ads, ADS.P2)
+chan2 = AnalogIn(ads, ADS.P3)
+chan3 = AnalogIn(ads, ADS.P4)
 
 # ADC Configuration
 ads.mode = Mode.CONTINUOUS
@@ -28,9 +31,10 @@ start = time.monotonic()
 
 # Read the same channel over and over
 for i in range(SAMPLES):
-    val = chan0.value
-    print(val)
-    data[i] = val
+    print(chan0.value)
+    print(chan1.value)
+    print(chan2.value)
+    print(chan3.value)
 
 end = time.monotonic()
 total_time = end - start
