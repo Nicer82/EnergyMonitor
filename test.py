@@ -32,7 +32,7 @@ def normalize(values):
     
 # Data collection setup
 RATE = 860
-MEASURETIME = 0.2
+MEASURETIME = 1
 PRECISION = 0.001516 # 2x the stdev of a large testgroup when measured with 0v at input
 
 # Create the I2C bus with a fast frequency
@@ -72,7 +72,7 @@ while(True):
 
     #for i in range(len(data)):
     #    print(data[i])
-
+    
     power = rootmeansquare(data)/100*2000*230
     #print("Time of capture: {}s".format(total_time))
     #print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
