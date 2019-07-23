@@ -72,7 +72,7 @@ while(True):
     #for i in range(len(data)):
     #    print(data[i])
     
-    power = rootmeansquare(data)/98.6*2000*230
+    power = rootmeansquare(data)/100*2000*243
     #print("Time of capture: {}s".format(total_time))
     #print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
     print("Power: {} Watt".format(power))
