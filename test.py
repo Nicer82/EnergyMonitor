@@ -15,7 +15,6 @@ i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
 # Create the ADC object using the I2C bus
 ads = ADS.ADS1115(i2c)
 
-
 chan0 = AnalogIn(ads, ADS.P0)
 chan1 = AnalogIn(ads, ADS.P1)
 
@@ -34,11 +33,12 @@ nextRead = start
 # Read the same channel over and over
 for i in range(SAMPLES):
     data0[i] = chan0.voltage;
-
-#    nextRead += timebetweenreads
-#    sleep = nextRead-time.perf_counter()
-#    if sleep > 0:
-#      time.sleep(sleep)
+    print(data0[i])
+    
+    nextRead += timebetweenreads
+    sleep = nextRead-time.perf_counter()
+    if sleep > 0:
+      time.sleep(sleep)
 
 #    data1[i] = chan1.voltage;
 
