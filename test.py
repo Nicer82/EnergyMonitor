@@ -6,7 +6,7 @@ from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 
 # Data collection setup
-RATE = 250
+RATE = 860
 SAMPLES = 1000
 
 # Create the I2C bus with a fast frequency
@@ -27,20 +27,19 @@ ads.data_rate = RATE
 
 data = [None]*SAMPLES
 
-start = time.monotonic()
-
 start = time.perf_counter()
-time.sleep(1)
-end = time.perf_counter()
-print(end-start)
-
+timebetweenreads = 1/RATE
+nextRead = start
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
-#for i in range(SAMPLES):
+for i in range(SAMPLES):
+  
 #    print("0;{}".format(chan0.voltage))
 #    print("1;{}".format(chan1.voltage))
 #    print(chan0.voltage) 
-#    print(chan1.voltage)
+    print(chan1.voltage)
+    nextRead += timebetweenreads
+    time.sleep(nextRead-time.perf_counter())
 #    print(chan2.voltage)
 #    print(chan3.voltage)
 
