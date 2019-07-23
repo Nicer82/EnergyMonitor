@@ -51,7 +51,7 @@ last = start
 # Read the same channel over and over
 while(last < start+MEASURETIME):
     value = chan0.voltage
-    while(value == data[data.count()-1]):
+    while(value == data[len(data)-1]):
        value = chan0.voltage
     
     data.append(value)
@@ -69,5 +69,5 @@ end = time.perf_counter()
 total_time = end - start
 power = rootmeansquare(data)/100*2000*230
 print("Time of capture: {}s".format(total_time))
-print("Sample rate requested={} actual={}".format(RATE, data.count() / total_time))
+print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
 print("Power: {} Watt".format(power))
