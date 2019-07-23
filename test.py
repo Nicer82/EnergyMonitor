@@ -24,7 +24,7 @@ def rootmeansquare(values):
 
 # Data collection setup
 RATE = 860
-SAMPLES = 4250
+SAMPLES = 170
 
 # Create the I2C bus with a fast frequency
 i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
@@ -41,25 +41,25 @@ ads.data_rate = RATE
 data0 = [None]*SAMPLES
 
 timebetweenreads = 1/850
-while(True):
-    start = time.perf_counter()
-    nextRead = start
+#while(True):
+start = time.perf_counter()
+nextRead = start
 
-    # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
-    # Read the same channel over and over
-    for i in range(SAMPLES):
-        data0[i] = chan0.voltage
-        #print(data0[i])
+# Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
+# Read the same channel over and over
+for i in range(SAMPLES):
+    data0[i] = chan0.voltage
+    print(data0[i])
 
-        nextRead += timebetweenreads
-        sleep = nextRead-time.perf_counter()
-        if sleep > 0:
-          time.sleep(sleep)
+    nextRead += timebetweenreads
+    sleep = nextRead-time.perf_counter()
+    if sleep > 0:
+      time.sleep(sleep)
 
-    end = time.perf_counter()
-    total_time = end - start
-    power = rootmeansquare(data0)/100*2000*230
-    power = (int(power/0.49632)-5)*0.49632
-    #print("Time of capture: {}s".format(total_time))
-    #print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
-    print("Power: {} Watt".format(power))
+end = time.perf_counter()
+total_time = end - start
+power = rootmeansquare(data0)/100*2000*230
+power = (int(power/0.49632)-5)*0.49632
+#print("Time of capture: {}s".format(total_time))
+#print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
+print("Power: {} Watt".format(power))
