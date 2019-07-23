@@ -41,7 +41,7 @@ ads.data_rate = RATE
 data0 = [None]*SAMPLES
 
 timebetweenreads = 1/RATE
-while(True):
+#while(True):
     start = time.perf_counter()
     nextRead = start
 
@@ -49,7 +49,7 @@ while(True):
     # Read the same channel over and over
     for i in range(SAMPLES):
         data0[i] = chan0.voltage
-        #print(data0[i])
+        print(data0[i])
 
         nextRead += timebetweenreads
         sleep = nextRead-time.perf_counter()
@@ -60,6 +60,6 @@ while(True):
     total_time = end - start
     power = rootmeansquare(data0)/220*2000*230
     power = (int(power/0.2256))*0.2256
-    #print("Time of capture: {}s".format(total_time))
-    #print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
+    print("Time of capture: {}s".format(total_time))
+    print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
     print("Power: {} Watt".format(power))
