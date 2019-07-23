@@ -35,10 +35,10 @@ nextRead = start
 for i in range(SAMPLES):
     data0[i] = chan0.voltage;
 
-    nextRead += timebetweenreads
-    sleep = nextRead-time.perf_counter()
-    if sleep > 0:
-      time.sleep(sleep)
+#    nextRead += timebetweenreads
+#    sleep = nextRead-time.perf_counter()
+#    if sleep > 0:
+#      time.sleep(sleep)
 
 #    data1[i] = chan1.voltage;
 
