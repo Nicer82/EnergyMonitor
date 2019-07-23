@@ -27,9 +27,11 @@ ads.data_rate = RATE
 
 data = [None]*SAMPLES
 
-start = time.perf_counter()
 timebetweenreads = 1/RATE
+print(timebetweenreads)
+start = time.perf_counter()
 nextRead = start
+
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 for i in range(SAMPLES):
