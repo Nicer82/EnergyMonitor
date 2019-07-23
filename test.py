@@ -32,7 +32,7 @@ def normalize(values):
     
 # Data collection setup
 RATE = 860
-MEASURETIME = 5
+MEASURETIME = 1
 
 # Create the I2C bus with a fast frequency
 i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
