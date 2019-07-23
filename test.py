@@ -6,6 +6,21 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 
+def rootmeansquare(values):
+    # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
+    sumsquares = 0.0
+    avg = statistics.mean(values)
+
+    for value in values:
+        sumsquares = sumsquares + (value-avg)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
+
+    if len(values) == 0:
+        rms = 0.0
+    else:
+        rms = math.sqrt(float(sumsquares)/len(values))
+
+    return rms
+
 # Data collection setup
 RATE = 860
 SAMPLES = 1000
@@ -45,4 +60,4 @@ total_time = end - start
 
 print("Time of capture: {}s".format(total_time))
 print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
-print("Mean: {}".format(statistics.mean(data0)))
+print("RMS: {}".format(rootmeansquare(data0)))
