@@ -24,7 +24,7 @@ def rootmeansquare(values):
 
 # Data collection setup
 RATE = 860
-SAMPLES = 1000
+SAMPLES = 4250
 
 # Create the I2C bus with a fast frequency
 i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
@@ -40,7 +40,7 @@ ads.data_rate = RATE
 
 data0 = [None]*SAMPLES
 
-timebetweenreads = 1/RATE
+timebetweenreads = 1/850
 while(True):
     start = time.perf_counter()
     nextRead = start
