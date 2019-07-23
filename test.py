@@ -44,23 +44,21 @@ data = []
 timebetweenreads = 1/RATE
 #while(True):
 start = time.perf_counter()
-last = start
-#nextRead = start
+nextRead = start
 
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
-while(last < start+MEASURETIME):
+while(nextRead < start+MEASURETIME):
+    while(nextRead < time.perf_counter())
+        print("s")
+        time.sleep(0.001)
+        
     value = chan0.voltage
-    while(len(data) != 0 and value == data[len(data)-1]):
-       value = chan0.voltage
+    data.append(chan0.voltage)
     
-    data.append(value)
-    
-    last = time.perf_counter()
-    
-    print("{}\t{}".format(last,value))
+    print("{}\t{}".format(nextRead, data[len(data)-1]))
 
-    #nextRead += timebetweenreads
+    nextRead += timebetweenreads
     #sleep = nextRead-time.perf_counter()
     #if sleep > 0:
     #  time.sleep(sleep)
