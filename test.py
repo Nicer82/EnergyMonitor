@@ -29,9 +29,10 @@ data = [None]*SAMPLES
 
 start = time.monotonic()
 
+# Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 for i in range(SAMPLES):
-    print((chan0.voltage-2.5)/100*2000) # measured voltage - 2.5 / burden resistor ohms * CT turn ratio = measured amps
+    print(chan0.voltage) 
     print(chan1.voltage)
 #    print(chan2.voltage)
 #    print(chan3.voltage)
