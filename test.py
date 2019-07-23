@@ -19,8 +19,8 @@ chan0 = AnalogIn(ads, ADS.P0)
 chan1 = AnalogIn(ads, ADS.P1)
 
 # ADC Configuration
-ads.mode = Mode.SINGLE #CONTINUOUS 
-#ads.data_rate = RATE
+ads.mode = Mode.CONTINUOUS 
+ads.data_rate = RATE
 
 data0 = [None]*SAMPLES
 data1 = [None]*SAMPLES
@@ -32,7 +32,9 @@ nextRead = start
 # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
 # Read the same channel over and over
 for i in range(SAMPLES):
-    data0[i] = chan0.voltage;
+    data0[i] = chan0.voltage
+    while(data0[i]=data1[i-1])
+        data0[i] = chan0.voltage
     print(data0[i])
     
 #    nextRead += timebetweenreads
@@ -40,7 +42,9 @@ for i in range(SAMPLES):
 #    if sleep > 0:
 #      time.sleep(sleep)
 
-    data1[i] = chan1.voltage;
+    data1[i] = chan1.voltage
+    while(data1[i]=data0[i])
+        data1[i] = chan1.voltage
     print(data1[i])
 
 #    nextRead += timebetweenreads
