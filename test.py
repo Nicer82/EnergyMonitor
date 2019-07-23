@@ -17,9 +17,9 @@ ads = ADS.ADS1115(i2c)
 
 
 chan0 = AnalogIn(ads, ADS.P0)
-chan1 = AnalogIn(ads, ADS.P1)
-chan2 = AnalogIn(ads, ADS.P2)
-chan3 = AnalogIn(ads, ADS.P3)
+#chan1 = AnalogIn(ads, ADS.P1)
+#chan2 = AnalogIn(ads, ADS.P2)
+#chan3 = AnalogIn(ads, ADS.P3)
 
 # ADC Configuration
 ads.mode = Mode.CONTINUOUS
@@ -32,9 +32,9 @@ start = time.monotonic()
 # Read the same channel over and over
 for i in range(SAMPLES):
     print(chan0.value)
-    print(chan1.value)
-    print(chan2.value)
-    print(chan3.value)
+#    print(chan1.value)
+#    print(chan2.value)
+#    print(chan3.value)
 
 end = time.monotonic()
 total_time = end - start
