@@ -15,12 +15,12 @@ i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
 # Create the ADC object using the I2C bus
 ads = ADS.ADS1115(i2c)
 
-chan0 = AnalogIn(ads, ADS.P0,ADS.P1)
-#chan1 = AnalogIn(ads, ADS.P1)
+chan0 = AnalogIn(ads, ADS.P0)
+chan1 = AnalogIn(ads, ADS.P1)
 
 # ADC Configuration
-ads.mode = Mode.CONTINUOUS
-ads.data_rate = RATE
+ads.mode = Mode.SINGLE #CONTINUOUS 
+#ads.data_rate = RATE
 
 data0 = [None]*SAMPLES
 data1 = [None]*SAMPLES
@@ -35,12 +35,13 @@ for i in range(SAMPLES):
     data0[i] = chan0.voltage;
     print(data0[i])
     
-    nextRead += timebetweenreads
-    sleep = nextRead-time.perf_counter()
-    if sleep > 0:
-      time.sleep(sleep)
+#    nextRead += timebetweenreads
+#    sleep = nextRead-time.perf_counter()
+#    if sleep > 0:
+#      time.sleep(sleep)
 
-#    data1[i] = chan1.voltage;
+    data1[i] = chan1.voltage;
+    print(data1[i])
 
 #    nextRead += timebetweenreads
 #    sleep = nextRead-time.perf_counter()
