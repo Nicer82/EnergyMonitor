@@ -31,10 +31,10 @@ start = time.monotonic()
 
 # Read the same channel over and over
 for i in range(SAMPLES):
-    print(chan0.value)
-#    print(chan1.value)
-#    print(chan2.value)
-#    print(chan3.value)
+    print(chan0.voltage)
+#    print(chan1.voltage)
+#    print(chan2.voltage)
+#    print(chan3.voltage)
 
 end = time.monotonic()
 total_time = end - start
