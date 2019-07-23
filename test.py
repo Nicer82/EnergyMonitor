@@ -51,7 +51,7 @@ nextRead = start
 while(nextRead < start+MEASURETIME):
     while(nextRead > time.perf_counter()):
         print("s")
-        time.sleep(0.001)
+        time.sleep(0.0001)
         
     value = chan0.voltage
     data.append(chan0.voltage)
