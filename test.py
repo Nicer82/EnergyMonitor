@@ -1,4 +1,5 @@
 import time
+import statistics
 import board
 import busio
 import adafruit_ads1x15.ads1115 as ADS
@@ -24,24 +25,24 @@ ads.data_rate = RATE
 data0 = [None]*SAMPLES
 
 timebetweenreads = 1/RATE
-while(True):
-    print(
-    start = time.perf_counter()
-    nextRead = start
+#while(True):
+start = time.perf_counter()
+nextRead = start
 
-    # Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
-    # Read the same channel over and over
-    for i in range(SAMPLES):
-        data0[i] = chan0.voltage
-        print(data0[i])
+# Current = measured voltage - 2.5 / burden resistor ohms * CT turn ratio
+# Read the same channel over and over
+for i in range(SAMPLES):
+    data0[i] = chan0.voltage
+    print(data0[i])
 
-        nextRead += timebetweenreads
-        sleep = nextRead-time.perf_counter()
-        if sleep > 0:
-          time.sleep(sleep)
+    nextRead += timebetweenreads
+    sleep = nextRead-time.perf_counter()
+    if sleep > 0:
+      time.sleep(sleep)
 
-    end = time.perf_counter()
-    total_time = end - start
+end = time.perf_counter()
+total_time = end - start
 
-    print("Time of capture: {}s".format(total_time))
-    print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
+print("Time of capture: {}s".format(total_time))
+print("Sample rate requested={} actual={}".format(RATE, SAMPLES / total_time))
+print("Mean: {}".format(statistics.mean(data0)))
