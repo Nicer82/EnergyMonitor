@@ -65,8 +65,7 @@ if(True):
 
     # Read the same channel over and over
     while(nextRead < end):
-        #data.append(chan0.voltage)
-        data.append(1)
+        data.append(chan0.voltage)
         
         nextRead += 1/ADC_RATE
         sleep = nextRead-time.perf_counter()
