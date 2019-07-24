@@ -30,13 +30,20 @@ def normalize(values):
     
     return values
     
-# Data collection setup
-RATE = 860
-MEASURETIME = 1
-CALIBRATIONFACTOR = 1.032
-VOLTAGE = 240 # TODO: replace with actual voltage measured through AC-AC adapter
+# ADC settings
+ADC_RATE = 860
+ADC_ACWAVESTOREAD = 50
+ADC_CALIBRATIONFACTOR = 1.032
+
+# Mains properties
+AC_FREQUENCY = 50
+AC_VOLTAGE = 240 # TODO: replace with actual voltage measured through AC-AC adapter
+
+# CT properties
 CT_TURNRATIO = 2000
-BURDENRESISTOR = 100 # TODO: replace with 150 ohm resistor for better accuracy
+CT_BURDENRESISTOR = 100 # TODO: replace with 150 ohm resistor for better accuracy
+
+
 
 # Create the I2C bus with a fast frequency
 i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
@@ -48,24 +55,22 @@ chan0 = AnalogIn(ads, ADS.P0)
 
 # ADC Configuration
 ads.mode = Mode.CONTINUOUS 
-ads.data_rate = RATE
+ads.data_rate = ADC_RATE
 
-timebetweenreads = 1/RATE
 while(True):
     data = []
     start = time.perf_counter()
-    end = start+MEASURETIME
+    end = start+(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
     nextRead = start
 
     # Read the same channel over and over
     while(nextRead < end):
         data.append(chan0.voltage)
 
-        nextRead += timebetweenreads
+        nextRead += 1/ADC_RATE
         sleep = nextRead-time.perf_counter()
         if sleep > 0:
             time.sleep(sleep)
-
 
     end = time.perf_counter()
     total_time = end - start
@@ -75,7 +80,7 @@ while(True):
     #for i in range(len(data)):
     #    print(data[i])
     
-    power = rootmeansquare(data) / BURDENRESISTOR * CT_TURNRATIO * VOLTAGE * CALIBRATIONFACTOR
+    power = rootmeansquare(data) / CT_BURDENRESISTOR * CT_TURNRATIO * AC_VOLTAGE * ADC_CALIBRATIONFACTOR
     #print("Time of capture: {}s".format(total_time))
     #print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
     print("Power: {} Watt".format(power))
