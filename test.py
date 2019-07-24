@@ -57,7 +57,7 @@ chan0 = AnalogIn(ads, ADS.P0)
 ads.mode = Mode.CONTINUOUS 
 ads.data_rate = ADC_RATE
 
-while(True):
+if(True):
     data = []
     start = time.perf_counter()
     end = start+(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
@@ -65,12 +65,13 @@ while(True):
 
     # Read the same channel over and over
     while(nextRead < end):
-        data.append(chan0.voltage)
-
+        #data.append(chan0.voltage)
+        data.append(1)
+        
         nextRead += 1/ADC_RATE
         sleep = nextRead-time.perf_counter()
-        if sleep > 0:
-            time.sleep(sleep)
+        #if sleep > 0:
+        #    time.sleep(sleep)
 
     end = time.perf_counter()
     total_time = end - start
@@ -81,6 +82,6 @@ while(True):
     #    print(data[i])
     
     power = rootmeansquare(data) / CT_BURDENRESISTOR * CT_TURNRATIO * AC_VOLTAGE * ADC_CALIBRATIONFACTOR
-    #print("Time of capture: {}s".format(total_time))
-    #print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
+    print("Time of capture: {}s".format(total_time))
+    print("Sample rate requested={} actual={}".format(RATE, len(data) / total_time))
     print("Power: {} Watt".format(power))
