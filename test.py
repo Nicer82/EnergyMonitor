@@ -46,7 +46,7 @@ CT_BURDENRESISTOR = 100 # TODO: replace with 150 ohm resistor for better accurac
 
 
 # Create the I2C bus with a fast frequency
-i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
+i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
 
 # Create the ADC object using the I2C bus
 ads = ADS.ADS1115(i2c)
