@@ -69,8 +69,8 @@ if(True):
         
         nextRead += 1/ADC_RATE
         sleep = nextRead-time.perf_counter()
-        #if sleep > 0:
-        #    time.sleep(sleep)
+        if sleep > 0:
+            time.sleep(sleep)
 
     end = time.perf_counter()
     total_time = end - start
