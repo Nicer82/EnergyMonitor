@@ -56,7 +56,7 @@ def normalize(values):
     
     return values
 
-def readadc(chan,start):
+def readadc(chan,start,debug=False):
     data = []
     end = round(start+1/AC_FREQUENCY*ADC_ACWAVESTOREAD,6)
     nextRead = start
@@ -68,6 +68,8 @@ def readadc(chan,start):
             time.sleep(sleep)
 
         data.append(chan.voltage)
+        if(debug):
+            print(data[len(data)-1])
         nextRead = round(nextRead + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
 
     data = normalize(data)
@@ -96,7 +98,7 @@ chanv = AnalogIn(ads, ADS.P1)
 ads.mode = Mode.CONTINUOUS 
 ads.data_rate = 860
 
-while(True):
+if(True):
     ### Voltage measurement
     startv = round(time.perf_counter() + 0.1,6)
     datav = readadc(chanv, startv)
@@ -109,7 +111,7 @@ while(True):
     while(startc < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
         startc = round(startc + 1/AC_FREQUENCY, 6) # add one wave at a time to perfectly match the sine wave with the current readout
 
-    datac = readadc(chanc, startc)
+    datac = readadc(chanc, startc, True)
     
     current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * flowdirection(datac,datav) * C_CALIBRATIONFACTOR
     #print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
