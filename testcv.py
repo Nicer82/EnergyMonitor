@@ -52,16 +52,15 @@ def readadc(chan,start):
     data = []
     end = start+(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
     nextRead = start
-    time.sleep(start-time.perf_counter())
 
     # Read the same channel over and over
     while(nextRead < end):
-        data.append(chan.voltage)
-        
-        nextRead += 1/(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD)
         sleep = nextRead-time.perf_counter()
         if sleep > 0:
             time.sleep(sleep)
+        
+        data.append(chan.voltage)
+        nextRead += 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE
 
     data = normalize(data)
     
