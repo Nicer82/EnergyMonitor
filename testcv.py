@@ -8,7 +8,7 @@ from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 
 # ADC settings
-ADC_SAMPLESPERWAVE = 10
+ADC_SAMPLESPERWAVE = 16
 ADC_ACWAVESTOREAD = 125
 
 # Mains properties
@@ -44,11 +44,10 @@ def normalize(values):
         values[i] -= avg
         
     # Sometimes the ADC reports the same value twice, in that case, mean it out between the prev and next measurements
-    for i in range(len(values)):
-        if i > 1 and i < len(values)-1 and values[i] == values[i-1]:
-            values[i-1] =  (values[i-2] + values[i-1]*2)/3
-            values[i] = (values[i+1] + values[i]*2)/3
-        
+    #for i in range(len(values)):
+    #    if i > 1 and i < len(values)-1 and values[i] == values[i-1]:
+    #        values[i-1] =  (values[i-2] + values[i-1]*2)/3
+    #        values[i] = (values[i+1] + values[i]*2)/3
     
     # Remove the first and last half wave
     for i in range(int(ADC_SAMPLESPERWAVE/2)):
