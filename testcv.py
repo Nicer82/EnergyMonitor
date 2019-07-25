@@ -97,25 +97,25 @@ ads.mode = Mode.CONTINUOUS
 ads.data_rate = 860
 
 while(True):
-    ### Current measurement
-    startc = round(time.perf_counter() + 0.1,6)
-    datac = readadc(chanc, startc)
-    
-    current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * C_CALIBRATIONFACTOR
-    #print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
-    
     ### Voltage measurement
-    startv = startc
-    while(startv < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
-        startv = round(startv + 1/AC_FREQUENCY, 6) # add one wave at a time to perfectly match the sine wave with the current readout
-
+    startv = round(time.perf_counter() + 0.1,6)
     datav = readadc(chanv, startv)
     
     voltage = rootmeansquare(datav) * V_CALIBRATIONFACTOR
     #print("Voltage: {} V, Reads: {}, VMin: {}, VMax: {}".format(voltage,len(datav),min(datav),max(datav)))
     
+    ### Current measurement
+    startc = startv
+    while(startc < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
+        startc = round(startc + 1/AC_FREQUENCY, 6) # add one wave at a time to perfectly match the sine wave with the current readout
+
+    datac = readadc(chanc, startc)
+    
+    current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * flowdirection(datac,datav) * C_CALIBRATIONFACTOR
+    #print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
+    
     ### Power calculation
-    power = current*voltage*flowdirection(datac,datav)
+    power = current*voltage
     print("Current: {} A, Voltage: {} V, Power: {} W".format(round(current,3),round(voltage,1),round(power)))
     
     #print("Flow direction: {}".format(flowdirection(datac,datav)))
