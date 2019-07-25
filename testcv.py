@@ -25,7 +25,7 @@ def rootmeansquare(values):
     avg = statistics.mean(values)
 
     for value in values:
-        sumsquares = sumsquares + (value-avg)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
+        sumsquares = sumsquares + (value)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
 
     if len(values) == 0:
         rms = 0.0
@@ -35,11 +35,17 @@ def rootmeansquare(values):
     return rms
 
 def normalize(values):
-    # Sometimes the ADC reports the same value twice, in that case, mean it out between the prev and next measurements
+    avg = statistics.mean(values)
+    
     for i in range(len(values)):
+        # Substract the mean of every value to set the mean to 0
+        values[i] -= avg
+        
+        # Sometimes the ADC reports the same value twice, in that case, mean it out between the prev and next measurements
         if i > 1 and i < len(values)-1 and values[i] == values[i-1]:
             values[i-1] =  (values[i-2] + values[i-1]*2)/3
             values[i] = (values[i+1] + values[i]*2)/3
+        
     
     # Remove the first and last half wave
     for i in range(int(ADC_SAMPLESPERWAVE/2)):
@@ -47,6 +53,8 @@ def normalize(values):
         values.pop(len(values)-1)
     
     return values
+
+
 
 def readadc(chan,start):
     data = []
@@ -96,3 +104,7 @@ if(True):
     
     voltage = rootmeansquare(datav)
     print("Voltage: {} V, Reads: {}, VMin: {}, VMax: {}".format(voltage,len(datav),min(datav),max(datav)))
+    
+    print("Value;Current;Voltage")
+    for i in range(len(datac)):
+        print("{};{};{}".format(i;datac[i];datav[i]))
