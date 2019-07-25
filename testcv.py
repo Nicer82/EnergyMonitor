@@ -60,7 +60,7 @@ def readadc(chan,start):
             time.sleep(sleep)
 
         data.append(chan.voltage)
-        nextRead = round(nextread + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
+        nextRead = round(nextRead + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
 
     data = normalize(data)
     
