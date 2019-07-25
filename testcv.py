@@ -85,7 +85,7 @@ if(True):
     datac = readadc(chanc, startc)
     
     current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
-    print("Current: {} A, VMin: {}, VMax: {}".format(current,min(datac),max(datac)))
+    print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
     
     ### Voltage measurement
     startv = startc
@@ -95,4 +95,4 @@ if(True):
     datav = readadc(chanv, startv)
     
     voltage = rootmeansquare(datav)
-    print("Voltage: {} V, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
+    print("Voltage: {} V, Reads: {}, VMin: {}, VMax: {}".format(voltage,len(datav),min(datav),max(datav)))
