@@ -42,7 +42,7 @@ def normalize(values):
             values[i] = (values[i+1] + values[i]*2)/3
     
     # Remove the first and last half wave
-    for i in range(ADC_SAMPLESPERWAVE/2):
+    for i in range(int(ADC_SAMPLESPERWAVE/2)):
         values.pop(0)
         values.pop(len(values)-1)
     
