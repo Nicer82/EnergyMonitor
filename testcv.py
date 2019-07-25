@@ -111,4 +111,4 @@ if(True):
     voltage = rootmeansquare(datav)
     #print("Time of capture: {}s".format(total_time))
     #print("Sample rate requested={} actual={}".format(ADC_RATE, len(datav) / total_time))
-    print("Voltage: {} W, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
+    print("Voltage: {} V, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
