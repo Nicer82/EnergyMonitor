@@ -8,7 +8,7 @@ from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 
 # ADC settings
-ADC_RATE = 800
+ADC_SAMPLESPERWAVE = 16
 ADC_ACWAVESTOREAD = 50
 ADC_CALIBRATIONFACTOR = 1.032
 
@@ -42,7 +42,9 @@ def normalize(values):
             values[i] = (values[i+1] + values[i]*2)/3
     
     # Remove the first and last half wave
-    #for i in range(ADC_RATE/AC_FREQUENCY/2)
+    for i in range(ADC_SAMPLESPERWAVE/2)
+        values.pop(0)
+        values.pop(len(values)-1)
     
     return values
 
@@ -56,7 +58,7 @@ def readadc(chan,start):
     while(nextRead < end):
         data.append(chan.voltage)
         
-        nextRead += 1/ADC_RATE
+        nextRead += 1/(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD)
         sleep = nextRead-time.perf_counter()
         if sleep > 0:
             time.sleep(sleep)
