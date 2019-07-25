@@ -71,7 +71,7 @@ def readadc(chan,start):
         
         nextRead = round(nextRead + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
 
-    #print("Before normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
+    print("Before normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
 
     data = normalize(data)
     
@@ -101,7 +101,7 @@ chanv = AnalogIn(ads, ADS.P1)
 ads.mode = Mode.CONTINUOUS 
 ads.data_rate = 860
 
-if(True):
+while(True):
     ### Voltage measurement
     startv = round(time.perf_counter() + 0.1,6)
     datav = readadc(chanv, startv)
