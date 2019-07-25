@@ -64,6 +64,8 @@ def readadc(chan,start):
 
     data = normalize(data)
     
+    print("Start:{} End:{} Gap:{}".format(start,end,1/AC_FREQUENCY/ADC_SAMPLESPERWAVE))
+    
     return data
 
 # Create the I2C bus with a fast frequency
