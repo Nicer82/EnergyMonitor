@@ -8,7 +8,7 @@ from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 
 # ADC settings
-ADC_SAMPLESPERWAVE = 16
+ADC_SAMPLESPERWAVE = 10
 ADC_ACWAVESTOREAD = 125
 
 # Mains properties
