@@ -83,4 +83,4 @@ if(True):
     power = rootmeansquare(data) / CT_BURDENRESISTOR * CT_TURNRATIO * AC_VOLTAGE * ADC_CALIBRATIONFACTOR
     print("Time of capture: {}s".format(total_time))
     print("Sample rate requested={} actual={}".format(ADC_RATE, len(data) / total_time))
-    print("Power: {} Watt".format(power))
+    print("Power: {} W, VMin: {}, VMax: {}".format(power,min(data),max(data)))
