@@ -103,6 +103,7 @@ if(True):
     print(startv)
     while(startv < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
         startv += 1/AC_FREQUENCY # add one wave at a time to perfectly match the sine wave with the current readout
+        print(startv)
     print(startv)
     
     datav = readadc(chanv, startv)
