@@ -7,6 +7,18 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 
+# ADC settings
+ADC_RATE = 800
+ADC_ACWAVESTOREAD = 50
+ADC_CALIBRATIONFACTOR = 1.032
+
+# Mains properties
+AC_FREQUENCY = 50
+
+# CT properties
+CT_TURNRATIO = 2000
+CT_BURDENRESISTOR = 150
+
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
     sumsquares = 0.0
@@ -23,24 +35,35 @@ def rootmeansquare(values):
     return rms
 
 def normalize(values):
+    # Sometimes the ADC reports the same value twice, in that case, mean it out between the prev and next measurements
     for i in range(len(values)):
         if i > 1 and i < len(values)-1 and values[i] == values[i-1]:
             values[i-1] =  (values[i-2] + values[i-1]*2)/3
             values[i] = (values[i+1] + values[i]*2)/3
     
-    return values
+    # Remove the first and last half wave
+    for i in range(ADC_RATE/AC_FREQUENCY/2)
     
-# ADC settings
-ADC_RATE = 860
-ADC_ACWAVESTOREAD = 50
-ADC_CALIBRATIONFACTOR = 1.032
+    return values
 
-# Mains properties
-AC_FREQUENCY = 50
+def readadc(chan,start):
+    data = []
+    end = start+(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
+    nextRead = start
+    time.sleep(start-time.perf_counter())
 
-# CT properties
-CT_TURNRATIO = 2000
-CT_BURDENRESISTOR = 150
+    # Read the same channel over and over
+    while(nextRead < end):
+        data.append(chan.voltage)
+        
+        nextRead += 1/ADC_RATE
+        sleep = nextRead-time.perf_counter()
+        if sleep > 0:
+            time.sleep(sleep)
+
+    data = normalize(data)
+    
+    return data
 
 # Create the I2C bus with a fast frequency
 i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
@@ -53,62 +76,30 @@ chanv = AnalogIn(ads, ADS.P1)
 
 # ADC Configuration
 ads.mode = Mode.CONTINUOUS 
-ads.data_rate = ADC_RATE
+ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    datac = []
-    start = time.perf_counter()
-    end = start+(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
-    nextRead = start
-
-    # Read the same channel over and over
-    while(nextRead < end):
-        datac.append(chanc.voltage)
-        
-        nextRead += 1/ADC_RATE
-        sleep = nextRead-time.perf_counter()
-        if sleep > 0:
-            time.sleep(sleep)
-
-    end = time.perf_counter()
-    total_time = end - start
-
-    datac = normalize(datac)
+    startc = time.perf_counter() + 0.1
+    datac = readadc(chanc, startc)
 
     for i in range(len(datac)):
-        print("{};{}".format(start+(1/ADC_RATE)*i,datac[i]))
+        print("{};{}".format(i,datac[i]))
     
-    current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
-    #print("Time of capture: {}s".format(total_time))
-    #print("Sample rate requested={} actual={}".format(ADC_RATE, len(datac) / total_time))
-    print("Current: {} A, VMin: {}, VMax: {}".format(current,min(datac),max(datac)))
+    #current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
+    #print("Current: {} A, VMin: {}, VMax: {}".format(current,min(datac),max(datac)))
     
     ### Voltage measurement
-    datav = []
-    start = start+(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)+1
-    end = start+(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
-    nextRead = start
-    time.sleep(start-time.perf_counter())
-
-    # Read the same channel over and over
-    while(nextRead < end):
-        datav.append(chanv.voltage)
-        
-        nextRead += 1/ADC_RATE
-        sleep = nextRead-time.perf_counter()
-        if sleep > 0:
-            time.sleep(sleep)
-
-    end = time.perf_counter()
-    total_time = end - start
-
-    datav = normalize(datav)
+    startv = startc
+    while(startv < time.perf_counter() + 0.1):
+        startv += 1/AC_FREQUENCY
+    
+    datav = readadc(chanv, startv)
     
     for i in range(len(datav)):
-        print("{};{}".format(start+(1/ADC_RATE)*i,datav[i]))
+        print("{};{}".format(i,datav[i]))
     
-    voltage = rootmeansquare(datav)
-    #print("Time of capture: {}s".format(total_time))
-    #print("Sample rate requested={} actual={}".format(ADC_RATE, len(datav) / total_time))
-    print("Voltage: {} V, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
+    #voltage = rootmeansquare(datav)
+    #print("Voltage: {} V, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
+    
+    
