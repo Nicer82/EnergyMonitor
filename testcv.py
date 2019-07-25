@@ -57,7 +57,7 @@ def normalize(values):
     
     return values
 
-def readadc(chan,start,debug=False):
+def readadc(chan,start):
     data = []
     end = round(start+1/AC_FREQUENCY*ADC_ACWAVESTOREAD,6)
     nextRead = start
@@ -69,8 +69,7 @@ def readadc(chan,start,debug=False):
             time.sleep(sleep)
 
         data.append(chan.voltage)
-        if(debug):
-            print(data[len(data)-1])
+        
         nextRead = round(nextRead + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
 
     data = normalize(data)
