@@ -77,7 +77,7 @@ if(True):
     datac = normalize(datac)
 
     for i in range(len(datac)):
-        print("{};{}".format(start+(1/ADC_RATE)*i,datac[i])
+        print("{};{}".format(start+(1/ADC_RATE)*i,datac[i]))
     
     current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
     #print("Time of capture: {}s".format(total_time))
@@ -106,7 +106,7 @@ if(True):
     datav = normalize(datav)
     
     for i in range(len(datav)):
-        print("{};{}".format(start+(1/ADC_RATE)*i,datav[i])
+        print("{};{}".format(start+(1/ADC_RATE)*i,datav[i]))
     
     voltage = rootmeansquare(datav)
     #print("Time of capture: {}s".format(total_time))
