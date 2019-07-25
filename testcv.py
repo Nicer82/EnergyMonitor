@@ -102,7 +102,7 @@ while(True):
     datac = readadc(chanc, startc)
     
     current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * C_CALIBRATIONFACTOR
-    print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
+    #print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
     
     ### Voltage measurement
     startv = startc
@@ -112,11 +112,11 @@ while(True):
     datav = readadc(chanv, startv)
     
     voltage = rootmeansquare(datav) * V_CALIBRATIONFACTOR
-    print("Voltage: {} V, Reads: {}, VMin: {}, VMax: {}".format(voltage,len(datav),min(datav),max(datav)))
+    #print("Voltage: {} V, Reads: {}, VMin: {}, VMax: {}".format(voltage,len(datav),min(datav),max(datav)))
     
     ### Power calculation
     power = current*voltage*flowdirection(datac,datav)
-    print("Power: {} W".format(power))
+    print("Current: {} A, Voltage: {} V, Power: {} W".format(round(current,3),round(voltage,1),round(power)))
     
     #print("Flow direction: {}".format(flowdirection(datac,datav)))
     #print("Value;Current;Voltage")
