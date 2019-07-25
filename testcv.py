@@ -83,7 +83,7 @@ ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    startc = time.perf_counter() + 0.1
+    startc = round(time.perf_counter() + 0.1,5) # rounding seems to be necessary, otherwise you run in floating point issues & the number of reads doesn't match with what you would expect
     datac = readadc(chanc, startc)
 
     for i in range(len(datac)):
