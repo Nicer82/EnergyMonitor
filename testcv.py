@@ -6,7 +6,6 @@ import busio
 import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
-from decimal import *
 
 # ADC settings
 ADC_SAMPLESPERWAVE = 16
@@ -51,17 +50,17 @@ def normalize(values):
 
 def readadc(chan,start):
     data = []
-    end = start+Decimal(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
+    end = round(start+1/AC_FREQUENCY*ADC_ACWAVESTOREAD,6)
     nextRead = start
 
     # Read the same channel over and over
     while(nextRead < end):
-        sleep = nextRead-Decimal(time.perf_counter())
+        sleep = nextRead-time.perf_counter()
         if sleep > 0:
             time.sleep(sleep)
-        
+
         data.append(chan.voltage)
-        nextRead += Decimal(1/AC_FREQUENCY/ADC_SAMPLESPERWAVE)
+        nextRead = round(nextread + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
 
     data = normalize(data)
     
@@ -84,7 +83,7 @@ ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    startc = Decimal(time.perf_counter() + 0.1)
+    startc = round(time.perf_counter() + 0.1,6)
     datac = readadc(chanc, startc)
     
     #current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
@@ -93,8 +92,8 @@ if(True):
     ### Voltage measurement
     startv = startc
     print(time.perf_counter())
-    while(startv < Decimal(time.perf_counter() + 0.1)): # add 100 ms to give time for python to get into readadc()
-        startv += Decimal(1/AC_FREQUENCY) # add one wave at a time to perfectly match the sine wave with the current readout
+    while(startv < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
+        startv = round(startv + 1/AC_FREQUENCY, 6) # add one wave at a time to perfectly match the sine wave with the current readout
         print(startv)
     datav = readadc(chanv, startv)
     
