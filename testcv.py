@@ -121,7 +121,6 @@ if(True):
     power = current*voltage
     print("Current: {} A, Voltage: {} V, Power: {} W".format(round(current,3),round(voltage,1),round(power)))
     
-    #print("Flow direction: {}".format(flowdirection(datac,datav)))
-    print("Value;Current;Voltage")
-    for i in range(len(datac)):
-        print("{};{};{}".format(i,datac[i],datav[i]))
+    #print("Value;Current;Voltage")
+    #for i in range(len(datac)):
+    #    print("{};{};{}".format(i,datac[i],datav[i]))
