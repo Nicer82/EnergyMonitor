@@ -85,13 +85,15 @@ if(True):
     ### Current measurement
     startc = time.perf_counter() + 0.1
     print(startc)
-    print(int(startc*100000))
-    print(int(startc*100000)/100000)
-    startc = int((time.perf_counter() + 0.1)*100000)/100000 # rounding seems to be necessary, otherwise you run in floating point issues & the number of reads doesn't match with what you would expect
+    startc = int(startc*100000)
+    print(startc)
+    startc = startc/100000
+    print(startc)
+    #startc = int((time.perf_counter() + 0.1)*100000)/100000 # rounding seems to be necessary, otherwise you run in floating point issues & the number of reads doesn't match with what you would expect
     datac = readadc(chanc, startc)
 
-    for i in range(len(datac)):
-        print("{};{}".format(i,datac[i]))
+    #for i in range(len(datac)):
+    #    print("{};{}".format(i,datac[i]))
     
     #current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
     #print("Current: {} A, VMin: {}, VMax: {}".format(current,min(datac),max(datac)))
@@ -103,8 +105,8 @@ if(True):
     
     datav = readadc(chanv, startv)
     
-    for i in range(len(datav)):
-        print("{};{}".format(i,datav[i]))
+    #for i in range(len(datav)):
+    #    print("{};{}".format(i,datav[i]))
     
     #voltage = rootmeansquare(datav)
     #print("Voltage: {} V, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
