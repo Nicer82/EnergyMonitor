@@ -56,7 +56,7 @@ def readadc(chan,start):
 
     # Read the same channel over and over
     while(nextRead < end):
-        sleep = nextRead-time.perf_counter()
+        sleep = nextRead-Decimal(time.perf_counter())
         if sleep > 0:
             time.sleep(sleep)
         
