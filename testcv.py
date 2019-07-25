@@ -64,8 +64,6 @@ def readadc(chan,start):
 
     data = normalize(data)
     
-    print("Start:{} End:{} Gap:{}".format(start,end,1/AC_FREQUENCY/ADC_SAMPLESPERWAVE))
-    
     return data
 
 # Create the I2C bus with a fast frequency
@@ -86,8 +84,8 @@ if(True):
     startc = round(time.perf_counter() + 0.1,6)
     datac = readadc(chanc, startc)
     
-    #current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
-    #print("Current: {} A, VMin: {}, VMax: {}".format(current,min(datac),max(datac)))
+    current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
+    print("Current: {} A, VMin: {}, VMax: {}".format(current,min(datac),max(datac)))
     
     ### Voltage measurement
     startv = startc
@@ -97,5 +95,5 @@ if(True):
         print(startv)
     datav = readadc(chanv, startv)
     
-    #voltage = rootmeansquare(datav)
-    #print("Voltage: {} V, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
+    voltage = rootmeansquare(datav)
+    print("Voltage: {} V, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
