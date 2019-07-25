@@ -38,12 +38,13 @@ def rootmeansquare(values):
 
 def normalize(values):
     avg = statistics.mean(values)
-    
+
+    # Substract the mean of every value to set the mean to 0
     for i in range(len(values)):
-        # Substract the mean of every value to set the mean to 0
         values[i] -= avg
         
-        # Sometimes the ADC reports the same value twice, in that case, mean it out between the prev and next measurements
+    # Sometimes the ADC reports the same value twice, in that case, mean it out between the prev and next measurements
+    for i in range(len(values)):
         if i > 1 and i < len(values)-1 and values[i] == values[i-1]:
             values[i-1] =  (values[i-2] + values[i-1]*2)/3
             values[i] = (values[i+1] + values[i]*2)/3
