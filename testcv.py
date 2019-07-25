@@ -51,7 +51,7 @@ def normalize(values):
 
 def readadc(chan,start):
     data = []
-    end = start+decimal(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
+    end = start+Decimal(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
     nextRead = start
 
     # Read the same channel over and over
@@ -61,7 +61,7 @@ def readadc(chan,start):
             time.sleep(sleep)
         
         data.append(chan.voltage)
-        nextRead += decimal(1/AC_FREQUENCY/ADC_SAMPLESPERWAVE)
+        nextRead += Decimal(1/AC_FREQUENCY/ADC_SAMPLESPERWAVE)
 
     data = normalize(data)
     
@@ -84,7 +84,7 @@ ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    startc = decimal(time.perf_counter() + 0.1)
+    startc = Decimal(time.perf_counter() + 0.1)
     print(startc)
     datac = readadc(chanc, startc)
     print(len(datac))
@@ -98,7 +98,7 @@ if(True):
     startv = startc
     print(startv)
     while(startv < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
-        startv += decimal(1/AC_FREQUENCY) # add one wave at a time to perfectly match the sine wave with the current readout
+        startv += Decimal(1/AC_FREQUENCY) # add one wave at a time to perfectly match the sine wave with the current readout
         print(startv)
     print(startv)
     
