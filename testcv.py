@@ -59,6 +59,7 @@ def readadc(chan,start):
         sleep = nextRead-Decimal(time.perf_counter())
         if sleep > 0:
             time.sleep(sleep)
+            print(sleep)
         
         data.append(chan.voltage)
         nextRead += Decimal(1/AC_FREQUENCY/ADC_SAMPLESPERWAVE)
