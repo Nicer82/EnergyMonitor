@@ -10,7 +10,6 @@ from adafruit_ads1x15.analog_in import AnalogIn
 # ADC settings
 ADC_SAMPLESPERWAVE = 16
 ADC_ACWAVESTOREAD = 50
-ADC_CALIBRATIONFACTOR = 1.032
 
 # Mains properties
 AC_FREQUENCY = 50
@@ -18,6 +17,9 @@ AC_FREQUENCY = 50
 # CT properties
 CT_TURNRATIO = 2000
 CT_BURDENRESISTOR = 150
+
+C_CALIBRATIONFACTOR = 1.032
+V_CALIBRATIONFACTOR = 172.94
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
@@ -94,12 +96,12 @@ chanv = AnalogIn(ads, ADS.P1)
 ads.mode = Mode.CONTINUOUS 
 ads.data_rate = 860
 
-if(True):
+while(True):
     ### Current measurement
     startc = round(time.perf_counter() + 0.1,6)
     datac = readadc(chanc, startc)
     
-    current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
+    current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * C_CALIBRATIONFACTOR
     print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
     
     ### Voltage measurement
@@ -109,10 +111,14 @@ if(True):
 
     datav = readadc(chanv, startv)
     
-    voltage = rootmeansquare(datav)
+    voltage = rootmeansquare(datav) * V_CALIBRATIONFACTOR
     print("Voltage: {} V, Reads: {}, VMin: {}, VMax: {}".format(voltage,len(datav),min(datav),max(datav)))
     
-    print("Flow direction: {}".format(flowdirection(datac,datav)))
-    print("Value;Current;Voltage")
-    for i in range(len(datac)):
-        print("{};{};{}".format(i,datac[i],datav[i]))
+    ### Power calculation
+    power = current*voltage*flowdirection(datac,datav)
+    print("Power: {} W".format(power))
+    
+    #print("Flow direction: {}".format(flowdirection(datac,datav)))
+    #print("Value;Current;Voltage")
+    #for i in range(len(datac)):
+    #    print("{};{};{}".format(i,datac[i],datav[i]))
