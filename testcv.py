@@ -9,7 +9,7 @@ from adafruit_ads1x15.analog_in import AnalogIn
 
 # ADC settings
 ADC_SAMPLESPERWAVE = 16
-ADC_ACWAVESTOREAD = 50
+ADC_ACWAVESTOREAD = 125
 
 # Mains properties
 AC_FREQUENCY = 50
@@ -19,7 +19,7 @@ CT_TURNRATIO = 2000
 CT_BURDENRESISTOR = 150
 
 C_CALIBRATIONFACTOR = 1.022
-V_CALIBRATIONFACTOR = 185.1
+V_CALIBRATIONFACTOR = 374.9 # with 10K Ohm burden resistor: 185.1
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
