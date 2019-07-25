@@ -86,7 +86,7 @@ if(True):
     startc = time.perf_counter() + 0.1
     print(startc)
     print(int(startc*100000))
-    print(int(startc*100000))/100000)
+    print(int(startc*100000)/100000)
     startc = int((time.perf_counter() + 0.1)*100000)/100000 # rounding seems to be necessary, otherwise you run in floating point issues & the number of reads doesn't match with what you would expect
     datac = readadc(chanc, startc)
 
