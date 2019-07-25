@@ -7,7 +7,6 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 from decimal import *
-getcontext().prec = 6 # set decimal precision to 6 digits
 
 # ADC settings
 ADC_SAMPLESPERWAVE = 16
@@ -85,7 +84,7 @@ ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    startc = Decimal(time.perf_counter() + 0.1)
+    startc = Decimal(int((time.perf_counter() + 0.1)*1000000)/1000000)
     print(startc)
     datac = readadc(chanc, startc)
     print(len(datac))
