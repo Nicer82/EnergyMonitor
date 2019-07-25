@@ -42,7 +42,7 @@ def normalize(values):
             values[i] = (values[i+1] + values[i]*2)/3
     
     # Remove the first and last half wave
-    for i in range(ADC_RATE/AC_FREQUENCY/2)
+    #for i in range(ADC_RATE/AC_FREQUENCY/2)
     
     return values
 
