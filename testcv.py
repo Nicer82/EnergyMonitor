@@ -71,11 +71,11 @@ def readadc(chan,start):
         
         nextRead = round(nextRead + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
 
-    print("Before normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
+    #print("Before normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
 
     data = normalize(data)
     
-    print("After normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
+    #print("After normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
     
     return data
 
