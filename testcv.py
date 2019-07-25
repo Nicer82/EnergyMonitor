@@ -19,7 +19,7 @@ CT_TURNRATIO = 2000
 CT_BURDENRESISTOR = 150
 
 C_CALIBRATIONFACTOR = 1.022
-V_CALIBRATIONFACTOR = 186.9
+V_CALIBRATIONFACTOR = 185.2
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
