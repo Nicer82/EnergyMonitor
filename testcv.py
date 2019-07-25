@@ -7,7 +7,6 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 from decimal import *
-print(getcontext())
 
 # ADC settings
 ADC_SAMPLESPERWAVE = 16
@@ -52,7 +51,7 @@ def normalize(values):
 
 def readadc(chan,start):
     data = []
-    end = start+(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
+    end = start+decimal(1/AC_FREQUENCY*ADC_ACWAVESTOREAD)
     nextRead = start
 
     # Read the same channel over and over
@@ -62,7 +61,7 @@ def readadc(chan,start):
             time.sleep(sleep)
         
         data.append(chan.voltage)
-        nextRead += 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE
+        nextRead += decimal(1/AC_FREQUENCY/ADC_SAMPLESPERWAVE)
 
     data = normalize(data)
     
@@ -85,13 +84,8 @@ ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    startc = time.perf_counter() + 0.1
+    startc = decimal(time.perf_counter() + 0.1)
     print(startc)
-    startc = int(startc*100000)
-    print(startc)
-    startc = startc/100000
-    print(startc)
-    #startc = int((time.perf_counter() + 0.1)*100000)/100000 # rounding seems to be necessary, otherwise you run in floating point issues & the number of reads doesn't match with what you would expect
     datac = readadc(chanc, startc)
     print(len(datac))
     #for i in range(len(datac)):
@@ -104,7 +98,7 @@ if(True):
     startv = startc
     print(startv)
     while(startv < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
-        startv += int(1/AC_FREQUENCY*100000)/100000 # add one wave at a time to perfectly match the sine wave with the current readout
+        startv += decimal(1/AC_FREQUENCY) # add one wave at a time to perfectly match the sine wave with the current readout
         print(startv)
     print(startv)
     
