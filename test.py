@@ -41,9 +41,7 @@ AC_VOLTAGE = 240 # TODO: replace with actual voltage measured through AC-AC adap
 
 # CT properties
 CT_TURNRATIO = 2000
-CT_BURDENRESISTOR = 100 # TODO: replace with 150 ohm resistor for better accuracy
-
-
+CT_BURDENRESISTOR = 150 # TODO: replace with 150 ohm resistor for better accuracy
 
 # Create the I2C bus with a fast frequency
 i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
