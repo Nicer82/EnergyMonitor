@@ -83,7 +83,7 @@ ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    startc = round(time.perf_counter() + 0.1,5) # rounding seems to be necessary, otherwise you run in floating point issues & the number of reads doesn't match with what you would expect
+    startc = int((time.perf_counter() + 0.1)*100000)/100000 # rounding seems to be necessary, otherwise you run in floating point issues & the number of reads doesn't match with what you would expect
     datac = readadc(chanc, startc)
 
     for i in range(len(datac)):
@@ -94,8 +94,8 @@ if(True):
     
     ### Voltage measurement
     startv = startc
-    while(startv < time.perf_counter() + 0.1):
-        startv += 1/AC_FREQUENCY
+    while(startv < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
+        startv += 1/AC_FREQUENCY # add one wave at a time to perfectly match the sine wave with the current readout
     
     datav = readadc(chanv, startv)
     
