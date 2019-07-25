@@ -107,4 +107,4 @@ if(True):
     
     print("Value;Current;Voltage")
     for i in range(len(datac)):
-        print("{};{};{}".format(i;datac[i];datav[i]))
+        print("{};{};{}".format(i,datac[i],datav[i]))
