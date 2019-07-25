@@ -84,7 +84,7 @@ ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    startc = Decimal(time.perf_counter() + 0.1)
+    startc = Decimal(round(time.perf_counter() + 0.1,6))
     print(startc)
     datac = readadc(chanc, startc)
     print(len(datac))
