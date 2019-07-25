@@ -92,9 +92,10 @@ if(True):
     
     ### Voltage measurement
     startv = startc
+    print(time.perf_counter())
     while(startv < Decimal(time.perf_counter() + 0.1)): # add 100 ms to give time for python to get into readadc()
         startv += Decimal(1/AC_FREQUENCY) # add one wave at a time to perfectly match the sine wave with the current readout
-    
+        print(startv)
     datav = readadc(chanv, startv)
     
     #voltage = rootmeansquare(datav)
