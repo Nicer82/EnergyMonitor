@@ -73,6 +73,8 @@ def readadc(chan,start):
 
     data = normalize(data)
     
+    print("Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
+    
     return data
 
 def flowdirection(datac,datav):
@@ -113,7 +115,7 @@ while(True):
     datac = readadc(chanc, startc)
     
     current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * flowdirection(datac,datav) * C_CALIBRATIONFACTOR
-    print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
+    #print("Current: {} A".format(current))
     
     ### Power calculation
     power = current*voltage
