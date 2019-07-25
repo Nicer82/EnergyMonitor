@@ -54,8 +54,6 @@ def normalize(values):
     
     return values
 
-
-
 def readadc(chan,start):
     data = []
     end = round(start+1/AC_FREQUENCY*ADC_ACWAVESTOREAD,6)
@@ -73,6 +71,15 @@ def readadc(chan,start):
     data = normalize(data)
     
     return data
+
+def flowdirection(datac,datav):
+    total = 0;
+    
+    for i in range(len(datac)):
+        total += datac[i]*datav[i]
+        
+    return total/abs(total)
+    
 
 # Create the I2C bus with a fast frequency
 i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
@@ -105,6 +112,7 @@ if(True):
     voltage = rootmeansquare(datav)
     print("Voltage: {} V, Reads: {}, VMin: {}, VMax: {}".format(voltage,len(datav),min(datav),max(datav)))
     
+    print("Flow direction: {}".format(flowdirection(datac,datav)))
     print("Value;Current;Voltage")
     for i in range(len(datac)):
         print("{};{};{}".format(i,datac[i],datav[i]))
