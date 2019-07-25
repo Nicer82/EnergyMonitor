@@ -113,7 +113,7 @@ while(True):
     datac = readadc(chanc, startc)
     
     current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * flowdirection(datac,datav) * C_CALIBRATIONFACTOR
-    #print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
+    print("Current: {} A, Reads: {}, VMin: {}, VMax: {}".format(current,len(datac),min(datac),max(datac)))
     
     ### Power calculation
     power = current*voltage
