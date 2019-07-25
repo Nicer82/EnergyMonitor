@@ -84,30 +84,18 @@ ads.data_rate = 860
 
 if(True):
     ### Current measurement
-    startc = Decimal(int((time.perf_counter() + 0.1)*1000000)/1000000)
-    print(startc)
+    startc = Decimal(time.perf_counter() + 0.1)
     datac = readadc(chanc, startc)
-    print(len(datac))
-    #for i in range(len(datac)):
-    #    print("{};{}".format(i,datac[i]))
     
     #current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * ADC_CALIBRATIONFACTOR
     #print("Current: {} A, VMin: {}, VMax: {}".format(current,min(datac),max(datac)))
     
     ### Voltage measurement
     startv = startc
-    print(startv)
     while(startv < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
         startv += Decimal(1/AC_FREQUENCY) # add one wave at a time to perfectly match the sine wave with the current readout
-        print(startv)
-    print(startv)
     
     datav = readadc(chanv, startv)
     
-    #for i in range(len(datav)):
-    #    print("{};{}".format(i,datav[i]))
-    
     #voltage = rootmeansquare(datav)
     #print("Voltage: {} V, VMin: {}, VMax: {}".format(voltage,min(datav),max(datav)))
-    
-    
