@@ -93,7 +93,7 @@ spi = spidev.SpiDev()
 spi.open(0,0)
 
 for i in range(800):
-    r = spi.xfer3([1, 8 + 1 << 4, 0],50000)
+    r = spi.xfer3([1, 8 + 1 << 4, 0],50000,0)
     print(r)
     
         
