@@ -24,7 +24,7 @@ for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     datasample = []
     
     # Read channels 0-5
-    for chan in range(6)
+    for chan in range(6):
         # Add a delay on the last channel to match timings. This is way more accurate than time.sleep() because it works up to the microsecond.
         if(chan == 5):
             delay = max([0,round((nextRead-time.perf_counter())*1000000)]) 
