@@ -52,7 +52,7 @@ def readadc(chan,start):
     data = []
     
     # Validate if channel is 0-7
-    if adcnum > 7 or adcnum < 0:
+    if chan > 7 or chan < 0:
         return data
     
     end = round(start+1/AC_FREQUENCY*ADC_ACWAVESTOREAD,6)
