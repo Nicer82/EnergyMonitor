@@ -93,9 +93,9 @@ spi = spidev.SpiDev()
 spi.open(0,0)
 
 for i in range(10):
-    r = spi.xfer2([1,8+0 << 4 + 8+1,0,1],50000,0)
+    r = spi.xfer2([1,8+0 << 4, 8+1,0],50000,0)
+    print(r)
 
-print(r)
 
 spi.close()
         
