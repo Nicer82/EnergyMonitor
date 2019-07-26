@@ -4,7 +4,7 @@ import math
 import spidev
 
 # Read settings
-ADC_SAMPLESPERWAVE = 20 # If set to more then 400 with one channel, the code can't keep up, so that is about the max samples per wave
+ADC_SAMPLESPERWAVE = 10 # If set to more then 400 with one channel, the code can't keep up, so that is about the max samples per wave
 ADC_ACWAVESTOREAD = 1
 
 # Mains properties
@@ -26,7 +26,7 @@ for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     # Read channels 0-5
     for chan in range(2):
         # Add a delay on the last channel to match timings. This is way more accurate than time.sleep() because it works up to the microsecond.
-        if(chan == 1):
+        if(chan == 0):
             delay = max([0,round((nextRead-time.perf_counter())*1000000)]) 
         else:
             delay = 0
