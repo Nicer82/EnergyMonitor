@@ -4,7 +4,7 @@ import math
 import spidev
 
 # Read settings
-ADC_SAMPLESPERWAVE = 100 # Around 65, the python can't keep up, so that is about the max samples per wave
+ADC_SAMPLESPERWAVE = 200 # Around 65, the python can't keep up, so that is about the max samples per wave
 ADC_ACWAVESTOREAD = 5
 
 # Mains properties
@@ -23,7 +23,7 @@ nextRead = start
 for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
     delay = max([0,round((nextRead-time.perf_counter())*1000000)])
-    data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],200000,delay))
+    data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],800000,delay))
 end = time.perf_counter()
     
 spi.close()
@@ -31,7 +31,7 @@ spi.close()
 for d in data:
     print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
 
-print("Reads: {}, Requested time: {} ms, Actual time: {} ms".format(len(data),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
+print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
