@@ -5,7 +5,7 @@ import spidev
 
 # Read settings
 ADC_SAMPLESPERWAVE = 400 # If set to more then 400, the code can't keep up, so that is about the max samples per wave
-ADC_ACWAVESTOREAD = 5
+ADC_ACWAVESTOREAD = 3
 
 # Mains properties
 AC_FREQUENCY = 50
