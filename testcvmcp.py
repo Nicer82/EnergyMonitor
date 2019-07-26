@@ -4,7 +4,7 @@ import math
 import spidev
 
 # Read settings
-ADC_SAMPLESPERWAVE = 400 # If set to more then 400, the code can't keep up, so that is about the max samples per wave
+ADC_SAMPLESPERWAVE = 50 # If set to more then 400 with one channel, the code can't keep up, so that is about the max samples per wave
 ADC_ACWAVESTOREAD = 3
 
 # Mains properties
