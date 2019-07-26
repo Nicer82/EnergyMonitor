@@ -40,9 +40,8 @@ end = time.perf_counter()
     
 spi.close()
 
-print(data)
-#for d in data:
-#    print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
+for d in data:
+    print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
 
 print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
 print([6+((4&chan)>>2),(3&chan)<<6,0]);
