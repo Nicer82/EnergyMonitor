@@ -97,6 +97,10 @@ for i in range(100):
     print("{} - {}".format(r,((r[1] & 15) << 8) + r[2]))
 
 spi.close()
+
+print((4&1)>>2)
+print((3&1)<<6)
+print(6+((4&1)>>2),(3&1)<<6)
         
 if(False):
     ### Voltage measurement
