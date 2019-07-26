@@ -78,12 +78,12 @@ def readadc(chan,start):
     return data
 
 def flowdirection(datac,datav):
-    total = 0;
+    total = 0
     
     for i in range(len(datac)):
         total += datac[i]*datav[i]
     
-    if total != 0
+    if total != 0:
         return total/abs(total)
     
     return 0
