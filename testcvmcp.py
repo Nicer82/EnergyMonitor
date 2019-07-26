@@ -32,7 +32,6 @@ for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
             delay = 0
         
         response = spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],2000000,delay)
-        datasample.append(time.perf_counter())
         datasample.append(((response[1] & 15) << 8) + response[2])
     
     data.append(datasample)
@@ -42,7 +41,8 @@ end = time.perf_counter()
 spi.close()
 
 for datasample in data:
-    print(datasample)
+    #print(datasample)
+    print("{};{}".format(datasample[0],datasample[1]))
     #    print("{};{};{};{};{};{}".format(datasample[0],datasample[1],datasample[2],datasample[3],datasample[4],datasample[5]))
 
 print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
