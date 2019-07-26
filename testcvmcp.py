@@ -16,20 +16,33 @@ V_CALIBRATIONFACTOR = 374.9 # with 10K Ohm burden resistor: 185.1
 # Create the SPI
 spi = spidev.SpiDev()
 spi.open(0,0)
-chan = 6
 data = []
 start = time.perf_counter()
 nextRead = start
 for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
-    delay = max([0,round((nextRead-time.perf_counter())*1000000)])
-    data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],2000000,delay))
+    datasample = []
+    
+    # Read channels 0-5
+    for chan in range(6)
+        # Add a delay on the last channel to match timings. This is way more accurate than time.sleep() because it works up to the microsecond.
+        if(chan == 5):
+            delay = max([0,round((nextRead-time.perf_counter())*1000000)]) 
+        else:
+            delay = 0
+        
+        response = spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],2000000,delay)
+        datasample.append(((response[1] & 15) << 8) + response[2])
+    
+    data.append(datasample)
+
 end = time.perf_counter()
     
 spi.close()
 
-for d in data:
-    print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
+print(data)
+#for d in data:
+#    print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
 
 print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
 print([6+((4&chan)>>2),(3&chan)<<6,0]);
