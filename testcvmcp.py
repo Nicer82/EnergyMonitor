@@ -18,15 +18,18 @@ spi = spidev.SpiDev()
 spi.open(0,0)
 chan = 1
 data = []
-nextRead = time.perf_counter()
+start = time.perf_counter()
+nextRead = start
 for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
     delay = max([0,round((nextRead-time.perf_counter())*1000000)])
     data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],100000,delay))
-    
+end = time.perf_counter()
+print("Requested time: {} ms, Actual time: {} ms".format(1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
+
 for d in data:
     print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
-print(1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY));
+
 spi.close()
 
 def rootmeansquare(values):
