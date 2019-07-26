@@ -13,6 +13,24 @@ AC_FREQUENCY = 50
 C_CALIBRATIONFACTOR = 1.022
 V_CALIBRATIONFACTOR = 374.9 # with 10K Ohm burden resistor: 185.1
 
+# Create the SPI
+spi = spidev.SpiDev()
+spi.open(0,0)
+chan = 1
+data = []
+nextRead = time.perf_counter()
+for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
+    nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
+    print("{} - {}".format(nextRead,time.perf_counter()))
+    delay = round(max([0,nextRead-time.perf_counter()])*1000000)
+    #print(delay)
+    data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],100000,delay))
+    
+for d in data:
+    print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
+print(1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY));
+spi.close()
+
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
     sumsquares = 0.0
@@ -88,23 +106,7 @@ def flowdirection(datac,datav):
     
     return 0
 
-# Create the SPI
-spi = spidev.SpiDev()
-spi.open(0,0)
-chan = 1
-data = []
-nextRead = time.perf_counter()
-for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
-    nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
-    print("{} - {}".format(nextRead,time.perf_counter()))
-    delay = round(max([0,nextRead-time.perf_counter()])*1000000)
-    #print(delay)
-    data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],100000,delay)))
-    
-for d in data:
-    print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
-print(1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY));
-spi.close()
+
 
 if(False):
     ### Voltage measurement
