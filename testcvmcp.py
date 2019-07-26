@@ -61,10 +61,10 @@ def readadc(channels):
 
     end = time.perf_counter()
 
-    for i in range(len(data[0])):
-        print("{};{}".format(data[0][i],data[1][i]))
+    #for i in range(len(data[0])):
+    #    print("{};{}".format(data[0][i],data[1][i]))
 
-    print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data[0]),len(data[0])/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
+    #print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data[0]),len(data[0])/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
     
     return data
 
@@ -83,9 +83,9 @@ def flowdirection(datac,datav):
 spi = spidev.SpiDev()
 spi.open(0,0)
 
-channels = [0,1]
+channels = [0,1,2]
 
-if(True):
+while(True):
     data = readadc(channels)
     datac = data[0]
     datav = data[1]
