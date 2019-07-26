@@ -91,10 +91,9 @@ def flowdirection(datac,datav):
 # Create the SPI
 spi = spidev.SpiDev()
 spi.open(0,0)
-
+print(8 + 0 << 4)
 for i in range(20):
-    #r = spi.xfer3([1, 8 + 0 << 4, 0],1000)
-    r = spi.xfer3([0],1000)
+    r = spi.xfer3([1, 8 + 0 << 4, 0],1000)
     print(r)
     time.sleep(0.001)
     
