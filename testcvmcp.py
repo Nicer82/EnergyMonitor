@@ -4,7 +4,7 @@ import math
 import spidev
 
 # Read settings
-ADC_SAMPLESPERWAVE = 100
+ADC_SAMPLESPERWAVE = 60
 ADC_ACWAVESTOREAD = 5
 
 # Mains properties
