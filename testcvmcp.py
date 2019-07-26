@@ -22,7 +22,6 @@ nextRead = time.perf_counter()
 for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
     delay = max([0,round((nextRead-time.perf_counter())*1000000)])
-    print(delay)
     data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],100000,delay))
     
 for d in data:
