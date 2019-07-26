@@ -13,41 +13,7 @@ AC_FREQUENCY = 50
 C_CALIBRATIONFACTOR = 1.022
 V_CALIBRATIONFACTOR = 374.9 # with 10K Ohm burden resistor: 185.1
 
-# Create the SPI
-spi = spidev.SpiDev()
-spi.open(0,0)
-data = []
-start = time.perf_counter()
-nextRead = start
-channels = [0,1]
-for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
-    nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
-    datasample = []
-    
-    # Read channels
-    for i in range(len(channels)):
-        # Add a delay on the last channel to match timings. This is way more accurate than time.sleep() because it works up to the microsecond.
-        if(i == len(channels)-1):
-            delay = max([0,round((nextRead-time.perf_counter())*1000000)]) 
-        else:
-            delay = 0
-        
-        response = spi.xfer2([6+((4&channels[i])>>2),(3&channels[i])<<6,0],2000000,delay)
-        datasample.append(((response[1] & 15) << 8) + response[2])
-    
-    data.append(datasample)
 
-end = time.perf_counter()
-    
-spi.close()
-
-for datasample in data:
-    #print(datasample)
-    print("{};{}".format(datasample[0],datasample[1]))
-    #    print("{};{};{};{};{};{}".format(datasample[0],datasample[1],datasample[2],datasample[3],datasample[4],datasample[5]))
-
-print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
-print([6+((4&chan)>>2),(3&chan)<<6,0]);
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
@@ -84,32 +50,33 @@ def normalize(values):
     
     return values
 
-def readadc(chan,start):
-    data = []
+def readadc(channels):
     
-    # Validate if channel is 0-7
-    if chan > 7 or chan < 0:
-        return data
-    
-    end = round(start+1/AC_FREQUENCY*ADC_ACWAVESTOREAD,6)
+    data = [[],[]]
+    start = time.perf_counter()
     nextRead = start
 
-    # Read the same channel over and over
-    while(nextRead < end):
-        sleep = nextRead-time.perf_counter()
-        if sleep > 0:
-            time.sleep(sleep)
+    for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
+        nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
+        datasample = []
 
-        r = spi.xfer2([1, 8 + chan << 4, 0])
-        data.append(((r[1] & 3) << 8) + r[2])
-        
-        nextRead = round(nextRead + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
+        # Read channels
+        for ci in range(len(channels)):
+            # Add a delay on the last channel to match timings. This is way more accurate than time.sleep() because it works up to the microsecond.
+            if(ci == len(channels)-1):
+                delay = max([0,round((nextRead-time.perf_counter())*1000000)]) 
+            else:
+                delay = 0
 
-    print("Before normalize: Reads: {}, Min: {}, Max: {}".format(len(data),min(data),max(data)))
+            response = spi.xfer2([6+((4&channels[ci])>>2),(3&channels[ci])<<6,0],2000000,delay)
+            data[ci].append(((response[1] & 15) << 8) + response[2])
 
-    data = normalize(data)
-    
-    print("After normalize: Reads: {}, Min: {}, Max: {}".format(len(data),min(data),max(data)))
+    end = time.perf_counter()
+
+    #for datasample in data:
+    #    print("{};{}".format(datasample[0],datasample[1]))
+
+    #print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
     
     return data
 
@@ -124,28 +91,31 @@ def flowdirection(datac,datav):
     
     return 0
 
+# Create the SPI
+spi = spidev.SpiDev()
+spi.open(0,0)
 
+channels = [0,1]
 
-if(False):
-    ### Voltage measurement
-    startv = round(time.perf_counter() + 0.1,6)
-    datav = readadc(1, startv)
+if(True):
+    data = readadc(channels)
+    datac = data[0]
+    datav = data[1]
     
+    print("Current data: Before normalize: Reads: {}, Min: {}, Max: {}".format(len(datac),min(datac),max(datac)))
+    print("Voltage data: Before normalize: Reads: {}, Min: {}, Max: {}".format(len(datav),min(datav),max(datav)))
+
+    datac = normailzedata(datac)
+    datav = normalizedata(datav)
+    
+    print("Current data: After normalize: Reads: {}, Min: {}, Max: {}".format(len(datac),min(datac),max(datac)))
+    print("Voltage data: After normalize: Reads: {}, Min: {}, Max: {}".format(len(datav),min(datav),max(datav)))
+
     voltage = rootmeansquare(datav) * V_CALIBRATIONFACTOR
-    
-    ### Current measurement
-    startc = startv
-    while(startc < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
-        startc = round(startc + 1/AC_FREQUENCY, 6) # add one wave at a time to perfectly match the sine wave with the current readout
-
-    datac = readadc(0, startc)
-    
     current = rootmeansquare(datac) * flowdirection(datac,datav) * C_CALIBRATIONFACTOR
     
     ### Power calculation
     power = current*voltage
     print("Current: {} A, Voltage: {} V, Power: {} W".format(round(current,3),round(voltage,1),round(power)))
-    
-    print("Value;Current;Voltage")
-    for i in range(len(datac)):
-        print("{};{};{}".format(i,datac[i],datav[i]))
+
+spi.close()
