@@ -93,7 +93,8 @@ spi = spidev.SpiDev()
 spi.open(0,0)
 
 for i in range(10):
-    r = spi.xfer3([1, 8 + 0 << 4, 0],1000)
+    #r = spi.xfer3([1, 8 + 0 << 4, 0],1000)
+    r = spi.xfer3([0],1000)
     print(r)
     time.sleep(1)
     
