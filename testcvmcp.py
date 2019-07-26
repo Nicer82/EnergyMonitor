@@ -73,7 +73,7 @@ def readadc(chan,start):
 
     data = normalize(data)
     
-    print("After normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
+    print("After normalize: Reads: {}, Min: {}, Max: {}".format(len(data),min(data),max(data)))
     
     return data
 
@@ -82,9 +82,11 @@ def flowdirection(datac,datav):
     
     for i in range(len(datac)):
         total += datac[i]*datav[i]
-        
-    return total/abs(total)
     
+    if total != 0
+        return total/abs(total)
+    
+    return 0
 
 # Create the SPI
 spi = spidev.SpiDev()
