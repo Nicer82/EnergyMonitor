@@ -64,7 +64,7 @@ def readadc(chan,start):
         if sleep > 0:
             time.sleep(sleep)
 
-        r = spi.xfer2([1, 8 + chan << 4, 0,1])
+        r = spi.xfer2([1, 8 + chan << 4, 0])
         data.append(((r[1] & 3) << 8) + r[2])
         
         nextRead = round(nextRead + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
@@ -92,7 +92,8 @@ def flowdirection(datac,datav):
 spi = spidev.SpiDev()
 spi.open(0,0)
 
-r = spi.xfer2([1,8+0 << 4 + 8+1,0],50000,0)
+for i in range(10):
+    r = spi.xfer2([1,8+0 << 4 + 8+1,0,1],50000,0)
 
 print(r)
 
