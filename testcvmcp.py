@@ -94,8 +94,7 @@ spi.open(0,0)
 
 for i in range(100):
     r = spi.xfer2([1,8+0 << 4,0])
-    print("{} - {}".format(r,((r[1] & 3) << 8) + r[2])
-
+    print("{} - {}".format(r,((r[1] & 3) << 8) + r[2]))
 
 spi.close()
         
