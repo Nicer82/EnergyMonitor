@@ -91,17 +91,13 @@ def flowdirection(datac,datav):
 # Create the SPI
 spi = spidev.SpiDev()
 spi.open(0,0)
-
+chan = 1
 for i in range(100):
-    r = spi.xfer2([1,8+((4&1)>>2),(3&1)<<6,0])
+    r = spi.xfer2([1,8+chan << 4,0])
     print("{} - {}".format(r,((r[1] & 15) << 8) + r[2]))
 
 spi.close()
 
-print((4&1)>>2)
-print((3&1)<<6)
-print(6+((4&1)>>2),(3&1)<<6)
-        
 if(False):
     ### Voltage measurement
     startv = round(time.perf_counter() + 0.1,6)
