@@ -2,6 +2,7 @@ import time
 import statistics
 import math
 import spidev
+from mcp3208 import MCP3208
 
 # Read settings
 ADC_SAMPLESPERWAVE = 16
@@ -89,12 +90,14 @@ def flowdirection(datac,datav):
     return 0
 
 # Create the SPI
-spi = spidev.SpiDev()
-spi.open(0,0)
+from mcp3208 import MCP3208
 
-for i in range(800):
-    r = spi.xfer3([1, 8 + 1 << 4, 0],50000,0)
-    print(r)
+adc = MCP3208()
+
+while True:
+        for i in range(8):
+                print('ADC[{}]: {:.2f}'.format(i, adc.read(i)))
+        time.sleep(0.5)
     
         
 if(False):
