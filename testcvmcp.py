@@ -93,7 +93,7 @@ spi = spidev.SpiDev()
 spi.open(0,0)
 chan = 1
 for i in range(100):
-    r = spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],100000,0)
+    r = spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0,6+((4&0)>>2),(3&0)<<6,0],100000,0)
     print("{} - {}".format(r,((r[1] & 15) << 8) + r[2]))
 
 spi.close()
