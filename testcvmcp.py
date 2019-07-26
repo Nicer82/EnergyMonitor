@@ -25,12 +25,13 @@ for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     delay = max([0,round((nextRead-time.perf_counter())*1000000)])
     data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],100000,delay))
 end = time.perf_counter()
-print("Requested time: {} ms, Actual time: {} ms".format(1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
+    
+spi.close()
 
 for d in data:
     print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
 
-spi.close()
+print("Reads: {}, Requested time: {} ms, Actual time: {} ms".format(len(data),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
