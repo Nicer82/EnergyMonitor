@@ -16,7 +16,7 @@ V_CALIBRATIONFACTOR = 374.9 # with 10K Ohm burden resistor: 185.1
 # Create the SPI
 spi = spidev.SpiDev()
 spi.open(0,0)
-chan = 1
+chan = 6
 data = []
 start = time.perf_counter()
 nextRead = start
@@ -28,12 +28,11 @@ end = time.perf_counter()
     
 spi.close()
 
-print([6+((4&chan)>>2),(3&chan)<<6,0]);
-
 for d in data:
     print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
 
 print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
+print([6+((4&chan)>>2),(3&chan)<<6,0]);
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
