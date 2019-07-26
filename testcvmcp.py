@@ -37,17 +37,6 @@ def normalize(values):
     for i in range(len(values)):
         values[i] -= avg
         
-    # Sometimes the ADC reports the same value twice, in that case, mean it out between the prev and next measurements
-    #for i in range(len(values)):
-    #    if i > 1 and i < len(values)-1 and values[i] == values[i-1]:
-    #        values[i-1] =  (values[i-2] + values[i-1]*2)/3
-    #        values[i] = (values[i+1] + values[i]*2)/3
-    
-    # Remove the first and last half wave
-    for i in range(int(ADC_SAMPLESPERWAVE/2)):
-        values.pop(0)
-        values.pop(len(values)-1)
-    
     return values
 
 def readadc(channels):
