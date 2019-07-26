@@ -13,8 +13,6 @@ AC_FREQUENCY = 50
 C_CALIBRATIONFACTOR = 0.01667
 V_CALIBRATIONFACTOR = 0.2406
 
-
-
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
     sumsquares = 0.0
@@ -39,14 +37,16 @@ def normalize(values):
     return values
 
 def readadc(channels):
+    data = []
     
-    data = [[],[]]
+    for i in channels:
+        data.append([])
+        
     start = time.perf_counter()
     nextRead = start
 
     for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
         nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
-        datasample = []
 
         # Read channels
         for ci in range(len(channels)):
@@ -61,10 +61,10 @@ def readadc(channels):
 
     end = time.perf_counter()
 
-    #for datasample in data:
-    #    print("{};{}".format(datasample[0],datasample[1]))
+    for datasample in data:
+        print("{};{}".format(datasample[0],datasample[1]))
 
-    #print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
+    print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data),len(data)/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
     
     return data
 
@@ -85,7 +85,7 @@ spi.open(0,0)
 
 channels = [0,1]
 
-while(True):
+if(True):
     data = readadc(channels)
     datac = data[0]
     datav = data[1]
