@@ -92,7 +92,7 @@ def flowdirection(datac,datav):
 spi = spidev.SpiDev()
 spi.open(0,0)
 
-while(True):
+if(True):
     ### Voltage measurement
     startv = round(time.perf_counter() + 0.1,6)
     datav = readadc(1, startv)
