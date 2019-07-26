@@ -31,8 +31,8 @@ for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
         else:
             delay = 0
         
-        response = spi.xfer2([6+((4&chan)>>2),(3&chan)<<6],2000000,delay)
-        print(response)
+        response = spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0,6+((4&chan)>>2),(3&chan)<<6],2000000,delay)
+        print("{}, {}".format(((response[1] & 15) << 8) + response[2],response[3] << 4 + ((response[4] & 240) >> 4)))
         #datasample.append(((response[1] & 15) << 8) + response[2])
     
     data.append(datasample)
