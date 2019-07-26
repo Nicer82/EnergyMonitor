@@ -5,7 +5,7 @@ import spidev
 
 # Read settings
 ADC_SAMPLESPERWAVE = 16
-ADC_ACWAVESTOREAD = 50
+ADC_ACWAVESTOREAD = 5
 
 # Mains properties
 AC_FREQUENCY = 50
@@ -93,8 +93,16 @@ spi = spidev.SpiDev()
 spi.open(0,0)
 chan = 1
 data = []
-for i in range(100):
-    data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],100000,1250))
+nextRead = time.perf_counter()
+for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
+    delay = 0
+
+    if(lastReadStart and lastReadEnd):
+        delay = max([0,(1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY))-(lastReadEnd-lastReadStart)])
+    
+    lastReadStart = time.perf_counter()
+    data.append(spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],100000,delay))
+    lastReadEnd = time.perf_counter()
     
 for d in data:
     print("{} - {}".format(d,((d[1] & 15) << 8) + d[2]))
