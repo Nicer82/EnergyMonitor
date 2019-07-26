@@ -97,9 +97,9 @@ print(2&3)
 print(3&3)
 
 for i in range(100):
-    r = spi.xfer2([1,8+0 << 4, 0,8+1 << 4,0],50000,0)
+    r = spi.xfer2([8+0 << 4])
     print(r)
-    print(((r[1] & 3) << 8) + r[2])
+    #print(((r[1] & 3) << 8) + r[2])
 
 
 spi.close()
