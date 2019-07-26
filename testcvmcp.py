@@ -18,10 +18,9 @@ V_CALIBRATIONFACTOR = 0.2406
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
     sumsquares = 0.0
-    avg = statistics.mean(values)
 
     for value in values:
-        sumsquares = sumsquares + (value)**2  # substract avg from value to correct the values and make sure we have the 0V line on the avg
+        sumsquares = sumsquares + (value)**2 
 
     if len(values) == 0:
         rms = 0.0
@@ -31,7 +30,7 @@ def rootmeansquare(values):
     return rms
 
 def normalize(values):
-    avg = statistics.mean(values)
+    avg = round(statistics.mean(values))
 
     # Substract the mean of every value to set the mean to 0
     for i in range(len(values)):
