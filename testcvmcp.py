@@ -89,7 +89,7 @@ def flowdirection(datac,datav):
     return 0
 
 # Create the SPI
-spi = spidev.SpiDev().
+spi = spidev.SpiDev()
 spi.open(0,0)
 
 r = spi.xfer2([1,8+0 << 4 + 8+1,0],50000,0)
