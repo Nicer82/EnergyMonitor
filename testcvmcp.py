@@ -19,19 +19,20 @@ spi.open(0,0)
 data = []
 start = time.perf_counter()
 nextRead = start
+channels = [0,1]
 for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     nextRead += 1/(ADC_SAMPLESPERWAVE*AC_FREQUENCY)
     datasample = []
     
-    # Read channels 0-5
-    for chan in range(2):
+    # Read channels
+    for i in range(len(channels)):
         # Add a delay on the last channel to match timings. This is way more accurate than time.sleep() because it works up to the microsecond.
-        if(chan == 0):
+        if(i == len(channels)):
             delay = max([0,round((nextRead-time.perf_counter())*1000000)]) 
         else:
             delay = 0
         
-        response = spi.xfer2([6+((4&chan)>>2),(3&chan)<<6,0],2000000,delay)
+        response = spi.xfer2([6+((4&channels[i])>>2),(3&channels[i])<<6,0],2000000,delay)
         datasample.append(((response[1] & 15) << 8) + response[2])
     
     data.append(datasample)
