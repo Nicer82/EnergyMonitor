@@ -93,7 +93,8 @@ spi = spidev.SpiDev()
 spi.open(0,0)
 chan = 1
 data = []
-nextRead = time.perf_counter()
+lastReadStart = 0
+lastReadEnd = 0
 for i in range(ADC_SAMPLESPERWAVE*ADC_ACWAVESTOREAD):
     delay = 0
 
