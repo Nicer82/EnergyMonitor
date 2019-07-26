@@ -97,19 +97,19 @@ spi.open(0,0)
 
 channels = [0,1]
 
-if(True):
+while(True):
     data = readadc(channels)
     datac = data[0]
     datav = data[1]
     
-    print("Current data: Before normalize: Reads: {}, Min: {}, Max: {}".format(len(datac),min(datac),max(datac)))
-    print("Voltage data: Before normalize: Reads: {}, Min: {}, Max: {}".format(len(datav),min(datav),max(datav)))
+    #print("Current data: Before normalize: Reads: {}, Min: {}, Max: {}".format(len(datac),min(datac),max(datac)))
+    #print("Voltage data: Before normalize: Reads: {}, Min: {}, Max: {}".format(len(datav),min(datav),max(datav)))
 
     datac = normalize(datac)
     datav = normalize(datav)
     
-    print("Current data: After normalize: Reads: {}, Min: {}, Max: {}".format(len(datac),min(datac),max(datac)))
-    print("Voltage data: After normalize: Reads: {}, Min: {}, Max: {}".format(len(datav),min(datav),max(datav)))
+    #print("Current data: After normalize: Reads: {}, Min: {}, Max: {}".format(len(datac),min(datac),max(datac)))
+    #print("Voltage data: After normalize: Reads: {}, Min: {}, Max: {}".format(len(datav),min(datav),max(datav)))
 
     voltage = rootmeansquare(datav) * V_CALIBRATIONFACTOR
     current = rootmeansquare(datac) * flowdirection(datac,datav) * C_CALIBRATIONFACTOR
