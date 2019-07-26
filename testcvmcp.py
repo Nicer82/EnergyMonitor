@@ -1,22 +1,14 @@
 import time
 import statistics
 import math
-import board
-import busio
-import adafruit_ads1x15.ads1115 as ADS
-from adafruit_ads1x15.ads1x15 import Mode
-from adafruit_ads1x15.analog_in import AnalogIn
+import spidev
 
-# ADC settings
+# Read settings
 ADC_SAMPLESPERWAVE = 16
-ADC_ACWAVESTOREAD = 125
+ADC_ACWAVESTOREAD = 50
 
 # Mains properties
 AC_FREQUENCY = 50
-
-# CT properties
-CT_TURNRATIO = 2000
-CT_BURDENRESISTOR = 150
 
 C_CALIBRATIONFACTOR = 1.022
 V_CALIBRATIONFACTOR = 374.9 # with 10K Ohm burden resistor: 185.1
@@ -58,6 +50,11 @@ def normalize(values):
 
 def readadc(chan,start):
     data = []
+    
+    # Validate if channel is 0-7
+    if adcnum > 7 or adcnum < 0:
+        return data
+    
     end = round(start+1/AC_FREQUENCY*ADC_ACWAVESTOREAD,6)
     nextRead = start
 
@@ -67,15 +64,16 @@ def readadc(chan,start):
         if sleep > 0:
             time.sleep(sleep)
 
-        data.append(chan.voltage)
+        r = spi.xfer2([1, 8 + chan << 4, 0])
+        data.append(((r[1] & 3) << 8) + r[2])
         
         nextRead = round(nextRead + 1/AC_FREQUENCY/ADC_SAMPLESPERWAVE,6)
 
-    print("Before normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
+    print("Before normalize: Reads: {}, Min: {}, Max: {}".format(len(data),min(data),max(data)))
 
     data = normalize(data)
     
-    #print("After normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
+    print("After normalize: Reads: {}, VMin: {}, VMax: {}".format(len(data),min(data),max(data)))
     
     return data
 
@@ -88,23 +86,14 @@ def flowdirection(datac,datav):
     return total/abs(total)
     
 
-# Create the I2C bus with a fast frequency
-i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
-
-# Create the ADC object using the I2C bus
-ads = ADS.ADS1115(i2c)
-
-chanc = AnalogIn(ads, ADS.P0)
-chanv = AnalogIn(ads, ADS.P1)
-
-# ADC Configuration
-ads.mode = Mode.CONTINUOUS 
-ads.data_rate = 860
+# Create the SPI
+spi = spidev.SpiDev()
+spi.open(0,0)
 
 while(True):
     ### Voltage measurement
     startv = round(time.perf_counter() + 0.1,6)
-    datav = readadc(chanv, startv)
+    datav = readadc(1, startv)
     
     voltage = rootmeansquare(datav) * V_CALIBRATIONFACTOR
     
@@ -113,9 +102,9 @@ while(True):
     while(startc < time.perf_counter() + 0.1): # add 100 ms to give time for python to get into readadc()
         startc = round(startc + 1/AC_FREQUENCY, 6) # add one wave at a time to perfectly match the sine wave with the current readout
 
-    datac = readadc(chanc, startc)
+    datac = readadc(0, startc)
     
-    current = rootmeansquare(datac) / CT_BURDENRESISTOR * CT_TURNRATIO * flowdirection(datac,datav) * C_CALIBRATIONFACTOR
+    current = rootmeansquare(datac) * flowdirection(datac,datav) * C_CALIBRATIONFACTOR
     
     ### Power calculation
     power = current*voltage
