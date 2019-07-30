@@ -85,7 +85,7 @@ spi.open(0,0)
 
 channels = [0,1,2]
 
-if(True):
+while(True):
     data = readadc(channels)
     datac = data[0]
     datav = data[1]
@@ -107,7 +107,7 @@ if(True):
     
     ### Power calculation v2
     datacv = []
-    foreach i in range(len(datac)):
+    for i in range(len(datac)):
         datacv.append(datac[0][i]*datav[1][i]*0.004010802‬)
         
     powerv2 = statistics.mean(datacv);
