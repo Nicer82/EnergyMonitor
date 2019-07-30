@@ -108,7 +108,7 @@ while(True):
     ### Power calculation v2
     datacv = []
     for i in range(len(datac)):
-        datacv.append(datac[0][i]*datav[1][i]*0.004010802‬)
+        datacv.append(datac[0][i]*C_CALIBRATIONFACTOR*datav[1][i]*V_CALIBRATIONFACTOR‬)
         
     powerv2 = statistics.mean(datacv);
     
