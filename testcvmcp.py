@@ -12,6 +12,7 @@ AC_FREQUENCY = 50
 
 C_CALIBRATIONFACTOR = 0.01667
 V_CALIBRATIONFACTOR = 0.2406
+CALIBRATIONFACTOR = 0.004044
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
@@ -108,10 +109,9 @@ while(True):
     ### Power calculation v2
     datacv = []
     for i in range(len(datac)):
-        val = datac[i] * C_CALIBRATIONFACTOR*datav[i] * V_CALIBRATIONFACTOR
-        datacv.append(val)
+        datacv.append(datac[i] * datav[i])
         
-    powerv2 = statistics.mean(datacv);
+    powerv2 = statistics.mean(datacv)*CALIBRATIONFACTOR;
     
     print("Current: {} A, Voltage: {} V, Power: {} W, Powerv2: {} W".format(round(current,3),round(voltage,1),round(power),round(powerv2)))
 
