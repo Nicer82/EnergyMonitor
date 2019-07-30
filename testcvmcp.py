@@ -109,7 +109,7 @@ while(True):
     datacv = []
     for i in range(len(datac)):
         val = datac[0][i]*C_CALIBRATIONFACTOR*datav[1][i]*V_CALIBRATIONFACTOR
-        datacv.append(‬val)
+        datacv.append(val)
         
     powerv2 = statistics.mean(datacv);
     
