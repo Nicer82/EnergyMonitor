@@ -12,7 +12,7 @@ AC_FREQUENCY = 50
 
 C_CALIBRATIONFACTOR = 0.01667
 V_CALIBRATIONFACTOR = 0.2406
-CALIBRATIONFACTOR = 0.004
+CALIBRATIONFACTOR = 0.003995
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
