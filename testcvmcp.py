@@ -5,7 +5,7 @@ import spidev
 
 # Read settings
 ADC_SAMPLESPERWAVE = 60 # If set to more then 400 with one channel, the code can't keep up, so that is about the max samples per wave
-ADC_ACWAVESTOREAD = 50
+ADC_ACWAVESTOREAD = 10
 
 # Mains properties
 AC_FREQUENCY = 50
@@ -85,8 +85,7 @@ spi.open(0,0)
 
 channels = [0,1,2]
 
-#while(True):
-for i in range(5):
+if(True):
     data = readadc(channels)
     datac = data[0]
     datav = data[1]
