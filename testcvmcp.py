@@ -61,8 +61,8 @@ def readadc(channels):
 
     end = time.perf_counter()
 
-    for i in range(len(data[0])):
-        print("{};{}".format(data[0][i],data[1][i]))
+    #for i in range(len(data[0])):
+    #    print("{};{}".format(data[0][i],data[1][i]))
 
     #print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data[0]),len(data[0])/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
     
@@ -104,6 +104,14 @@ if(True):
     
     ### Power calculation
     power = current*voltage
-    print("Current: {} A, Voltage: {} V, Power: {} W".format(round(current,3),round(voltage,1),round(power)))
+    
+    ### Power calculation v2
+    datacv = []
+    foreach i in range(len(datac)):
+        datacv.append(datac[0][i]*datav[1][i]*0.004010802‬)
+        
+    powerv2 = statistics.mean(datacv);
+    
+    print("Current: {} A, Voltage: {} V, Power: {} W, Powerv2: {} W".format(round(current,3),round(voltage,1),round(power),round(powerv2)))
 
 spi.close()
