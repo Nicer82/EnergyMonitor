@@ -111,6 +111,6 @@ while(True):
         
         print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
     
-    print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(,round(sum(current),3),round(statistics.mean(voltage),1),round(sum(power))))
+    print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(sum(current),3),round(statistics.mean(voltage),1),round(sum(power))))
 
 spi.close()
