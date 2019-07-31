@@ -84,7 +84,7 @@ def flowdirection(datac,datav):
 spi = spidev.SpiDev()
 spi.open(0,0)
 
-channels = [0,1,2,3,4,5]
+channels = [0,1,2]
 
 while(True):
     data = readadc(channels)
