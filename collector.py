@@ -96,17 +96,16 @@ while(True):
         voltage = []
         current = []
 
-        for phase in config["Collector"]["Phases"]:
+        for li in range(len(config["Collector"]["Phases"])):
             powerdata = []                            
-            li = int(phase)
             ci = round(li*2)
             vi = ci+1
 
             for reading in range(len(data[ci])):
                 powerdata.append(data[ci][reading] * data[vi][reading])
 
-            power.append(statistics.mean(powerdata)*config["Collector"]["Phases"][phase]["CalibrationFactor_Power"])
-            voltage.append(rootmeansquare(data[vi])*config["Collector"]["Phases"][phase]["CalibrationFactor_Voltage"])
+            power.append(statistics.mean(powerdata)*config["Collector"]["Phases"][li]["CalibrationFactor_Power"])
+            voltage.append(rootmeansquare(data[vi])*config["Collector"]["Phases"][li]["CalibrationFactor_Voltage"])
             print(power)
             print(voltage)
             print(li)
