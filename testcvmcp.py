@@ -12,7 +12,7 @@ AC_FREQUENCY = 50
 
 CHANNELS = [0,1,2,3,4,5]
 CALIBRATIONFACTOR = [0.004047,0.004047,0.004047]
-CALIBRATIONFACTOR_V = [1,1,1]
+CALIBRATIONFACTOR_V = [1,1,0,248]
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
     sumsquares = 0.0
