@@ -65,10 +65,9 @@ def readadc(channels,samplesperwave,wavestoread,frequency):
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
     channels = []
-    for phase in config["Collector"]["Phases"]:
-        print(phase)
-        channels.append(config["Collector"]["Phases"][phase]["Channel_Current"])
-        channels.append(config["Collector"]["Phases"][phase]["Channel_Voltage"])
+    for i in range(config["Collector"]["Phases"]):
+        channels.append(i*2)
+        channels.append(i*2+1)
         
 # Create a new log file per start
 logFileName = "/home/pi/EnergyMonitor/collector_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
@@ -97,18 +96,16 @@ while(True):
         voltage = []
         current = []
 
-        for phase in config["Collector"]["Phases"]:
+        for li in range(config["Collector"]["Phases"]):
             powerdata = []                            
-            ci = config["Collector"]["Phases"][phase]["Channel_Current"]
-            vi = config["Collector"]["Phases"][phase]["Channel_Voltage"]
-            li = round(ci/2)
+            ci = li*2
+            vi = ci+1
 
             for reading in range(len(data[ci])):
                 powerdata.append(data[ci][reading] * data[vi][reading])
 
-            power.append(statistics.mean(powerdata)*config["Collector"]["Phases"][phase]["CalibrationFactor_Power"])
-            voltage.append(rootmeansquare(data[vi])*config["Collector"]["Phases"][phase]["CalibrationFactor_Voltage"])
-            print(phase)
+            power.append(statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"])
+            voltage.append(rootmeansquare(data[vi])*config["Collector"]["CalibrationFactor_Voltage"])
             current.append(power[li]/voltage[li])
 
             print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
