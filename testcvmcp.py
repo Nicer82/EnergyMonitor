@@ -11,7 +11,7 @@ ADC_ACWAVESTOREAD = 250
 AC_FREQUENCY = 50
 
 CHANNELS = [0,1,2,3,4,5]
-CALIBRATIONFACTOR = [0.004047,0.003996,0.004047]
+CALIBRATIONFACTOR = [0.004047,0.003995,0.004047]
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
