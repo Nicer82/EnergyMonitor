@@ -1,7 +1,7 @@
 {
   "Collector":
   {
-    "StateFile": "/home/pi/EnergyMonitorRAM/state.json" 
+    "StateFile": "/home/pi/EnergyMonitorRAM/state.json",
     "SamplesPerWave": 60,
     "WavesToRead": 50,
     "Frequency": 50,
