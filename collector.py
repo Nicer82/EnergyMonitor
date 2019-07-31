@@ -138,7 +138,7 @@ while(True):
             now = time.perf_counter()
             readtime = now-lastread
             capacity = sum(power)*readtime/3600
-            counter += capacity/1000
+            #counter += capacity/1000
             #print("Read time: {}, Capacity: {} Wh, Counter: {} KWh".format(round(readtime,3),round(capacity,5),round(counter,2)))
             lastread = now
     except Exception as e:
