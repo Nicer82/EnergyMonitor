@@ -121,6 +121,6 @@ while(True):
         readtime = now-lastread
         capacity = sum(power)*readtime/3600
         counter += capacity/1000
-        print("Read time: {}, Capacity: {} Wh, Counter: {} KWh".format(round(readtime,3),round(capacity,5),round(counter,2)))
+        print("Read time: {}, Power: {} W, Capacity: {} Wh, Counter: {} KWh".format(round(readtime,3),round(sum(power)),round(capacity,5),round(counter,2)))
         lastread = now
 spi.close()
