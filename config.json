@@ -1,48 +1,27 @@
 {
   "Collector":
   {
-    "Database": "/home/pi/EnergyMonitor/EnergyMonitor.db",
-    "SaveInterval": 10,
-    "ReadInterval": 3,
-    "Voltage": 230,
+    "StateFile": "/home/pi/EnergyMonitorRAM/state.json" 
+    "SamplesPerWave": 60,
+    "WavesToRead": 50,
     "Frequency": 50,
-    "Channels":
+    "Phases":
     {
       "0":
       {
-        "AmpFactor": 0.00285,
-        "AmpExponent": 1.0,
-        "AmpMinimum": 0.0
+        "CalibrationFactor_Power": 0.004064,
+        "CalibrationFactor_Voltage": 0.2475
       },
       "1":
       {
-        "AmpFactor": 0.00285,
-        "AmpExponent": 1.0,
-        "AmpMinimum": 0.0
+        "CalibrationFactor_Power": 0.004064,
+        "CalibrationFactor_Voltage": 0.2475
       },
       "2":
       {
-        "AmpFactor": 0.00285,
-        "AmpExponent": 1.0,
-        "AmpMinimum": 0.0
-      },
-      "3":
-      {
-        "AmpFactor": 0.00285,
-        "AmpExponent": 1.0,
-        "AmpMinimum": 0.1
+        "CalibrationFactor_Power": 0.004064,
+        "CalibrationFactor_Voltage": 0.2475
       }
     }
-  },
-  "Uploader":
-  {
-    "Host": "MyHost",
-    "Port": 3307,
-    "Database": "MyDatabase",
-    "User": "MyUser",
-    "Password": "MyPassword",
-    "UploadInterval": 5,
-    "VacuumInterval": 3600,
-    "LocalDataKeepInterval": 900
   }
 }
