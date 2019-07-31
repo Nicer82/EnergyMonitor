@@ -4,6 +4,7 @@ import statistics
 import math
 import spidev
 import logging
+from datetime import datetime
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
