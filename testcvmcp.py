@@ -10,6 +10,7 @@ ADC_ACWAVESTOREAD = 50
 # Mains properties
 AC_FREQUENCY = 50
 
+counter = 68
 CHANNELS = [0,1,2,3,4,5]
 CALIBRATIONFACTOR = [0.004047,0.004047,0.004047]
 CALIBRATIONFACTOR_V = [0.2475,0.2475,0.2475]
@@ -83,6 +84,7 @@ def flowdirection(datac,datav):
 spi = spidev.SpiDev()
 spi.open(0,0)
 
+
 while(True):
     ### Read the channels
     data = readadc(CHANNELS)
@@ -109,8 +111,15 @@ while(True):
         voltage.append(rootmeansquare(data[channel+1])*CALIBRATIONFACTOR_V[li])
         current.append(power[li]/voltage[li])
         
-        print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
+        #print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
     
-    print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(sum(current),3),round(statistics.mean(voltage),1),round(sum(power))))
-
+    #print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(sum(current),3),round(statistics.mean(voltage),1),round(sum(power))))
+    
+    if(lastread != 0):
+        capacity = sum(power)*readtime/3600
+        counter += capacity/1000
+        now = time.perf_counter()
+        readtime = lastread-now
+        print("Read time: {}, Capacity: {} Wh, Counter: {} KWh".format(readtime,capacity,counter))
+        lastread = now
 spi.close()
