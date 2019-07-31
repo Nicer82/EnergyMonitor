@@ -13,7 +13,7 @@ AC_FREQUENCY = 50
 counter = 8632.72
 lastread = time.perf_counter()
 CHANNELS = [0,1,2,3,4,5]
-CALIBRATIONFACTOR = [0.004047,0.004047,0.004047]
+CALIBRATIONFACTOR = [0.004064,0.004064,0.004064]
 CALIBRATIONFACTOR_V = [0.2475,0.2475,0.2475]
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
