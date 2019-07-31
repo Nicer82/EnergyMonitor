@@ -99,7 +99,7 @@ while(True):
         for phase in config["Collector"]["Phases"]:
             powerdata = []                            
             li = int(phase)
-            ci = round(phase*2)
+            ci = round(li*2)
             vi = ci+1
 
             for reading in range(len(data[ci])):
