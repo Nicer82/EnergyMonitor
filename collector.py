@@ -65,9 +65,9 @@ def readadc(channels,samplesperwave,wavestoread,frequency):
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
     channels = []
-    for phase in config["Collector"]["Phases"]:
-        channels.append(int(phase)*2)
-        channels.append(int(phase)*2+1)
+    for li in range(len(config["Collector"]["Phases"])):
+        channels.append(round(li*2))
+        channels.append(round(li*2)+1)
 
 # Create a new log file per start
 logFileName = "/home/pi/EnergyMonitor/collector_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
