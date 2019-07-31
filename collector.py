@@ -107,6 +107,7 @@ while(True):
 
             power.append(statistics.mean(powerdata)*config["Collector"]["Phases"][phase]["CalibrationFactor_Power"])
             voltage.append(rootmeansquare(data[vi])*config["Collector"]["Phases"][phase]["CalibrationFactor_Voltage"])
+            print(li)
             current.append(power[li]/voltage[li])
 
             print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
