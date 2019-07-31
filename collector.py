@@ -95,7 +95,10 @@ while(True):
         power = []
         voltage = []
         current = []
-
+        jsondata = {}
+        jsondata['time'] = time.time()
+        jsondata['phases'] = []
+        
         for li in range(config["Collector"]["Phases"]):
             powerdata = []                            
             ci = li*2
@@ -104,21 +107,38 @@ while(True):
             for reading in range(len(data[ci])):
                 powerdata.append(data[ci][reading] * data[vi][reading])
 
-            power.append(statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"])
-            voltage.append(rootmeansquare(data[vi])*config["Collector"]["CalibrationFactor_Voltage"])
-            current.append(power[li]/voltage[li])
+            phase_power = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
+            power.append(phase_power)
+            phase_voltage = rootmeansquare(data[vi])*config["Collector"]["CalibrationFactor_Voltage"]
+            voltage.append(phase_voltage)
+            phase_current = phase_power / phase_voltage
+            current.append(phase_current)
+            
+            jsondata['phases'].append({
+                'name': 'L{}'.format(li+1),
+                'current': round(phase_current,3),
+                'voltage': round(phase_voltage,1),
+                'power': round(phase_power)
+            })
 
             #print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
 
         #print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(sum(current),3),round(statistics.mean(voltage),1),round(sum(power))))
-
-        #if(lastread != 0):
-        #    now = time.perf_counter()
-        #    readtime = now-lastread
-        #    capacity = sum(power)*readtime/3600
-        #    counter += capacity/1000
-        #    print("Read time: {}, Capacity: {} Wh, Counter: {} KWh".format(round(readtime,3),round(capacity,5),round(counter,2)))
-        #    lastread = now
+        
+        jsondata['total_current'] = round(sum(current),3)
+        jsondata['total_voltage'] = round(statistics.mean(voltage),1)
+        jsondata['total_power'] = round(sum(power))
+        
+        with open(config["Collector"]["StateFile"], 'w+') as outfile:
+            json.dump(jsondata, outfile)
+    
+        if(lastread != 0):
+            now = time.perf_counter()
+            readtime = now-lastread
+            capacity = sum(power)*readtime/3600
+            counter += capacity/1000
+            #print("Read time: {}, Capacity: {} Wh, Counter: {} KWh".format(round(readtime,3),round(capacity,5),round(counter,2)))
+            lastread = now
     except Exception as e:
         print(e)
         logging.exception("Exception occurred, waiting 10 seconds before continueing")
