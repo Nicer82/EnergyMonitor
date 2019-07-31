@@ -64,12 +64,11 @@ def readadc(channels,samplesperwave,wavestoread,frequency):
 # Read configuration
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
-    print(config)
     channels = []
-    for li in range(len(config["Collector"]["Phases"])):
-        channels.append(round(li*2))
-        channels.append(round(li*2)+1)
-
+    for phase in config["Collector"]["Phases"]:
+        channels.append(config["Collector"]["Phases"][phase]["Channel_Current"])
+        channels.append(config["Collector"]["Phases"][phase]["Channel_Voltage"])
+        
 # Create a new log file per start
 logFileName = "/home/pi/EnergyMonitor/collector_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
 logging.basicConfig(filename=logFileName, 
@@ -97,19 +96,17 @@ while(True):
         voltage = []
         current = []
 
-        for li in range(len(config["Collector"]["Phases"])):
+        for phase in config["Collector"]["Phases"]:
             powerdata = []                            
-            ci = round(li*2)
-            vi = ci+1
+            ci = config["Collector"]["Phases"][phase]["Channel_Current"]
+            vi = config["Collector"]["Phases"][phase]["Channel_Voltage"]
+            li = round(ci/2)
 
             for reading in range(len(data[ci])):
                 powerdata.append(data[ci][reading] * data[vi][reading])
 
-            power.append(statistics.mean(powerdata)*config["Collector"]["Phases"][li]["CalibrationFactor_Power"])
-            voltage.append(rootmeansquare(data[vi])*config["Collector"]["Phases"][li]["CalibrationFactor_Voltage"])
-            print(power)
-            print(voltage)
-            print(li)
+            power.append(statistics.mean(powerdata)*config["Collector"]["Phases"][phase]["CalibrationFactor_Power"])
+            voltage.append(rootmeansquare(data[vi])*config["Collector"]["Phases"][phase]["CalibrationFactor_Voltage"])
             current.append(power[li]/voltage[li])
 
             print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
