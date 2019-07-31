@@ -1,33 +1,72 @@
-#!/usr/bin/python3
-# -------------------------------------------------------------------------
-# Program: Script to continuously read out the current sensors and save
-#          the results in a local SQLite DB.
-#          This script should be setup to run at boot of the 
-#          monitoring device.
-#
-# Copyright (C) 2019 Bjorn Douchy
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License at https://www.gnu.org/licenses
-#    for more details.
-# -------------------------------------------------------------------------
-from currentreader import CurrentReader
-from datetime import datetime
 import json
-import sqlite3
 import time
+import statistics
+import math
+import spidev
 import logging
+
+def rootmeansquare(values):
+    # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
+    sumsquares = 0.0
+
+    for value in values:
+        sumsquares = sumsquares + (value)**2 
+
+    if len(values) == 0:
+        rms = 0.0
+    else:
+        rms = math.sqrt(float(sumsquares)/len(values))
+
+    return rms
+
+def normalize(values):
+    avg = round(statistics.mean(values))
+
+    # Substract the mean of every value to set the mean to 0
+    for i in range(len(values)):
+        values[i] -= avg
+        
+    return values
+
+def readadc(channels,samplesperwave,wavestoread,frequency):
+    data = []
+    
+    for i in channels:
+        data.append([])
+        
+    start = time.perf_counter()
+    nextRead = start
+
+    for i in range(samplesperwave*wavestoread):
+        nextRead += 1/(samplesperwave*frequency)
+
+        # Read channels
+        for ci in range(len(channels)):
+            # Add a delay on the last channel to match timings. This is way more accurate than time.sleep() because it works up to the microsecond.
+            if(ci == len(channels)-1):
+                delay = max([0,round((nextRead-time.perf_counter())*1000000)]) 
+            else:
+                delay = 0
+
+            response = spi.xfer2([6+((4&channels[ci])>>2),(3&channels[ci])<<6,0],2000000,delay)
+            data[ci].append(((response[1] & 15) << 8) + response[2])
+
+    end = time.perf_counter()
+
+    #for i in range(len(data[0])):
+    #    print("{};{}".format(data[0][i],data[1][i]))
+
+    #print("Reads: {}, Performance: {} sps, Requested time: {} ms, Actual time: {} ms".format(len(data[0]),len(data[0])/(end-start),1000/AC_FREQUENCY*ADC_ACWAVESTOREAD,(end-start)*1000))
+    
+    return data
 
 # Read configuration
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
+    channels = []
+    for phase in config["Collector"]["Phases"]:
+        channels.append(int(phase)*2)
+        channels.append(int(phase)*2+1)
 
 # Create a new log file per start
 logFileName = "/home/pi/EnergyMonitor/collector_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
@@ -35,47 +74,56 @@ logging.basicConfig(filename=logFileName,
                     level=logging.ERROR, 
                     format='%(asctime)s %(levelname)s %(message)s')
 
-# Create CurrentReader object
-reader = CurrentReader(frequency=config["Collector"]["Frequency"])
-
-nextSave = time.time()+config["Collector"]["SaveInterval"]
-lastTimeStamp = (time.time() // config["Collector"]["ReadInterval"] * config["Collector"]["ReadInterval"])
-lastTimeStamps = [lastTimeStamp,lastTimeStamp,lastTimeStamp,lastTimeStamp]
-unsaved = []
+# Create the SPI
+spi = spidev.SpiDev()
+spi.open(0,0)
 
 # Infinite loop
 while(True):
     try:
-        for chan in config["Collector"]["Channels"]:
-            chanInt = int(chan)
-            reader.readChannel(chan=chanInt,
-                               ampFactor=config["Collector"]["Channels"][chan]["AmpFactor"],
-                               ampExponent=config["Collector"]["Channels"][chan]["AmpExponent"],
-                               ampMinimum=config["Collector"]["Channels"][chan]["AmpMinimum"])
-            power = reader.lastCurrent()*config["Collector"]["Voltage"]
-            
-            while(lastTimeStamps[chanInt] < reader.lastStart()):
-                unsaved.append([lastTimeStamps[chanInt], chanInt, power])
-                lastTimeStamps[chanInt] = lastTimeStamps[chanInt] + config["Collector"]["ReadInterval"]
-        
-        if(time.time() >= nextSave):
-            conn = sqlite3.connect(config["Collector"]["Database"])
-            c = conn.cursor()
-            sql = "INSERT INTO ReadingData (TimeStamp,Channel,Power) VALUES ({0},{1},{2})"
+        ### Read the channels
+        data = readadc(channels,config["Collector"]["SamplesPerWave"],config["Collector"]["WavesToRead"],config["Collector"]["Frequency"])
 
-            for unsavedrow in unsaved:
-                c.execute(sql.format(unsavedrow[0],unsavedrow[1],unsavedrow[2]))
+        ### Normalize the captured data
+        for i in range(len(data)):
+            #print("Channel {} before normalize: Reads: {}, Min: {}, Max: {}".format(i,len(data[i]),min(data[i]),max(data[i])))
+            data[i] = normalize(data[i])
+            #print("Channel {} after normalize: Reads: {}, Min: {}, Max: {}".format(i,len(data[i]),min(data[i]),max(data[i])))
 
-            conn.commit()
-            conn.close()
+        ### Calculate the power
+        power = []
+        voltage = []
+        current = []
 
-            unsaved = []
+        for phase in config["Collector"]["Phases"]:
+            powerdata = []                            
+            li = int(phase)
+
+            for reading in range(len(data[phase*2])):
+                powerdata.append(data[phase*2][reading] * data[phase*2+1][reading])
+
+            power.append(statistics.mean(powerdata)*config["Collector"]["Phases"][li]["CalibrationFactor_Power"]);
+            voltage.append(rootmeansquare(data[phase*2+1])*config["Collector"]["Phases"][li]["CalibrationFactor_Voltage"])
+            current.append(power[li]/voltage[li])
+
+            print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
+
+        print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(sum(current),3),round(statistics.mean(voltage),1),round(sum(power))))
+
+        #if(lastread != 0):
+        #    now = time.perf_counter()
+        #    readtime = now-lastread
+        #    capacity = sum(power)*readtime/3600
+        #    counter += capacity/1000
+        #    print("Read time: {}, Capacity: {} Wh, Counter: {} KWh".format(round(readtime,3),round(capacity,5),round(counter,2)))
+        #    lastread = now
     except Exception as e:
         print(e)
         logging.exception("Exception occurred, waiting 10 seconds before continueing")
 
-        # Reset reader object
-        reader = CurrentReader(frequency=config["Collector"]["Frequency"])
+        # Reset the SPI
+        spi = spidev.SpiDev()
+        spi.open(0,0)
 
         # Wait 10 seconds to avoid flooding the error log too much
         time.sleep(10)
