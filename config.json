@@ -7,17 +7,17 @@
     "Frequency": 50,
     "Phases":
     {
-      "0":
+      "L1":
       {
         "CalibrationFactor_Power": 0.004064,
         "CalibrationFactor_Voltage": 0.2475
       },
-      "1":
+      "L2":
       {
         "CalibrationFactor_Power": 0.004064,
         "CalibrationFactor_Voltage": 0.2475
       },
-      "2":
+      "L3":
       {
         "CalibrationFactor_Power": 0.004064,
         "CalibrationFactor_Voltage": 0.2475
