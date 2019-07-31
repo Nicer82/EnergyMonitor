@@ -10,7 +10,7 @@ ADC_ACWAVESTOREAD = 50
 # Mains properties
 AC_FREQUENCY = 50
 
-counter = 8632,75
+counter = 8632.74
 lastread = time.perf_counter()
 CHANNELS = [0,1,2,3,4,5]
 CALIBRATIONFACTOR = [0.004047,0.004047,0.004047]
