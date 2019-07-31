@@ -117,10 +117,10 @@ while(True):
     #print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(sum(current),3),round(statistics.mean(voltage),1),round(sum(power))))
     
     if(lastread != 0):
-        capacity = sum(power)*readtime/3600
-        counter += capacity/1000
         now = time.perf_counter()
         readtime = lastread-now
+        capacity = sum(power)*readtime/3600
+        counter += capacity/1000
         print("Read time: {}, Capacity: {} Wh, Counter: {} KWh".format(readtime,capacity,counter))
         lastread = now
 spi.close()
