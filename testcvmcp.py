@@ -134,7 +134,7 @@ while(True):
     
     print("L1: Current: {} A, Voltage: {} V, Power: {} W".format(round(current1,3),round(voltage1,1),round(power1)))
     print("L2: Current: {} A, Voltage: {} V, Power: {} W".format(round(current2,3),round(voltage2,1),round(power2)))
-    print("L3: Current: {} A, Voltage: {} V, Power: {} W".format(round(current2,3),round(voltage3,1),round(power3)))
+    print("L3: Current: {} A, Voltage: {} V, Power: {} W".format(round(current3,3),round(voltage3,1),round(power3)))
     print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(current1+current2+current3,3),round(statistics.mean([voltage1,voltage2,voltage3]),1),round(power1+power2+power3)))
 
 spi.close()
