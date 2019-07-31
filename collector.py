@@ -99,12 +99,14 @@ while(True):
         for phase in config["Collector"]["Phases"]:
             powerdata = []                            
             li = int(phase)
+            ci = round(phase*2)
+            vi = ci+1
 
-            for reading in range(len(data[phase*2])):
-                powerdata.append(data[phase*2][reading] * data[phase*2+1][reading])
+            for reading in range(len(data[ci])):
+                powerdata.append(data[ci][reading] * data[vi][reading])
 
             power.append(statistics.mean(powerdata)*config["Collector"]["Phases"][li]["CalibrationFactor_Power"]);
-            voltage.append(rootmeansquare(data[phase*2+1])*config["Collector"]["Phases"][li]["CalibrationFactor_Voltage"])
+            voltage.append(rootmeansquare(data[vi])*config["Collector"]["Phases"][li]["CalibrationFactor_Voltage"])
             current.append(power[li]/voltage[li])
 
             print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
