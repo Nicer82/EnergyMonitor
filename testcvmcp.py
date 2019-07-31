@@ -10,9 +10,8 @@ ADC_ACWAVESTOREAD = 250
 # Mains properties
 AC_FREQUENCY = 50
 
-C_CALIBRATIONFACTOR = 0.01667
-V_CALIBRATIONFACTOR = 0.2406
-CALIBRATIONFACTOR = 0.003995
+CHANNELS = [0,1,2,3,4,5]
+CALIBRATIONFACTOR = [0.003995,0.003995,0.003995]
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
@@ -84,57 +83,26 @@ def flowdirection(datac,datav):
 spi = spidev.SpiDev()
 spi.open(0,0)
 
-channels = [0,1,2,3,4,5]
-
 while(True):
-    data = readadc(channels)
-    datac1 = data[0]
-    datav1 = data[1]
-    datac2 = data[2]
-    datav2 = data[3]
-    datac3 = data[4]
-    datav3 = data[5]
-    
-    #print("Current data: Before normalize: Reads: {}, Min: {}, Max: {}".format(len(datac),min(datac),max(datac)))
-    #print("Voltage data: Before normalize: Reads: {}, Min: {}, Max: {}".format(len(datav),min(datav),max(datav)))
+    ### Read the channels
+    data = readadc(CHANNELS)
 
-    datac1 = normalize(datac1)
-    datav1 = normalize(datav1)
-    datac2 = normalize(datac2)
-    datav2 = normalize(datav2)
-    datac3 = normalize(datac3)
-    datav3 = normalize(datav3)
-    
-    #print("Current data: After normalize: Reads: {}, Min: {}, Max: {}".format(len(datac),min(datac),max(datac)))
-    #print("Voltage data: After normalize: Reads: {}, Min: {}, Max: {}".format(len(datav),min(datav),max(datav)))
-
-    voltage1 = rootmeansquare(datav1) * V_CALIBRATIONFACTOR
-    current1 = rootmeansquare(datac1) * flowdirection(datac1,datav1) * C_CALIBRATIONFACTOR
-    voltage2 = rootmeansquare(datav2) * V_CALIBRATIONFACTOR
-    current2 = rootmeansquare(datac2) * flowdirection(datac2,datav2) * C_CALIBRATIONFACTOR
-    voltage3 = rootmeansquare(datav3) * V_CALIBRATIONFACTOR
-    current3 = rootmeansquare(datac3) * flowdirection(datac3,datav3) * C_CALIBRATIONFACTOR
-    
-    ### Power calculation
-    datacv1 = []
-    for i in range(len(datac1)):
-        datacv1.append(datac1[i] * datav1[i])
-    
-    datacv2 = []
-    for i in range(len(datac2)):
-        datacv2.append(datac2[i] * datav2[i])
-    
-    datacv3 = []
-    for i in range(len(datac3)):
-        datacv3.append(datac3[i] * datav3[i])
+    ### Normalize the captured data
+    for i in range(len(data)):
+        #print("Channel {} before normalize: Reads: {}, Min: {}, Max: {}".format(i,len(data[i]),min(data[i]),max(data[i])))
+        data[i] = normalize(data[i])
+        #print("Channel {} after normalize: Reads: {}, Min: {}, Max: {}".format(i,len(data[i]),min(data[i]),max(data[i])))
         
-    power1 = statistics.mean(datacv1)*CALIBRATIONFACTOR;
-    power2 = statistics.mean(datacv2)*CALIBRATIONFACTOR;
-    power3 = statistics.mean(datacv3)*CALIBRATIONFACTOR;
+    ### Calculate the power
+    power = []
+    for channel in [0,2,4]:
+        powerdata = []                            
+        for reading in range(len(data[channel])):
+            powerdata.append(data[channel][reading] * data[channel+1][reading])
+        
+        power.append(statistics.mean(powerdata)*CALIBRATIONFACTOR[channel/2]);
+        print("L{}: Power: {} W".format(channel/2+1,round(power[channel/2])))
     
-    print("L1: Current: {} A, Voltage: {} V, Power: {} W".format(round(current1,3),round(voltage1,1),round(power1)))
-    print("L2: Current: {} A, Voltage: {} V, Power: {} W".format(round(current2,3),round(voltage2,1),round(power2)))
-    print("L3: Current: {} A, Voltage: {} V, Power: {} W".format(round(current3,3),round(voltage3,1),round(power3)))
-    print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(current1+current2+current3,3),round(statistics.mean([voltage1,voltage2,voltage3]),1),round(power1+power2+power3)))
+    print("Total: Power: {} W".format(round(sum(power))))
 
 spi.close()
