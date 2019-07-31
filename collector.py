@@ -79,6 +79,8 @@ logging.basicConfig(filename=logFileName,
 spi = spidev.SpiDev()
 spi.open(0,0)
 
+lastread = time.perf_counter()
+
 # Infinite loop
 while(True):
     try:
