@@ -100,8 +100,8 @@ while(True):
         for reading in range(len(data[channel])):
             powerdata.append(data[channel][reading] * data[channel+1][reading])
         
-        power.append(statistics.mean(powerdata)*CALIBRATIONFACTOR[channel/2]);
-        print("L{}: Power: {} W".format(channel/2+1,round(power[channel/2])))
+        power.append(statistics.mean(powerdata)*CALIBRATIONFACTOR[round(channel/2]));
+        print("L{}: Power: {} W".format(round(channel/2)+1,round(power[round(channel/2)])))
     
     print("Total: Power: {} W".format(round(sum(power))))
 
