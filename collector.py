@@ -64,6 +64,7 @@ def readadc(channels,samplesperwave,wavestoread,frequency):
 # Read configuration
 with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
+    print(config)
     channels = []
     for li in range(len(config["Collector"]["Phases"])):
         channels.append(round(li*2))
