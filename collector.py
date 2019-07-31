@@ -100,7 +100,7 @@ while(True):
             powerdata = []                            
             ci = config["Collector"]["Phases"][phase]["Channel_Current"]
             vi = config["Collector"]["Phases"][phase]["Channel_Voltage"]
-            li = round(ci/2)
+            li = ci/2
 
             for reading in range(len(data[ci])):
                 powerdata.append(data[ci][reading] * data[vi][reading])
