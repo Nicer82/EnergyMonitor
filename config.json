@@ -9,16 +9,22 @@
     {
       "L1":
       {
+        "Channel_Current": 0,
+        "Channel_Voltage": 1,
         "CalibrationFactor_Power": 0.004064,
         "CalibrationFactor_Voltage": 0.2475
       },
       "L2":
       {
+        "Channel_Current": 2,
+        "Channel_Voltage": 3,
         "CalibrationFactor_Power": 0.004064,
         "CalibrationFactor_Voltage": 0.2475
       },
       "L3":
       {
+        "Channel_Current": 4,
+        "Channel_Voltage": 5,
         "CalibrationFactor_Power": 0.004064,
         "CalibrationFactor_Voltage": 0.2475
       }
