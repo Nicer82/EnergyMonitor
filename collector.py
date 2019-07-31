@@ -97,6 +97,7 @@ while(True):
         current = []
 
         for phase in config["Collector"]["Phases"]:
+            print(phase)
             powerdata = []                            
             ci = config["Collector"]["Phases"][phase]["Channel_Current"]
             vi = config["Collector"]["Phases"][phase]["Channel_Voltage"]
