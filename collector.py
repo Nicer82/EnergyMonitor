@@ -66,6 +66,7 @@ with open('/home/pi/EnergyMonitor/config.json') as json_data:
     config = json.load(json_data)
     channels = []
     for phase in config["Collector"]["Phases"]:
+        print(phase)
         channels.append(config["Collector"]["Phases"][phase]["Channel_Current"])
         channels.append(config["Collector"]["Phases"][phase]["Channel_Voltage"])
         
@@ -97,7 +98,6 @@ while(True):
         current = []
 
         for phase in config["Collector"]["Phases"]:
-            print(phase)
             powerdata = []                            
             ci = config["Collector"]["Phases"][phase]["Channel_Current"]
             vi = config["Collector"]["Phases"][phase]["Channel_Voltage"]
