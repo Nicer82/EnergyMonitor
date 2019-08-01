@@ -1,10 +1,14 @@
+import json
 from flask import Flask
 from flask_restful import Resource, reqparse ,Api
 
 TGS = Flask(__name__)
 api = Api(TGS)
 
-articles = [
+with open('/home/pi/EnergyMonitorRAM/state.json') as json_data:
+    state = json.load(json_data)
+
+state = [
     {
         "category": "python",
         "views": 100,
@@ -21,6 +25,12 @@ articles = [
         "title": "elasticsearch"
     }
 ]
+
+class State(Resource):
+    def get(self):
+        with open('/home/pi/EnergyMonitorRAM/state.json') as json_data:
+            state = json.load(json_data)
+        return state, 200
 
 class Article(Resource):
     def get(self, category):
@@ -73,5 +83,6 @@ class Article(Resource):
         return "{} is deleted.".format(category), 200
 
 api.add_resource(Article, "/category/<string:category>")
+api.add_resource(State, "/state")
 
 TGS.run(host='192.168.1.70',debug=True,port=8080)
