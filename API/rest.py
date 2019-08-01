@@ -74,4 +74,4 @@ class Article(Resource):
 
 api.add_resource(Article, "/category/<string:category>")
 
-TGS.run(debug=True,port=8080)
+TGS.run(host='192.168.1.70',debug=True,port=8080)
