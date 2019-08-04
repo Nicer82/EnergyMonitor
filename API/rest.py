@@ -85,4 +85,4 @@ class Article(Resource):
 api.add_resource(Article, "/category/<string:category>")
 api.add_resource(State, "/state")
 
-TGS.run(host='192.168.1.70',debug=False,port=8080)
+TGS.run(host='192.168.1.55',debug=False,port=80)
