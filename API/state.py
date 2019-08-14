@@ -4,6 +4,8 @@ from flask import Flask
 from flask_restful import Resource, reqparse ,Api
 
 app = Flask(__name__)
+@app.route("/")
+
 api = Api(app)
 
 with open('/home/pi/EnergyMonitorRAM/state.json') as json_data:
