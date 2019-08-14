@@ -16,3 +16,6 @@ class State(Resource):
         return state, 200
 
 api.add_resource(State, "/state")
+
+if __name__ == "__main__":
+    app.run(host='192.168.1.55',debug=False,port=8080)
