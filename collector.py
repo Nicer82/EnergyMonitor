@@ -139,7 +139,6 @@ while(True):
         jsondata['total_voltage'] = round(statistics.mean(voltage),1)
         jsondata['total_power'] = round(sum(power))
         
-        print(json.dumps(jsondata))
         run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(config["Collector"]["StateDevice"],jsondata['point'],json.dumps(jsondata)))
         
         if(lastread != 0):
