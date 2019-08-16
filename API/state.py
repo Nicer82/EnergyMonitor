@@ -56,7 +56,7 @@ class State(Resource):
         #    "total_current": args["total_current"],
         #    "total_voltage": args["total_voltage"],
         #    "total_power": args["total_power"]
-        }
+        #}
         statedata.append(newpointdata)
         return pointdata, 201
                 
