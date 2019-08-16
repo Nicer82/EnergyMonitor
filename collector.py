@@ -117,12 +117,9 @@ while(True):
             phase_current = phase_power / phase_voltage
             current.append(phase_current)
             
-            jsondata['phases'].append({
-                'name': 'L{}'.format(li+1),
-                'current': round(phase_current,3),
-                'voltage': round(phase_voltage,1),
-                'power': round(phase_power)
-            })
+            jsondata['l{}_current'.format(li+1)] = round(phase_current,3)
+            jsondata['l{}_voltage'.format(li+1)] = round(phase_voltage,1)
+            jsondata['l{}_power'.format(li+1)] = round(phase_power)
 
             #print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
 
