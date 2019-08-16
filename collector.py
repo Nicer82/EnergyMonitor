@@ -4,7 +4,18 @@ import statistics
 import math
 import spidev
 import logging
+import subprocess
 from datetime import datetime
+
+def run_process(cmd):
+    result = None
+    try:
+        result = subprocess.check_output(cmd, shell=True)
+    except subprocess.CalledProcessError:
+        # We reach this point if the process returns a non-zero exit code.
+        result = b''
+
+    return result
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
@@ -127,6 +138,8 @@ while(True):
         jsondata['total_current'] = round(sum(current),3)
         jsondata['total_voltage'] = round(statistics.mean(voltage),1)
         jsondata['total_power'] = round(sum(power))
+        
+        print(run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(config["Collector"]["StateDevice"],jsondata['point'],jsondata)))
         
         with open(config["Collector"]["StateFile"], 'w+') as outfile:
             json.dump(jsondata, outfile)
