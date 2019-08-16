@@ -57,20 +57,20 @@ class State(Resource):
                 
         # insert in case the point doesn't already exist
         pointdata = {
-            "point" = point,
-            "time" = args["time"],
-            "l1_current" = args["l1_current"],
-            "l1_voltage" = args["l1_voltage"],
-            "l1_power" = args["l1_power"],
-            "l2_current" = args["l2_current"],
-            "l2_voltage" = args["l2_voltage"],
-            "l2_power" = args["l2_power"],
-            "l3_current" = args["l3_current"],
-            "l3_voltage" = args["l3_voltage"],
-            "l3_power" = args["l3_power"],
-            "total_current" = args["total_current"],
-            "total_voltage" = args["total_voltage"],
-            "total_power" = args["total_power"]
+            "point": point,
+            "time": args["time"],
+            "l1_current": args["l1_current"],
+            "l1_voltage": args["l1_voltage"],
+            "l1_power": args["l1_power"],
+            "l2_current": args["l2_current"],
+            "l2_voltage": args["l2_voltage"],
+            "l2_power": args["l2_power"],
+            "l3_current": args["l3_current"],
+            "l3_voltage": args["l3_voltage"],
+            "l3_power": args["l3_power"],
+            "total_current": args["total_current"],
+            "total_voltage": args["total_voltage"],
+            "total_power": args["total_power"]
         }
         statedata.append(pointdata)
         return pointdata, 201
