@@ -1,8 +1,7 @@
 {
   "Collector":
   {
-    "StateFile": "/home/pi/EnergyMonitorRAM/state.json",
-    "StateService": "http://192.168.1.55:8080",
+    "StateDevice": "192.168.1.55:8080",
     "Point": "Mains",
     "SamplesPerWave": 60,
     "WavesToRead": 50,
