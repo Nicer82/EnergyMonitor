@@ -141,9 +141,6 @@ while(True):
         
         print(run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(config["Collector"]["StateDevice"],jsondata['point'],jsondata)))
         
-        with open(config["Collector"]["StateFile"], 'w+') as outfile:
-            json.dump(jsondata, outfile)
-    
         if(lastread != 0):
             now = time.perf_counter()
             readtime = now-lastread
