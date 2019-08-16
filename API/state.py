@@ -21,7 +21,7 @@ class State(Resource):
     def put(self, point):
         # fetch the values from the post data
         
-        newpointdata = json.loads(request.data)
+        newpointdata = json.loads(request.data.decode('ascii'))
         print(newpointdata)
         
         parser = reqparse.RequestParser()
