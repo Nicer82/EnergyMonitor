@@ -75,7 +75,6 @@ class State(Resource):
         statedata.append(pointdata)
         return pointdata, 201
                 
-api.add_resource(State, "/state")
 api.add_resource(State, "/state/<string:point>")
 
 if __name__ == "__main__":
