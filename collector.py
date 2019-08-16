@@ -100,7 +100,6 @@ while(True):
         jsondata = {}
         jsondata['point'] = config["Collector"]["Point"]
         jsondata['time'] = time.time()
-        jsondata['phases'] = []
         
         for li in range(config["Collector"]["Phases"]):
             powerdata = []                            
