@@ -12,7 +12,7 @@
   },
   "Api":
   {
-    "Port": 8080
+    "Port": 8080,
     "VolumeDataSeconds": 300
   }
 }
