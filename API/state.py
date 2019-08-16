@@ -7,14 +7,19 @@ from flask_restful import Resource, reqparse ,Api
 app = Flask(__name__)
 api = Api(app)
 
-with open('/home/pi/EnergyMonitorRAM/state.json') as json_data:
-    state = json.load(json_data)
+statedata = []
 
 class State(Resource):
-    def get(self):
-        with open('/home/pi/EnergyMonitorRAM/state.json') as json_data:
-            state = json.load(json_data)
-        return state, 200
+    def get(self, point):
+        if(point != ''):
+            for pointdata in statedata:
+                if(point == pointdata["point"]):
+                    return pointdata, 200
+            return "point not found", 404
+        return statedata, 200
+        #with open('/home/pi/EnergyMonitorRAM/state.json') as json_data:
+        #    state = json.load(json_data)
+        #return state, 200
 
 api.add_resource(State, "/state")
 
