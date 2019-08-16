@@ -98,7 +98,7 @@ while(True):
         voltage = []
         current = []
         jsondata = {}
-        jsondata['pointname'] = config["Collector"]["PointName"]
+        jsondata['point'] = config["Collector"]["Point"]
         jsondata['time'] = time.time()
         jsondata['phases'] = []
         
