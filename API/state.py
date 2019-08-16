@@ -21,7 +21,7 @@ class State(Resource):
         #    state = json.load(json_data)
         #return state, 200
 
-api.add_resource(State, "/state")
+api.add_resource(State, "/state/<string:point>")
 
 if __name__ == "__main__":
     # Read configuration
