@@ -20,6 +20,10 @@ class State(Resource):
         #return state, 200
     def put(self, point):
         # fetch the values from the post data
+        
+        newpointdata = json.loads(request.data)
+        print(newpointdata)
+        
         parser = reqparse.RequestParser()
         parser.add_argument("point")
         parser.add_argument("time")
