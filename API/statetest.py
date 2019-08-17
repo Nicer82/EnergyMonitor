@@ -21,5 +21,5 @@ input = {
 }
 while(True):
   input["time"] = time.time()
-  s.registerState(input)
+  s.registerState(input.copy())
   time.sleep(random.random()*3+1)
