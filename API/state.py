@@ -117,7 +117,7 @@ class State(Resource):
             "UsageMinW": statevolumeusagewh
         }
         return newvolumepointdata     
-    def writevolume(self, volumepointdata)
+    def writevolume(self, volumepointdata):
         volumepointdata["SupplyAvgW"] = volumepointdata["SupplyWh"] / config["Api"]["VolumeDataSeconds"] * 3600
         volumepointdata["UsageAvgW"] = volumepointdata["UsageWh"] / config["Api"]["VolumeDataSeconds"] * 3600
         print(volumepointdata)
