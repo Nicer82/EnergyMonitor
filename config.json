@@ -15,7 +15,7 @@
     "Port": 8080,
     "VolumeDataSeconds": 60,
     "VolumeDbHost": "192.168.1.2",
-    "VolumeDbPort": 1433,
+    "VolumeDbPort": 3307,
     "VolumeDbName": "EnergyMonitor",
     "VolumeDbUser": "EnergyMonitor",
     "VolumeDbPassword": "EnergyMonitor"
