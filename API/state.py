@@ -52,6 +52,8 @@ class State(Resource):
         # Calculate the volume data for the current state (part 1)
         volumestartfromprevstate =  prevtime // config["Api"]["VolumeDataSeconds"] * config["Api"]["VolumeDataSeconds"]
         volumestartfromcurstate = statepointdata["time"] // config["Api"]["VolumeDataSeconds"] * config["Api"]["VolumeDataSeconds"]
+        print(volumestartfromprevstate)
+        print(volumestartfromcurstate)
         if(volumestartfromcurstate != volumestartfromprevstate):
             newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(volumestartfromcurstate-prevtime))
         else:
