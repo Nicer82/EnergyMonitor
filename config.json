@@ -13,6 +13,6 @@
   "Api":
   {
     "Port": 8080,
-    "VolumeDataSeconds": 300
+    "VolumeDataSeconds": 15
   }
 }
