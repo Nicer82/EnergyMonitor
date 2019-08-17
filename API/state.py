@@ -2,8 +2,8 @@
 import json
 import socket
 import time
-import datetime
 import mysql.connector
+from datetime import datetime
 from flask import Flask, request
 from flask_restful import Resource, reqparse ,Api
 
