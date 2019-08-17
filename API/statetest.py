@@ -6,6 +6,7 @@ s = state.State()
 
 statepointdata = {
   "time": time.time(),
+  "point": "test",
   "l1_current": 1.123,
   "l1_voltage": 240.1,
   "l1_power": 269.6323,
