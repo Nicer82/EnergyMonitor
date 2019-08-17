@@ -14,41 +14,113 @@ api = Api(app)
 
 statedata = []
 volumedata = []
-volumestart = time.time() DIV config["Api"]["VolumeDataSeconds"] * config["Api"]["VolumeDataSeconds"]
-volumeend = volumestart + config["Api"]["VolumeDataSeconds"]
 
 class State(Resource):
     def get(self, point):
-        for pointdata in statedata:
-            if(point == pointdata["point"]):
-                return pointdata, 200
+        for statepointdata in statedata:
+            if(point == statepointdata["point"]):
+                return statepointdata, 200
         return "point not found", 404
     def put(self, point):
         # fetch the values from the post data
-        newpointdata = json.loads(request.data.decode('ascii'))
+        newstatepointdata = json.loads(request.data.decode('ascii'))
         
         # update in case the point already exists
-        for pointdata in statedata:
-            if(point == pointdata["point"]):
-                pointdata["time"] = newpointdata["time"]
-                pointdata["l1_current"] = newpointdata["l1_current"]
-                pointdata["l1_voltage"] = newpointdata["l1_voltage"]
-                pointdata["l1_power"] = newpointdata["l1_power"]
-                pointdata["l2_current"] = newpointdata["l2_current"]
-                pointdata["l2_voltage"] = newpointdata["l2_voltage"]
-                pointdata["l2_power"] = newpointdata["l2_power"]
-                pointdata["l3_current"] = newpointdata["l3_current"]
-                pointdata["l3_voltage"] = newpointdata["l3_voltage"]
-                pointdata["l3_power"] = newpointdata["l3_power"]
-                pointdata["total_current"] = newpointdata["total_current"]
-                pointdata["total_voltage"] = newpointdata["total_voltage"]
-                pointdata["total_power"] = newpointdata["total_power"]
-                return pointdata, 200
+        for statepointdata in statedata:
+            if(point == statepointdata["point"]):
+                self.updatevolume(newstatepointdata, statepointdata["time"])
+                statepointdata["time"] = newstatepointdata["time"]
+                statepointdata["l1_current"] = newstatepointdata["l1_current"]
+                statepointdata["l1_voltage"] = newstatepointdata["l1_voltage"]
+                statepointdata["l1_power"] = newstatepointdata["l1_power"]
+                statepointdata["l2_current"] = newstatepointdata["l2_current"]
+                statepointdata["l2_voltage"] = newstatepointdata["l2_voltage"]
+                statepointdata["l2_power"] = newstatepointdata["l2_power"]
+                statepointdata["l3_current"] = newstatepointdata["l3_current"]
+                statepointdata["l3_voltage"] = newstatepointdata["l3_voltage"]
+                statepointdata["l3_power"] = newstatepointdata["l3_power"]
+                statepointdata["total_current"] = newstatepointdata["total_current"]
+                statepointdata["total_voltage"] = newstatepointdata["total_voltage"]
+                statepointdata["total_power"] = newstatepointdata["total_power"]
+                return statepointdata, 200
                 
         # insert in case the point doesn't already exist
-        statedata.append(newpointdata)
-        return pointdata, 201
+        statedata.append(newstatepointdata)
+        return statepointdata, 201
+    def updatevolume(self, statepointdata, prevtime):
+        # Calculate the volume data for the current state (part 1)
+        volumestartfromprevstate =  prevtime DIV config["Api"]["VolumeDataSeconds"] * config["Api"]["VolumeDataSeconds"]
+        volumestartfromcurstate = statepointdata["time"] DIV config["Api"]["VolumeDataSeconds"] * config["Api"]["VolumeDataSeconds"]
+        if(volumestartfromcurstate != volumestartfromprevstate):
+            newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(volumestartfromcurstate-prevtime))
+        else:
+            newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(statepointdata["time"]-prevtime))
+        
+        # update the already collected volume data with the current state
+        updatedvolumepointdata = {}
+        for volumepointdata in volumedata:
+            if(point == volumepointdata["point"]):
+                volumepointdata["NumReads"] += 1
+                volumepointdata["SupplyWh"] += newvolumepointdata["SupplyWh"]
+                volumepointdata["SupplyMaxW"] = max([volumepointdata["SupplyMaxW"],newvolumepointdata["SupplyMaxW"]])
+                volumepointdata["SupplyMinW"] = min([volumepointdata["SupplyMinW"],newvolumepointdata["SupplyMinW"]])
+                volumepointdata["UsageWh"] += newvolumepointdata["UsageWh"]
+                volumepointdata["UsageMaxW"] = max([volumepointdata["UsageMaxW"],newvolumepointdata["UsageMaxW"]])
+                volumepointdata["UsageMinW"] = min([volumepointdata["UsageMinW"],newvolumepointdata["UsageMinW"]])
+                updatedvolumepointdata = volumepointdata
+                break
                 
+        # in case no volume was available for the point, add it
+        if(updatedvolumepointdata == {}):
+            volumedata.append(newvolumepointdata)
+            updatedvolumepointdata = newvolumepointdata
+
+        # Write the volume data to the backend if it is complete
+        if(volumestartfromcurstate != volumestartfromprevstate):
+            self.writevolume(volumepointdata)
+            
+            # Calculate the volume data for the current state (part 2)
+            newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(statepointdata["time"]-volumestartfromcurstate))
+        
+            # overwrite the previous volume data with the current state (part 2)
+            for volumepointdata in volumedata:
+                if(point == volumepointdata["point"]):
+                    volumepointdata["VolumeStart"] = volumestartfromcurstate
+                    volumepointdata["NumReads"] = newvolumepointdata["NumReads"]
+                    volumepointdata["SupplyWh"] = newvolumepointdata["SupplyWh"]
+                    volumepointdata["SupplyMaxW"] = newvolumepointdata["SupplyMaxW"]
+                    volumepointdata["SupplyMinW"] = newvolumepointdata["SupplyMinW"]
+                    volumepointdata["SupplyAvgW"] = 0
+                    volumepointdata["UsageWh"] = newvolumepointdata["UsageWh"]
+                    volumepointdata["UsageMaxW"] = newvolumepointdata["UsageMaxW"]
+                    volumepointdata["UsageMinW"] = newvolumepointdata["UsageMinW"]
+                    volumepointdata["UsageAvgW"] = 0
+                    break
+        return
+    def calcvolumepointdatafromstatepointdata(self, statepointdata, volumestart, readtime):
+        statevolumewh = statepointdata["total_power"] * (readtime) / 3600
+        if(statevolumewh < 0):
+            statevolumeusagewh = abs(statevolumewh)
+        else:
+            statevolumesupplywh = statevolumewh
+        newvolumepointdata = {
+            "VolumeStart": volumestart,
+            "Point": statepointdata["point"],
+            "NumReads": 1
+            "SupplyWh": statevolumesupplywh,
+            "SupplyMaxW": statevolumesupplywh,
+            "SupplyMinW": statevolumesupplywh,
+            "UsageWh": statevolumeusagewh,
+            "UsageMaxW": statevolumeusagewh,
+            "UsageMinW": statevolumeusagewh,
+        }
+        return newvolumepointdata     
+    def writevolume(self, volumepointdata)
+        volumepointdata["SupplyAvgW"] = volumepointdata["SupplyWh"] / config["Api"]["VolumeDataSeconds"] * 3600
+        volumepointdata["UsageAvgW"] = volumepointdata["UsageWh"] / config["Api"]["VolumeDataSeconds"] * 3600
+        print(volumepointdata)
+        return
+                        
 api.add_resource(State, "/state/<string:point>")
 
 if __name__ == "__main__":
