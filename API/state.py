@@ -24,11 +24,12 @@ class State(Resource):
     def put(self, point):
         # fetch the values from the post data
         newstatepointdata = json.loads(request.data.decode('ascii'))
-        return self.registerState(point,newstatepointdata)
-    def registerState(self, point, newstatepointdata):
+        return self.registerState(newstatepointdata)
+    def registerState(self, newstatepointdata):
         # update in case the point already exists
+        print(statedata)
         for statepointdata in statedata:
-            if(point == statepointdata["point"]):
+            if(newstatepointdata["point"] == statepointdata["point"]):
                 print("{}-{}".format(newstatepointdata["time"],statepointdata["time"]))
                 self.updatevolume(newstatepointdata, statepointdata["time"])
                 statepointdata["time"] = newstatepointdata["time"]
