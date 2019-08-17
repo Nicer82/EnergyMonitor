@@ -1,5 +1,6 @@
 import state
 import time
+import random
 
 s = state.State()
 
@@ -18,4 +19,6 @@ statepointdata = {
   "total_voltage": 240.2,
   "total_power": 882.7458
 }
-s.registerState('test',statepointdata)
+while(True):
+  s.registerState('test',statepointdata)
+  time.sleep(random.random()*3+1)
