@@ -126,7 +126,7 @@ class State(Resource):
             connection.autocommit = False
             cursor = connection.cursor()
             cursor.execute("INSERT INTO VolumeData (TimeStamp,Point,NumReads,SupplyWh,SupplyMaxW,SupplyMinW,SupplyAvgW,UsageWh,UsageMaxW,UsageMinW,UsageAvgW) VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10})".format(
-                                                                datetime.utcfromtimestamp(volumepointdata["VolumeStart"]),
+                                                                datetime.fromtimestamp(volumepointdata["VolumeStart"]),
                                                                 volumepointdata["Point"],
                                                                 volumepointdata["NumReads"],
                                                                 volumepointdata["SupplyWh"],
