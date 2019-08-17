@@ -90,8 +90,6 @@ logging.basicConfig(filename=logFileName,
 spi = spidev.SpiDev()
 spi.open(0,0)
 
-lastread = time.perf_counter()
-
 # Infinite loop
 while(True):
     try:
@@ -129,7 +127,7 @@ while(True):
             
             jsondata['l{}_current'.format(li+1)] = round(phase_current,3)
             jsondata['l{}_voltage'.format(li+1)] = round(phase_voltage,1)
-            jsondata['l{}_power'.format(li+1)] = round(phase_power)
+            jsondata['l{}_power'.format(li+1)] = round(phase_power,4)
 
             #print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
 
@@ -139,15 +137,8 @@ while(True):
         jsondata['total_voltage'] = round(statistics.mean(voltage),1)
         jsondata['total_power'] = round(sum(power))
         
+        # post the new state to the state device
         run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(config["Collector"]["StateDevice"],jsondata['point'],json.dumps(jsondata)))
-        
-        if(lastread != 0):
-            now = time.perf_counter()
-            readtime = now-lastread
-            capacity = sum(power)*readtime/3600
-            #counter += capacity/1000
-            #print("Read time: {}, Capacity: {} Wh, Counter: {} KWh".format(round(readtime,3),round(capacity,5),round(counter,2)))
-            lastread = now
     except Exception as e:
         print(e)
         logging.exception("Exception occurred, waiting 10 seconds before continueing")
