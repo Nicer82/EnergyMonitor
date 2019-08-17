@@ -96,22 +96,16 @@ class State(Resource):
         return
     def calcvolumepointdatafromstatepointdata(self, statepointdata, volumestart, readtime):
         statevolumewh = statepointdata["total_power"] * (readtime) / 3600
-        if(statevolumewh < 0):
-            statevolumesupplywh = 0
-            statevolumeusagewh = abs(statevolumewh)
-        else:
-            statevolumesupplywh = statevolumewh
-            statevolumeusagewh = 0
         newvolumepointdata = {
             "VolumeStart": volumestart,
             "Point": statepointdata["point"],
             "NumReads": 1,
-            "SupplyWh": statevolumesupplywh,
-            "SupplyMaxW": statevolumesupplywh,
-            "SupplyMinW": statevolumesupplywh,
-            "UsageWh": statevolumeusagewh,
-            "UsageMaxW": statevolumeusagewh,
-            "UsageMinW": statevolumeusagewh
+            "SupplyWh": statevolumewh if statepointdata["total_power"] >= 0 else 0,
+            "SupplyMaxW": statepointdata["total_power"] if statepointdata["total_power"] >= 0 else 0,
+            "SupplyMinW": statepointdata["total_power"] if statepointdata["total_power"] >= 0 else 0,
+            "UsageWh": abs(statevolumewh) if statepointdata["total_power"] < 0 else 0,
+            "UsageMaxW": abs(statepointdata["total_power"]) if statepointdata["total_power"] < 0 else 0,
+            "UsageMinW": abs(statepointdata["total_power"]) if statepointdata["total_power"] < 0 else 0
         }
         return newvolumepointdata     
     def writevolume(self, volumepointdata):
