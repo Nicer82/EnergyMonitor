@@ -13,6 +13,8 @@
   "Api":
   {
     "Port": 8080,
-    "VolumeDataSeconds": 15
+    "VolumeDataSeconds": 60
+    "VolumeServer": "ds.clemado.net:1433" 
+    "VolumeDatabase": "EnergyMonitor"
   }
 }
