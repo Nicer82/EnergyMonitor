@@ -1,7 +1,7 @@
 import state
 import time
 
-s = state.State(0)
+s = state.State()
 
 statepointdata = {
   "time": time.time(),
