@@ -26,7 +26,6 @@ class State(Resource):
         newstatepointdata = json.loads(request.data.decode('ascii'))
         return self.registerState(point,newstatepointdata)
     def registerState(self, point, newstatepointdata):
-        
         # update in case the point already exists
         for statepointdata in statedata:
             if(point == statepointdata["point"]):
@@ -48,7 +47,7 @@ class State(Resource):
                 
         # insert in case the point doesn't already exist
         statedata.append(newstatepointdata)
-        return statepointdata, 201
+        return newstatepointdata, 201
     def updatevolume(self, statepointdata, prevtime):
         # Calculate the volume data for the current state (part 1)
         volumestartfromprevstate =  prevtime // config["Api"]["VolumeDataSeconds"] * config["Api"]["VolumeDataSeconds"]
