@@ -108,13 +108,13 @@ class State(Resource):
         newvolumepointdata = {
             "VolumeStart": volumestart,
             "Point": statepointdata["point"],
-            "NumReads": 1
+            "NumReads": 1,
             "SupplyWh": statevolumesupplywh,
             "SupplyMaxW": statevolumesupplywh,
             "SupplyMinW": statevolumesupplywh,
             "UsageWh": statevolumeusagewh,
             "UsageMaxW": statevolumeusagewh,
-            "UsageMinW": statevolumeusagewh,
+            "UsageMinW": statevolumeusagewh
         }
         return newvolumepointdata     
     def writevolume(self, volumepointdata)
