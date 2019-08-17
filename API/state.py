@@ -60,7 +60,7 @@ class State(Resource):
         # update the already collected volume data with the current state
         updatedvolumepointdata = {}
         for volumepointdata in volumedata:
-            if(point == volumepointdata["point"]):
+            if(statepointdata["point"] == volumepointdata["point"]):
                 volumepointdata["NumReads"] += 1
                 volumepointdata["SupplyWh"] += newvolumepointdata["SupplyWh"]
                 volumepointdata["SupplyMaxW"] = max([volumepointdata["SupplyMaxW"],newvolumepointdata["SupplyMaxW"]])
