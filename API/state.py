@@ -29,6 +29,7 @@ class State(Resource):
         # update in case the point already exists
         for statepointdata in statedata:
             if(point == statepointdata["point"]):
+                print("{}-{}".format(newstatepointdata["time"],statepointdata["time"]))
                 self.updatevolume(newstatepointdata, statepointdata["time"])
                 statepointdata["time"] = newstatepointdata["time"]
                 statepointdata["l1_current"] = newstatepointdata["l1_current"]
