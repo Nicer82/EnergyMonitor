@@ -2,6 +2,8 @@
 import json
 import socket
 import time
+import datetime
+import mysql.connector
 from flask import Flask, request
 from flask_restful import Resource, reqparse ,Api
 
@@ -80,7 +82,12 @@ class State(Resource):
         if(volumestartfromcurstate != volumestartfromprevstate):
             for volumepointdata in volumedata:
                 if(statepointdata["point"] == volumepointdata["Point"]):
+                    # Calculate the averages for the volume data
+                    volumepointdata["SupplyAvgW"] = volumepointdata["SupplyWh"] / config["Api"]["VolumeDataSeconds"] * 3600
+                    volumepointdata["UsageAvgW"] = volumepointdata["UsageWh"] / config["Api"]["VolumeDataSeconds"] * 3600
+                    
                     self.writevolume(volumepointdata)
+                    
                     newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(statepointdata["time"]-volumestartfromcurstate))
                     volumepointdata["VolumeStart"] = volumestartfromcurstate
                     volumepointdata["NumReads"] = newvolumepointdata["NumReads"]
@@ -109,9 +116,31 @@ class State(Resource):
         }
         return newvolumepointdata     
     def writevolume(self, volumepointdata):
-        volumepointdata["SupplyAvgW"] = volumepointdata["SupplyWh"] / config["Api"]["VolumeDataSeconds"] * 3600
-        volumepointdata["UsageAvgW"] = volumepointdata["UsageWh"] / config["Api"]["VolumeDataSeconds"] * 3600
-        print(volumepointdata)
+        try:
+            # Set up DB connections
+            connection = mysql.connector.connect(user=config["Api"]["VolumeDbUser"],
+                                                 password=config["Api"]["VolumeDbPassword"],
+                                                 host=config["Api"]["VolumeDbHost"],
+                                                 port=config["Api"]["VolumeDbPort"],
+                                                 database=config["Api"]["VolumeDbName"])
+            connection.autocommit = False
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO VolumeData (TimeStamp,Point,NumReads,SupplyWh,SupplyMaxW,SupplyMinW,SupplyAvgW,UsageWh,UsageMaxW,UsageMinW,UsageAvgW) VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10})".format(
+                                                                datetime.utcfromtimestamp(volumepointdata["VolumeStart"]),
+                                                                volumepointdata["Point"],
+                                                                volumepointdata["NumReads"],
+                                                                volumepointdata["SupplyWh"],
+                                                                volumepointdata["SupplyMaxW"],
+                                                                volumepointdata["SupplyMinW"],
+                                                                volumepointdata["SupplyAvgW"],
+                                                                volumepointdata["UsageWh"],
+                                                                volumepointdata["UsageMaxW"],
+                                                                volumepointdata["UsageMinW"],
+                                                                volumepointdata["UsageAvgW"]))
+            connection.commit()
+            connection.close()
+        except Exception as e:
+            print(e)
         return
                         
 api.add_resource(State, "/state/<string:point>")
