@@ -24,6 +24,8 @@ class State(Resource):
     def put(self, point):
         # fetch the values from the post data
         newstatepointdata = json.loads(request.data.decode('ascii'))
+        return self.registerState(point,newstatepointdata)
+    def registerState(self, point, newstatepointdata):
         
         # update in case the point already exists
         for statepointdata in statedata:
