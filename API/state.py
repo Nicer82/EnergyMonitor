@@ -60,7 +60,7 @@ class State(Resource):
         # update the already collected volume data with the current state
         updatedvolumepointdata = {}
         for volumepointdata in volumedata:
-            if(statepointdata["point"] == volumepointdata["point"]):
+            if(statepointdata["point"] == volumepointdata["Point"]):
                 volumepointdata["NumReads"] += 1
                 volumepointdata["SupplyWh"] += newvolumepointdata["SupplyWh"]
                 volumepointdata["SupplyMaxW"] = max([volumepointdata["SupplyMaxW"],newvolumepointdata["SupplyMaxW"]])
@@ -85,7 +85,7 @@ class State(Resource):
         
             # overwrite the previous volume data with the current state (part 2)
             for volumepointdata in volumedata:
-                if(point == volumepointdata["point"]):
+                if(statepointdata["point"] == volumepointdata["Point"]):
                     volumepointdata["VolumeStart"] = volumestartfromcurstate
                     volumepointdata["NumReads"] = newvolumepointdata["NumReads"]
                     volumepointdata["SupplyWh"] = newvolumepointdata["SupplyWh"]
