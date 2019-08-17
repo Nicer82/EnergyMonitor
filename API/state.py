@@ -27,10 +27,8 @@ class State(Resource):
         return self.registerState(newstatepointdata)
     def registerState(self, newstatepointdata):
         # update in case the point already exists
-        print(statedata)
         for statepointdata in statedata:
             if(newstatepointdata["point"] == statepointdata["point"]):
-                print("{}-{}".format(newstatepointdata["time"],statepointdata["time"]))
                 self.updatevolume(newstatepointdata, statepointdata["time"])
                 statepointdata["time"] = newstatepointdata["time"]
                 statepointdata["l1_current"] = newstatepointdata["l1_current"]
@@ -49,14 +47,11 @@ class State(Resource):
                 
         # insert in case the point doesn't already exist
         statedata.append(newstatepointdata)
-        print("initialized statedata: ",newstatepointdata["time"])
         return newstatepointdata, 201
     def updatevolume(self, statepointdata, prevtime):
         # Calculate the volume data for the current state (part 1)
         volumestartfromprevstate =  prevtime // config["Api"]["VolumeDataSeconds"] * config["Api"]["VolumeDataSeconds"]
         volumestartfromcurstate = statepointdata["time"] // config["Api"]["VolumeDataSeconds"] * config["Api"]["VolumeDataSeconds"]
-        print("{} --> {}".format(prevtime, volumestartfromprevstate))
-        print("{} --> {}".format(statepointdata["time"], volumestartfromcurstate))
         if(volumestartfromcurstate != volumestartfromprevstate):
             newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(volumestartfromcurstate-prevtime))
         else:
@@ -81,16 +76,12 @@ class State(Resource):
             volumedata.append(newvolumepointdata)
             updatedvolumepointdata = newvolumepointdata
 
-        # Write the volume data to the backend if it is complete
+        # Write the volume data to the backend if it is complete and re-initialize it with the remaining volume from the current state
         if(volumestartfromcurstate != volumestartfromprevstate):
-            self.writevolume(volumepointdata)
-            
-            # Calculate the volume data for the current state (part 2)
-            newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(statepointdata["time"]-volumestartfromcurstate))
-        
-            # overwrite the previous volume data with the current state (part 2)
             for volumepointdata in volumedata:
                 if(statepointdata["point"] == volumepointdata["Point"]):
+                    self.writevolume(volumepointdata)
+                    newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(statepointdata["time"]-volumestartfromcurstate))
                     volumepointdata["VolumeStart"] = volumestartfromcurstate
                     volumepointdata["NumReads"] = newvolumepointdata["NumReads"]
                     volumepointdata["SupplyWh"] = newvolumepointdata["SupplyWh"]
