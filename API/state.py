@@ -1,8 +1,10 @@
 #! /usr/bin/python3
+import threading
 import json
 import socket
 import time
 import mysql.connector
+from queue import Queue
 from datetime import datetime
 from flask import Flask, request
 from flask_restful import Resource, reqparse ,Api
@@ -16,6 +18,8 @@ api = Api(app)
 
 statedata = []
 volumedata = []
+volumedatawritequeue = Queue()
+volumedatawritethread = None
 
 class State(Resource):
     def get(self, point):
@@ -85,9 +89,8 @@ class State(Resource):
                     # Calculate the averages for the volume data
                     volumepointdata["SupplyAvgW"] = volumepointdata["SupplyWh"] / config["Api"]["VolumeDataSeconds"] * 3600
                     volumepointdata["UsageAvgW"] = volumepointdata["UsageWh"] / config["Api"]["VolumeDataSeconds"] * 3600
-                    
-                    self.writevolume(volumepointdata)
-                    
+                    volumedatawritequeue.put(volumepointdata)
+                                            
                     newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(statepointdata["time"]-volumestartfromcurstate))
                     volumepointdata["VolumeStart"] = volumestartfromcurstate
                     volumepointdata["NumReads"] = newvolumepointdata["NumReads"]
@@ -100,6 +103,13 @@ class State(Resource):
                     volumepointdata["UsageMinW"] = newvolumepointdata["UsageMinW"]
                     volumepointdata["UsageAvgW"] = 0
                     break
+                    
+            # write completed volumes to the DB if a write action isn't running currently
+            global volumedatawritethread
+            if(!t or !t.is_alive()):
+                t = threading.Thread(target=self.writevolumes)
+                t.start()
+                
         return
     def calcvolumepointdatafromstatepointdata(self, statepointdata, volumestart, readtime):
         statevolumewh = statepointdata["total_power"] * (readtime) / 3600
@@ -115,32 +125,40 @@ class State(Resource):
             "UsageMinW": abs(statepointdata["total_power"]) if statepointdata["total_power"] < 0 else 0
         }
         return newvolumepointdata     
-    def writevolume(self, volumepointdata):
-        try:
-            # Set up DB connections
-            connection = mysql.connector.connect(user=config["Api"]["VolumeDbUser"],
-                                                 password=config["Api"]["VolumeDbPassword"],
-                                                 host=config["Api"]["VolumeDbHost"],
-                                                 port=config["Api"]["VolumeDbPort"],
-                                                 database=config["Api"]["VolumeDbName"])
-            connection.autocommit = False
-            cursor = connection.cursor()
-            cursor.execute("INSERT INTO VolumeData (TimeStamp,Point,NumReads,SupplyWh,SupplyMaxW,SupplyMinW,SupplyAvgW,UsageWh,UsageMaxW,UsageMinW,UsageAvgW) VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10})".format(
-                                                                datetime.utcfromtimestamp(volumepointdata["VolumeStart"]),
-                                                                volumepointdata["Point"],
-                                                                volumepointdata["NumReads"],
-                                                                volumepointdata["SupplyWh"],
-                                                                volumepointdata["SupplyMaxW"],
-                                                                volumepointdata["SupplyMinW"],
-                                                                volumepointdata["SupplyAvgW"],
-                                                                volumepointdata["UsageWh"],
-                                                                volumepointdata["UsageMaxW"],
-                                                                volumepointdata["UsageMinW"],
-                                                                volumepointdata["UsageAvgW"]))
-            connection.commit()
-            connection.close()
-        except Exception as e:
-            print(e)
+    def writevolumes(self):
+        while(not volumedatawritequeue.empty()):
+            volumepointdata = volumedatawritequeue.get()
+            
+            try:
+                # Set up DB connections
+                connection = mysql.connector.connect(user=config["Api"]["VolumeDbUser"],
+                                                     password=config["Api"]["VolumeDbPassword"],
+                                                     host=config["Api"]["VolumeDbHost"],
+                                                     port=config["Api"]["VolumeDbPort"],
+                                                     database=config["Api"]["VolumeDbName"])
+                connection.autocommit = False
+                cursor = connection.cursor()
+                cursor.execute("INSERT INTO VolumeData (TimeStamp,Point,NumReads,SupplyWh,SupplyMaxW,SupplyMinW,SupplyAvgW,UsageWh,UsageMaxW,UsageMinW,UsageAvgW) VALUES ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10})".format(
+                                                                    datetime.utcfromtimestamp(volumepointdata["VolumeStart"]),
+                                                                    volumepointdata["Point"],
+                                                                    volumepointdata["NumReads"],
+                                                                    volumepointdata["SupplyWh"],
+                                                                    volumepointdata["SupplyMaxW"],
+                                                                    volumepointdata["SupplyMinW"],
+                                                                    volumepointdata["SupplyAvgW"],
+                                                                    volumepointdata["UsageWh"],
+                                                                    volumepointdata["UsageMaxW"],
+                                                                    volumepointdata["UsageMinW"],
+                                                                    volumepointdata["UsageAvgW"]))
+                connection.commit()
+                cursor.close()
+            except mysql.connector.Error as error:
+                print("Failed to insert record into VolumeData table {}".format(error))
+                volumedatawritequeue.put(volumepointdata)
+            finally:
+                if (connection.is_connected()):
+                    connection.close()
+        
         return
                         
 api.add_resource(State, "/state/<string:point>")
