@@ -153,7 +153,7 @@ class State(Resource):
                 connection.commit()
                 cursor.close()
             except mysql.connector.Error as error:
-                print("Failed to insert record into VolumeData table {}".format(error))
+                print("Failed to insert record into VolumeData table: {}".format(error))
                 volumedatawritequeue.put(volumepointdata)
             finally:
                 if (connection.is_connected()):
