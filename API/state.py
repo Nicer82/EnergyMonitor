@@ -156,7 +156,7 @@ class State(Resource):
                 print("Failed to insert record into VolumeData table: {}".format(error))
                 volumedatawritequeue.put(volumepointdata)
             finally:
-                if (connection.is_connected()):
+                if (connection and connection.is_connected()):
                     connection.close()
         
         return
