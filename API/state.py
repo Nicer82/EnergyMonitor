@@ -106,7 +106,7 @@ class State(Resource):
                     
             # write completed volumes to the DB if a write action isn't running currently
             global volumedatawritethread
-            if(!t or !t.is_alive()):
+            if(not t or not t.is_alive()):
                 t = threading.Thread(target=self.writevolumes)
                 t.start()
                 
