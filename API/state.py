@@ -89,7 +89,7 @@ class State(Resource):
                     # Calculate the averages for the volume data
                     volumepointdata["SupplyAvgW"] = volumepointdata["SupplyWh"] / config["Api"]["VolumeDataSeconds"] * 3600
                     volumepointdata["UsageAvgW"] = volumepointdata["UsageWh"] / config["Api"]["VolumeDataSeconds"] * 3600
-                    volumedatawritequeue.put(volumepointdata)
+                    volumedatawritequeue.put(volumepointdata.copy())
                                             
                     newvolumepointdata = self.calcvolumepointdatafromstatepointdata(statepointdata,volumestartfromprevstate,(statepointdata["time"]-volumestartfromcurstate))
                     volumepointdata["VolumeStart"] = volumestartfromcurstate
