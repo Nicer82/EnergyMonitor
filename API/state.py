@@ -157,6 +157,7 @@ class State(Resource):
             except mysql.connector.Error as error:
                 print("Failed to insert record into VolumeData table: {}".format(error))
                 volumedatawritequeue.put(volumepointdata)
+                time.sleep(5) # wait 5 seconds after an error to not overwhelm the attempts
             finally:
                 if (connection and connection.is_connected()):
                     connection.close()
