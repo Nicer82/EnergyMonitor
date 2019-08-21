@@ -106,9 +106,9 @@ class State(Resource):
                     
             # write completed volumes to the DB if a write action isn't running currently
             global volumedatawritethread
-            if(not t or not t.is_alive()):
-                t = threading.Thread(target=self.writevolumes)
-                t.start()
+            if(not volumedatawritethread or not volumedatawritethread.is_alive()):
+                volumedatawritethread = threading.Thread(target=self.writevolumes)
+                volumedatawritethread.start()
                 
         return
     def calcvolumepointdatafromstatepointdata(self, statepointdata, volumestart, readtime):
