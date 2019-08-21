@@ -126,6 +126,8 @@ class State(Resource):
         }
         return newvolumepointdata     
     def writevolumes(self):
+        connection = None
+        
         while(not volumedatawritequeue.empty()):
             volumepointdata = volumedatawritequeue.get()
             
