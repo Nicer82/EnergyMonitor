@@ -5,14 +5,7 @@ import spidev
 import subprocess
 
 def run_process(cmd):
-    result = None
-    try:
-        result = subprocess.check_output(cmd, shell=True)
-    except subprocess.CalledProcessError:
-        # We reach this point if the process returns a non-zero exit code.
-        result = b''
-
-    return result
+    return subprocess.check_output(cmd, shell=True)
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))

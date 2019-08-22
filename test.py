@@ -21,7 +21,7 @@ while(True):
     ### Normalize the captured data
     for i in range(len(data)):
         #print("Channel {} before normalize: Reads: {}, Min: {}, Max: {}".format(i,len(data[i]),min(data[i]),max(data[i])))
-        data[i] = normalize(data[i])
+        data[i] = emlib.normalize(data[i])
         #print("Channel {} after normalize: Reads: {}, Min: {}, Max: {}".format(i,len(data[i]),min(data[i]),max(data[i])))
         
     ### Calculate the power
@@ -37,7 +37,7 @@ while(True):
             powerdata.append(data[channel][reading] * data[channel+1][reading])
         
         power.append(statistics.mean(powerdata)*CALIBRATIONFACTOR[li]);
-        voltage.append(rootmeansquare(data[channel+1])*CALIBRATIONFACTOR_V[li])
+        voltage.append(emlib.rootmeansquare(data[channel+1])*CALIBRATIONFACTOR_V[li])
         current.append(power[li]/voltage[li])
         print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
     
