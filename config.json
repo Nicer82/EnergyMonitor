@@ -7,7 +7,7 @@
     "WavesToRead": 50,
     "Frequency": 50,
     "Phases": 3,
-    "CalibrationFactor_Power": 0.004064,
+    "CalibrationFactor_Power": 0.0044715,
     "CalibrationFactor_Voltage": 0.2527
   },
   "Api":
