@@ -14,12 +14,12 @@ on the RPI, two pieces of software are running:
 
 Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 
-1. Python 3 - This is probably already installed.  If not, use sudo apt-get install python3 
-2. SpiDev module - sudo pip install spidev
-3. MySQL module - sudo pip3 install mysql-connector-python
-4. The source code of this project
-4.1 Config file
+### Python 3 - This is probably already installed.  If not, use sudo apt-get install python3 
+### SpiDev module - sudo pip install spidev
+### MySQL module - sudo pip3 install mysql-connector-python
+### The source code of this project
+#### Config file
 
 Configuration is stored in the config.json file. There is a section for the collector and one for the Api.
 
-5. Setting up the API webservice (lighttpd webserver)
+### Setting up the API webservice (lighttpd webserver)
