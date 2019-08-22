@@ -4,8 +4,6 @@ import math
 import spidev
 import subprocess
 
-spi = None
-
 def run_process(cmd):
     result = None
     try:
