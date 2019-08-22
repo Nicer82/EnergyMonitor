@@ -55,7 +55,7 @@ class AdcReader():
                 # Add a delay on the last channel to match timings. 
                 # This is way more accurate than time.sleep() because it works up to the microsecond.
                 if(channel == lastChannel):
-                    delay = int((nextRead-time.perf_counter())*1000000) #TODO: validate if rounding the delay is necessary (int cutoff is faster then round btw)
+                    delay = ((nextRead-time.perf_counter())*1000000) #TODO: validate if rounding the delay is necessary (int cutoff is faster then round btw)
                     if(delay > 0): 
                         response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, delay) 
                     else:
