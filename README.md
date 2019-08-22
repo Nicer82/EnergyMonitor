@@ -1,4 +1,4 @@
-##Monitoring Energy with your Raspberry Pi
+# Monitoring Energy with your Raspberry Pi
 
 The centerpiece of the design is an MCP3208 analog-to-digital controller, which used SPI to communicate with the RPi.
 
