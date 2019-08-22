@@ -42,7 +42,7 @@ def normalize(values):
 class AdcReader():
     def __init__(self):
         self.spi = spidev.SpiDev()
-        spi.open(0,0)
+        self.spi.open(0,0)
         
     def readSineWave(self, channels, samplesperwave, wavestoread, frequency):
         # Initialize the data object
@@ -64,9 +64,9 @@ class AdcReader():
                 # Add a delay on the last channel to match timings. 
                 # This is way more accurate than time.sleep() because it works up to the microsecond.
                 if(channel == lastChannel):
-                    response = spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, int((nextRead-time.perf_counter())*1000000)) #TODO: validate if rounding the delay is necessary (int cutoff is faster then round btw)
+                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, int((nextRead-time.perf_counter())*1000000)) #TODO: validate if rounding the delay is necessary (int cutoff is faster then round btw)
                 else:
-                    response = spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
+                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
 
                 data[ci].append(((response[1] & 15) << 8) + response[2])
 
