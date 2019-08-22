@@ -39,39 +39,38 @@ def normalize(values):
         
     return values
 
-def readadc(channels, samplesperwave, wavestoread, frequency):
-    # Initialize the spi object
-    global spi
-    if(not spi):
-      spi = spidev.SpiDev()
-      spi.open(0,0)
-    
-    # Initialize the data object
-    data = []
-    for channel in channels:
-        data.append([])
+class AdcReader():
+    def __init__(self):
+        self.spi = spidev.SpiDev()
+        spi.open(0,0)
         
-    start = time.perf_counter()
-    sampleReadTime = 1/(samplesperwave*frequency)
-    nextRead = start + sampleReadTime
-    lastChannel = channels[len(channels)-1]
-    channelIndexes = range(len(channels))
-    
-    # Loop through the total number of samples to take
-    for si in range(samplesperwave*wavestoread):
-        # Read all the requested channels
-        for ci in channelIndexes:
-            channel = channels[ci]
-            # Add a delay on the last channel to match timings. 
-            # This is way more accurate than time.sleep() because it works up to the microsecond.
-            if(channel == lastChannel):
-                response = spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, int((nextRead-time.perf_counter())*1000000)) #TODO: validate if rounding the delay is necessary (int cutoff is faster then round btw)
-            else:
-                response = spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
-            
-            data[ci].append(((response[1] & 15) << 8) + response[2])
-        
-        # Set the next read time for the next iteration
-        nextRead += sampleReadTime
+    def readSineWave(self, channels, samplesperwave, wavestoread, frequency):
+        # Initialize the data object
+        data = []
+        for channel in channels:
+            data.append([])
 
-    return data
+        start = time.perf_counter()
+        sampleReadTime = 1/(samplesperwave*frequency)
+        nextRead = start + sampleReadTime
+        lastChannel = channels[len(channels)-1]
+        channelIndexes = range(len(channels))
+
+        # Loop through the total number of samples to take
+        for si in range(samplesperwave*wavestoread):
+            # Read all the requested channels
+            for ci in channelIndexes:
+                channel = channels[ci]
+                # Add a delay on the last channel to match timings. 
+                # This is way more accurate than time.sleep() because it works up to the microsecond.
+                if(channel == lastChannel):
+                    response = spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, int((nextRead-time.perf_counter())*1000000)) #TODO: validate if rounding the delay is necessary (int cutoff is faster then round btw)
+                else:
+                    response = spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
+
+                data[ci].append(((response[1] & 15) << 8) + response[2])
+
+            # Set the next read time for the next iteration
+            nextRead += sampleReadTime
+
+        return data
