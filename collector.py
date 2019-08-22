@@ -5,6 +5,7 @@ import math
 import spidev
 import logging
 import subprocess
+import emlib
 from datetime import datetime
 
 def run_process(cmd):
