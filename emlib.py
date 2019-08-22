@@ -46,24 +46,22 @@ class AdcReader():
         nextRead = start + sampleReadTime
         lastChannel = channels[len(channels)-1]
         channelIndexes = range(len(channels))
-        channelRequests = []
-        for channel in channels:
-            channelRequests.append([6+((4&channel)>>2),(3&channel)<<6,0])
 
         # Loop through the total number of samples to take
         for si in range(samplesperwave*wavestoread):
             # Read all the requested channels
             for ci in channelIndexes:
+                channel = channels[ci]
                 # Add a delay on the last channel to match timings. 
                 # This is way more accurate than time.sleep() because it works up to the microsecond.
-                if(channels[ci] == lastChannel):
+                if(channel == lastChannel):
                     delay = int((nextRead-time.perf_counter())*1000000)
                     if(delay > 0): 
-                        response = self.spi.xfer2(channelRequests[ci], 2000000, delay) 
+                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, delay) 
                     else:
-                        response = self.spi.xfer2(channelRequests[ci], 2000000)
+                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
                 else:
-                    response = self.spi.xfer2(channelRequests[ci], 2000000)
+                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
 
                 data[ci].append(((response[1] & 15) << 8) + response[2])
 
