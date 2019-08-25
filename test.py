@@ -14,12 +14,12 @@ CALIBRATIONFACTOR_V = [0.2454,0.2454,0.2454]
 # Create the reader
 reader = emlib.AdcReader()
 
-if(True):
+while(True):
     ### Read the channels
     data = reader.readSineWave(CHANNELS, ADC_SAMPLESPERWAVE, ADC_ACWAVESTOREAD, AC_FREQUENCY)
 
-    for d in data[0]:
-        print(d)
+    #for d in data[0]:
+    #    print(d)
         
     ### Normalize the captured data
     for i in range(len(data)):
