@@ -89,10 +89,12 @@ while(True):
         jsondata['total_power'] = round(sum(power))
         
         # post the new state to the state device
+        perfstart = time.perf_counter()
         statePostQueue.put(jsondata)
         if(not statePostThread or not statePostThread.is_alive()):
             statePostThread = threading.Thread(target=postStates)
             statePostThread.start()
+        print("Start postStates in {} ms".format((time.perf_counter()-perfstart)*1000))
         
     except Exception as e:
         print(e)
