@@ -9,13 +9,12 @@ from datetime import datetime
 
 def postStates():
     while(not statePostQueue.empty()):
-        jsondata = statePostQueue.get()
+        statePost = statePostQueue.get()
     
-        while(jsondata):
+        while(statePost):
             try:
-                jsondata = statePostQueue.get()
-                emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(config["Collector"]["StateDevice"],jsondata['point'],json.dumps(jsondata)))
-                jsondata = None
+                emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(config["Collector"]["StateDevice"],statePost['point'],json.dumps(statePost)))
+                statePost = None
             except Exception as e:
                 logging.exception("Failed to post state to the API: {}".format(e))
                 time.sleep(5) # wait 5 seconds after an error to not overwhelm the attempts
@@ -90,7 +89,7 @@ while(True):
         
         # post the new state to the state device
         perfstart = time.perf_counter()
-        statePostQueue.put(jsondata)
+        statePostQueue.put(jsondata.copy())
         if(not statePostThread or not statePostThread.is_alive()):
             statePostThread = threading.Thread(target=postStates)
             statePostThread.start()
