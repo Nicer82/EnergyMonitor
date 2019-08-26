@@ -5,7 +5,7 @@ import spidev
 import subprocess
 
 def run_process(cmd):
-    return subprocess.run(cmd, check=True)
+    return subprocess.check_output(cmd)
 
 def rootmeansquare(values):
     # RMS = SQUARE_ROOT((values[0]² + values[1]² + ... + values[n]²) / LENGTH(values))
