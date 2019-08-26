@@ -1,9 +1,24 @@
+import threading
 import json
 import time
 import statistics
 import logging
 import emlib
+from queue import Queue
 from datetime import datetime
+
+def postStates():
+    while(not statePostQueue.empty()):
+        jsondata = statePostQueue.get()
+    
+        while(jsondata):
+            try:
+                jsondata = statePostQueue.get()
+                emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(config["Collector"]["StateDevice"],jsondata['point'],json.dumps(jsondata)))
+                jsondata = None
+            except Exception as e:
+                logging.exception("Failed to post state to the API: {}".format(e))
+                time.sleep(5) # wait 5 seconds after an error to not overwhelm the attempts
 
 # Read configuration
 with open('config.json') as json_data:
@@ -21,6 +36,10 @@ logging.basicConfig(filename=logFileName,
 
 # Create the reader object
 reader = emlib.AdcReader()
+
+# Create a Queue for posting the states to the state service
+statePostQueue = Queue()
+statePostThread = None
 
 # Infinite loop
 while(True):
@@ -70,7 +89,11 @@ while(True):
         jsondata['total_power'] = round(sum(power))
         
         # post the new state to the state device
-        emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(config["Collector"]["StateDevice"],jsondata['point'],json.dumps(jsondata)))
+        statePostQueue.put(jsondata)
+        if(not statePostThread or not statePostThread.is_alive()):
+            statePostThread = threading.Thread(target=postStates)
+            statePostThread.start()
+        
     except Exception as e:
         print(e)
         logging.exception("Exception occurred, waiting 10 seconds before continueing")
