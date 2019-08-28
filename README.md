@@ -28,15 +28,17 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
  8. Exit the Raspbian config tool and reboot. From this point on, if you enabled SSH, you can disconnect the keyboard and screen and access the pi using SSH from another computer.
  9. Update the system packages with 'sudo apt-get update'
 
-### Python 3
-This is probably already installed.  If not, use sudo apt-get install python3 
-### SpiDev module
-sudo pip install spidev
-### MySQL module
-sudo pip3 install mysql-connector-python
-### The source code of this project
+### Install dependent software
+- sudo apt-get -y install python3 python3-pip git
+- sudo pip3 install spidev mysql-connector-python
+### Install the source code of this project
+- git clone https://github.com/Nicer82/EnergyMonitor
+- cd EnergyMonitor
 #### Config file
-Configuration is stored in the config.json file. There is a section for the collector and one for the Api.
+Configuration is stored in the config.json file. There is a section for the collector and one for the Api. Edit the settings according to your needs
+- sudo nano config.json
+- Edit the point name (logical name for the point you are measuring, for instance: Mains, SolarGarage,SolarHome, ...
+- Set the number of phases you want to read
 ### Setting up the API webservice (lighttpd webserver)
 
 ## MySQL DB setup instructions
