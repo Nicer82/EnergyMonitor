@@ -14,10 +14,13 @@ def postStates():
     
         while(statePost):
             try:
-                #print("POST: {}".format(statePost)) # temp for debugging
+                # temp for debugging
+                #print("POST: {}".format(statePost))
+                #break;
+            
                 # Get the current IP
                 ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-                emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}:{}/state/{} -d\'{}\''.format(ip, config["Api"]["Port"],statePost['point'],json.dumps(statePost)))
+                emlib.run_process('curl -s -m 5 -H "Content-Type: application/json" -X PUT http://{}:{}/state/{} -d\'{}\''.format(ip, config["Api"]["Port"],statePost['point'],json.dumps(statePost)))
                 statePost = None
             except Exception as e:
                 logging.exception("Failed to post state to the API: {}".format(e))
@@ -37,7 +40,6 @@ with open('config.json') as json_data:
                                               calibrationfactor=config["Collector"]["CalibrationFactor_Voltage"])
     else:
         voltageService = None
-    
     for wirecolor in config["Collector"]["CurrentChannels"]:
         # Add a current measurement channel for every phase (even channel numbers)
         channels.append(config["Collector"]["CurrentChannels"][wirecolor])
@@ -70,9 +72,7 @@ while(True):
 
         ### Normalize the captured data
         for i in range(len(data)):
-            #print("Channel {} before normalize: Reads: {}, Min: {}, Max: {}".format(i,len(data[i]),min(data[i]),max(data[i])))
             data[i] = emlib.normalize(data[i])
-            #print("Channel {} after normalize: Reads: {}, Min: {}, Max: {}".format(i,len(data[i]),min(data[i]),max(data[i])))
 
         ### Calculate the power
         power = []
@@ -87,13 +87,12 @@ while(True):
 
             if(voltageService):
                 voltageData = voltageService.wireVoltageData(wirecolor, data[currentidxs[wirecolor]])
-                voltageService
             else:
                 voltageData = data[voltageidxs[wirecolor]]
-            
+
             for reading in range(len(data[currentidxs[wirecolor]])):
                 powerdata.append(data[currentidxs[wirecolor]][reading] * voltageData[reading])
-
+            
             wirepower = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
             power.append(wirepower)
 
@@ -121,7 +120,9 @@ while(True):
             statePostThread.start()
         
     except Exception as e:
-        #raise # temp for debugging
+        # temp for debugging
+        #raise 
+
         logging.exception("Exception occurred, waiting 10 seconds before continueing")
 
         # Wait 10 seconds to avoid flooding the error log too much
