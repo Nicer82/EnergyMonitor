@@ -3,6 +3,7 @@ import statistics
 import math
 import spidev
 import subprocess
+import operator
 
 def run_process(cmd):
     return subprocess.check_output(cmd, shell=True)
@@ -80,11 +81,39 @@ class AdcReader():
 
         return data
     
-    def simulateSineWave(self, peaksampleidx, peaksamplevalue, samplesperwave, wavestoread):
+    
+class VoltageService:
+    def __init__(self, url, samplesperwave, wavestoread, calibrationfactor):
+        self.url = url
+        self.samplesperwave = samplesperwave
+        self.wavestoread = wavestoread
+        self.calibrationfactor = calibrationfactor
+
+        #TODO Periodically fetch wire voltages from url in separate thread. Hardcoded for now.
+        self.voltage={}
+        self.voltage["brown"] = 240
+        self.voltage["black"] = 240
+        self.voltage["gray"] = 240
+
+    def calcPeakSampleIdx(self, values):
+        indexes = []
+        
+        for i in range(int(len(values)/self.samplesperwave)):
+            wave = values[i*self.samplesperwave:(i+1)*self.samplesperwave]
+            maxidx, maxvalue = max(enumerate(wave), key=operator.itemgetter(1))
+            indexes.append(maxidx)
+
+        return round(statistics.mean(indexes)) 
+
+    def wireVoltageData(self, wirecolor, currentData):
+        #TODO
+        return self.simulateSineWave(peaksampleidx=self.calcPeakSampleIdx(currentData),peaksamplevalue = round(self.voltage[wirecolor]/self.calibrationfactor*math.sqrt(2)))
+        
+    def simulateSineWave(self, peaksampleidx, peaksamplevalue):
         data = []
         
         # Loop through the total number of samples to take
-        for si in range(samplesperwave*wavestoread):
-            data.append(round(math.sin((si+samplesperwave/4-peaksampleidx)/samplesperwave*2*math.pi)*peaksamplevalue))
+        for si in range(self.samplesperwave*self.wavestoread):
+            data.append(round(math.sin((si+self.samplesperwave/4-peaksampleidx)/self.samplesperwave*2*math.pi)*peaksamplevalue))
         
         return data

@@ -10,15 +10,15 @@
     "VoltageService": "",
     "CurrentChannels":
     {
-      "Brown": 0,
-      "Black": 2,
-      "Gray": 4
+      "brown": 0,
+      "black": 2,
+      "gray": 4
     },
     "VoltageChannels":
     {
-      "Brown": 1,
-      "Black": 3,
-      "Gray": 5
+      "brown": 1,
+      "black": 3,
+      "gray": 5
     }
   },
   "Api":

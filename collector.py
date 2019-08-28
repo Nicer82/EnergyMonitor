@@ -14,10 +14,10 @@ def postStates():
     
         while(statePost):
             try:
+                print("POST: {}".format(statePost))
                 # Get the current IP
-                ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-                
-                emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(ip, statePost['point'],json.dumps(statePost)))
+                #ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+                #emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(ip, statePost['point'],json.dumps(statePost)))
                 statePost = None
             except Exception as e:
                 logging.exception("Failed to post state to the API: {}".format(e))
@@ -27,17 +27,28 @@ def postStates():
 with open('config.json') as json_data:
     config = json.load(json_data)
     channels = []
+    currentidxs = {}
+    voltageidxs = {}
+
+    if(config["Collector"]["VoltageService"]):
+        voltageService = emlib.VoltageService(url=config["Collector"]["VoltageService"],
+                                              samplesperwave=config["Collector"]["SamplesPerWave"],
+                                              wavestoread=config["Collector"]["WavesToRead"],
+                                              calibrationfactor=config["Collector"]["CalibrationFactor_Voltage"])
+    else:
+        voltageService = None
+    
     for wirecolor in config["Collector"]["CurrentChannels"]:
         # Add a current measurement channel for every phase (even channel numbers)
         channels.append(config["Collector"]["CurrentChannels"][wirecolor])
+        currentidxs[wirecolor] = len(channels)-1
         
         # In case no voltage service is setup, we also need to measure the voltage
         # Always read the voltage of a phase directly after the current to avoid too much time between those reads.
-        if(not config["Collector"]["VoltageService"]): 
+        if(not voltageService): 
             channels.append(config["Collector"]["VoltageChannels"][wirecolor])
-        
-print(channels)
-
+            voltageidxs[wirecolor] = len(channels)-1
+    
 # Create a new log file per start
 logFileName = "collector_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
 logging.basicConfig(filename=logFileName, 
@@ -71,33 +82,37 @@ while(True):
         jsondata['point'] = config["Collector"]["Point"]
         jsondata['time'] = time.time()
         
-        for li in range(config["Collector"]["Phases"]):
+        for wirecolor in config["Collector"]["CurrentChannels"]:
             powerdata = []                            
-            ci = li*2
-            vi = ci+1
 
-            # TODO use voltage from state service in case a config["Collector"]["VoltageStateService"] is setup.
-            for reading in range(len(data[ci])):
-                powerdata.append(data[ci][reading] * data[vi][reading])
-
-            phase_power = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
-            power.append(phase_power)
-            phase_voltage = emlib.rootmeansquare(data[vi])*config["Collector"]["CalibrationFactor_Voltage"]
-            voltage.append(phase_voltage)
-            phase_current = phase_power / phase_voltage
-            current.append(phase_current)
+            if(voltageService):
+                voltageData = voltageService.wireVoltageData(wirecolor, data[currentidxs[wirecolor]])
+                voltageService
+            else:
+                voltageData = data[voltageidxs[wirecolor]]
             
-            jsondata['l{}_current'.format(li+1)] = round(phase_current,3)
-            jsondata['l{}_voltage'.format(li+1)] = round(phase_voltage,1)
-            jsondata['l{}_power'.format(li+1)] = round(phase_power,4)
+            for reading in range(len(data[currentidxs[wirecolor]])):
+                powerdata.append(data[currentidxs[wirecolor]][reading] * voltageData[reading])
 
-            #print("L{}: Current: {} A, Voltage: {} V, Power: {} W".format(li+1,round(current[li],3),round(voltage[li],1), round(power[li])))
+            wirepower = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
+            power.append(wirepower)
 
-        #print("Total: Current: {} A, Voltage: {} V, Power: {} W".format(round(sum(current),3),round(statistics.mean(voltage),1),round(sum(power))))
-        
-        jsondata['total_current'] = round(sum(current),3)
-        jsondata['total_voltage'] = round(statistics.mean(voltage),1)
-        jsondata['total_power'] = round(sum(power))
+            if(voltageService):
+                wirevoltage = voltageService.voltage[wirecolor]
+            else:
+                wirevoltage = emlib.rootmeansquare(voltageData)*config["Collector"]["CalibrationFactor_Voltage"]
+
+            voltage.append(wirevoltage)
+            wirecurrent = wirepower / wirevoltage
+            current.append(wirecurrent)
+            jsondata[wirecolor] = {}
+            jsondata[wirecolor]['current'] = round(wirecurrent,3)
+            jsondata[wirecolor]['voltage'] = round(wirevoltage,1)
+            jsondata[wirecolor]['power'] = round(wirepower,4)
+
+        jsondata['current'] = round(sum(current),3)
+        jsondata['voltage'] = round(statistics.mean(voltage),1)
+        jsondata['power'] = round(sum(power))
         
         # post the new state to the state device
         statePostQueue.put(jsondata.copy())
@@ -106,7 +121,7 @@ while(True):
             statePostThread.start()
         
     except Exception as e:
-        print(e)
+        #raise # temp for debugging
         logging.exception("Exception occurred, waiting 10 seconds before continueing")
 
         # Wait 10 seconds to avoid flooding the error log too much
