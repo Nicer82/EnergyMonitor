@@ -7,7 +7,7 @@
     "Frequency": 50,
     "CalibrationFactor_Power": 0.0045232,
     "CalibrationFactor_Voltage": 0.2527,
-    "VoltageStateService": "",
+    "VoltageService": "",
     "CurrentChannels":
     {
       "Brown": 0,
