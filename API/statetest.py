@@ -6,18 +6,24 @@ s = state.State()
 
 input = {
   "point": "test",
-  "l1_current": -1.123,
-  "l1_voltage": 240.1,
-  "l1_power": -269.6323,
-  "l2_current": -1.321,
-  "l2_voltage": 240.2,
-  "l2_power": -317.3042,
-  "l3_current": -1.231,
-  "l3_voltage": 240.3,
-  "l3_power": -295.8093,
-  "total_current": -3.675,
-  "total_voltage": 240.2,
-  "total_power": -882.7458
+  "brown": {
+    "current": -1.123,
+    "voltage": 240.1,
+    "power": -269.6323
+  },
+  "black": {
+    "current": -1.321,
+    "voltage": 240.2,
+    "power": -317.3042
+  },
+  "gray": {
+    "current": -1.231,
+    "voltage": 240.3,
+    "power": -295.8093
+  },
+  "current": -3.675,
+  "voltage": 240.2,
+  "power": -882.7458
 }
 while(True):
   input["time"] = time.time()

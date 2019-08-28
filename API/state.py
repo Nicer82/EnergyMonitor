@@ -37,18 +37,14 @@ class State(Resource):
             if(newstatepointdata["point"] == statepointdata["point"]):
                 self.updatevolume(newstatepointdata, statepointdata["time"])
                 statepointdata["time"] = newstatepointdata["time"]
-                statepointdata["l1_current"] = newstatepointdata["l1_current"]
-                statepointdata["l1_voltage"] = newstatepointdata["l1_voltage"]
-                statepointdata["l1_power"] = newstatepointdata["l1_power"]
-                statepointdata["l2_current"] = newstatepointdata["l2_current"]
-                statepointdata["l2_voltage"] = newstatepointdata["l2_voltage"]
-                statepointdata["l2_power"] = newstatepointdata["l2_power"]
-                statepointdata["l3_current"] = newstatepointdata["l3_current"]
-                statepointdata["l3_voltage"] = newstatepointdata["l3_voltage"]
-                statepointdata["l3_power"] = newstatepointdata["l3_power"]
-                statepointdata["total_current"] = newstatepointdata["total_current"]
-                statepointdata["total_voltage"] = newstatepointdata["total_voltage"]
-                statepointdata["total_power"] = newstatepointdata["total_power"]
+                for wirecolor in config["Collector"]["CurrentChannels"]:
+                    statepointdata[wirecolor] = {}
+                    statepointdata[wirecolor]['current'] = newstatepointdata[wirecolor]['current']
+                    statepointdata[wirecolor]['voltage'] = newstatepointdata[wirecolor]['voltage']
+                    statepointdata[wirecolor]['power'] = newstatepointdata[wirecolor]['power']
+                statepointdata["current"] = newstatepointdata["current"]
+                statepointdata["voltage"] = newstatepointdata["voltage"]
+                statepointdata["power"] = newstatepointdata["power"]
                 return statepointdata, 200
                 
         # insert in case the point doesn't already exist
@@ -112,17 +108,17 @@ class State(Resource):
                 
         return
     def calcvolumepointdatafromstatepointdata(self, statepointdata, volumestart, readtime):
-        statevolumewh = statepointdata["total_power"] * (readtime) / 3600
+        statevolumewh = statepointdata["power"] * (readtime) / 3600
         newvolumepointdata = {
             "VolumeStart": volumestart,
             "Point": statepointdata["point"],
             "NumReads": 1,
-            "SupplyWh": statevolumewh if statepointdata["total_power"] >= 0 else 0,
-            "SupplyMaxW": statepointdata["total_power"] if statepointdata["total_power"] >= 0 else 0,
-            "SupplyMinW": statepointdata["total_power"] if statepointdata["total_power"] >= 0 else 0,
-            "UsageWh": abs(statevolumewh) if statepointdata["total_power"] < 0 else 0,
-            "UsageMaxW": abs(statepointdata["total_power"]) if statepointdata["total_power"] < 0 else 0,
-            "UsageMinW": abs(statepointdata["total_power"]) if statepointdata["total_power"] < 0 else 0
+            "SupplyWh": statevolumewh if statepointdata["power"] >= 0 else 0,
+            "SupplyMaxW": statepointdata["power"] if statepointdata["power"] >= 0 else 0,
+            "SupplyMinW": statepointdata["power"] if statepointdata["power"] >= 0 else 0,
+            "UsageWh": abs(statevolumewh) if statepointdata["power"] < 0 else 0,
+            "UsageMaxW": abs(statepointdata["power"]) if statepointdata["power"] < 0 else 0,
+            "UsageMinW": abs(statepointdata["power"]) if statepointdata["power"] < 0 else 0
         }
         return newvolumepointdata     
     def writevolumes(self):
