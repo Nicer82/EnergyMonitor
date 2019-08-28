@@ -17,7 +17,7 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 4. Wait for Raspbian to do its initial configuration. Once you get to the login prompt, log in with user 'pi', password 'raspbian'.
 5. Open the Raspbian config tool with 'sudo raspi-config'
 6. The following stuff depends on your preferences and type of Raspberry PI, but you will probably want to perform some basic setup like:
-  - change the default password
+    - change the default password
   - set your own hostname
   - set your wifi settings (not necessary if you are using an UTP, connection)
   - set localisation options as preferred
