@@ -29,7 +29,7 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
  9. Update the system packages with 'sudo apt-get update'
 
 ### Install dependent software
-- sudo apt-get -y install python3 python3-pip git
+- sudo apt-get -y install python3 python3-pip git screen
 - sudo pip3 install spidev mysql-connector-python
 ### Install the source code of this project
 - git clone https://github.com/Nicer82/EnergyMonitor
