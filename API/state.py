@@ -23,7 +23,6 @@ volumedatawritethread = None
 
 class State(Resource):
     def get(self, point):
-        return statedata, 200 #tmp
         for statepointdata in statedata:
             if(point == statepointdata["point"]):
                 return statepointdata, 200
