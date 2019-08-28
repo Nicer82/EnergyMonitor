@@ -23,6 +23,7 @@ volumedatawritethread = None
 
 class State(Resource):
     def get(self, point):
+        return statedata, 200 #tmp
         for statepointdata in statedata:
             if(point == statepointdata["point"]):
                 return statepointdata, 200
@@ -30,9 +31,7 @@ class State(Resource):
     def put(self, point):
         # fetch the values from the post data
         newstatepointdata = json.loads(request.data.decode('ascii'))
-        self.registerState(newstatepointdata)
-        return statedata, 200 #return self.registerState(newstatepointdata)
-        
+        return self.registerState(newstatepointdata)
     def registerState(self, newstatepointdata):
         # update in case the point already exists
         for statepointdata in statedata:
