@@ -5,10 +5,21 @@
     "SamplesPerWave": 60,
     "WavesToRead": 50,
     "Frequency": 50,
-    "Phases": 3,
     "CalibrationFactor_Power": 0.0045232,
     "CalibrationFactor_Voltage": 0.2527,
-    "VoltageStateService": ""
+    "VoltageStateService": "",
+    "CurrentChannels":
+    {
+      "Brown": 0,
+      "Black": 2,
+      "Gray": 4
+    },
+    "VoltageChannels":
+    {
+      "Brown": 1,
+      "Black": 3,
+      "Gray": 5
+    }
   },
   "Api":
   {
