@@ -17,7 +17,7 @@ def postStates():
                 #print("POST: {}".format(statePost)) # temp for debugging
                 # Get the current IP
                 ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-                emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}/state/{} -d\'{}\''.format(ip, statePost['point'],json.dumps(statePost)))
+                emlib.run_process('curl -H "Content-Type: application/json" -X PUT http://{}:{}/state/{} -d\'{}\''.format(ip, config["Api"]["Port"],statePost['point'],json.dumps(statePost)))
                 statePost = None
             except Exception as e:
                 logging.exception("Failed to post state to the API: {}".format(e))
