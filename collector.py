@@ -28,8 +28,13 @@ with open('config.json') as json_data:
     config = json.load(json_data)
     channels = []
     for i in range(config["Collector"]["Phases"]):
+        # Add a current measurement channel for every phase (even channel numbers)
         channels.append(i*2)
-        channels.append(i*2+1)
+        
+        # In case no voltage state service is setup, we also need to measure the voltage (odd channel numbers)
+        # Channel is always the current measurement channel + 1 for that phase.
+        if(not config["Collector"]["VoltageStateService"]): 
+            channels.append(i*2+1)
         
 # Create a new log file per start
 logFileName = "collector_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
