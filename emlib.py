@@ -30,6 +30,16 @@ def normalize(values):
         
     return values
 
+def calcPeakSampleIdx(values, samplesperwave):
+    indexes = []
+    
+    for i in range(int(len(values)/samplesperwave)):
+        wave = values[i*samplesperwave:(i+1)*samplesperwave]
+        maxidx, maxvalue = max(enumerate(wave), key=operator.itemgetter(1))
+        indexes.append(maxidx)
+
+    return round(statistics.mean(indexes))
+
 class AdcReader():
     def __init__(self):
         self.spi = spidev.SpiDev()
