@@ -27,15 +27,17 @@ def postStates():
 with open('config.json') as json_data:
     config = json.load(json_data)
     channels = []
-    for i in range(config["Collector"]["Phases"]):
+    for wirecolor in config["Collector"]["CurrentChannels"]:
         # Add a current measurement channel for every phase (even channel numbers)
-        channels.append(i*2)
+        channels.append(config["Collector"]["CurrentChannels"][wirecolor])
         
-        # In case no voltage state service is setup, we also need to measure the voltage (odd channel numbers)
-        # Channel is always the current measurement channel + 1 for that phase.
-        if(not config["Collector"]["VoltageStateService"]): 
-            channels.append(i*2+1)
+        # In case no voltage service is setup, we also need to measure the voltage
+        # Always read the voltage of a phase directly after the current to avoid too much time between those reads.
+        if(not config["Collector"]["VoltageService"]): 
+            channels.append(config["Collector"]["VoltageChannels"][wirecolor])
         
+print(channels)
+
 # Create a new log file per start
 logFileName = "collector_{0}.log".format(datetime.now().strftime("%Y%m%d_%H%M%S"))
 logging.basicConfig(filename=logFileName, 
@@ -74,6 +76,7 @@ while(True):
             ci = li*2
             vi = ci+1
 
+            # TODO use voltage from state service in case a config["Collector"]["VoltageStateService"] is setup.
             for reading in range(len(data[ci])):
                 powerdata.append(data[ci][reading] * data[vi][reading])
 
