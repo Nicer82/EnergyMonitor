@@ -18,12 +18,12 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 5. Open the Raspbian config tool with 'sudo raspi-config'
 6. The following stuff depends on your preferences and type of Raspberry PI, but you will probably want to perform some basic setup like:
     - change the default password
-  - set your own hostname
-  - set your wifi settings (not necessary if you are using an UTP, connection)
-  - set localisation options as preferred
-  - set interfacing options
-      - enable SSH
-      - enable SPI (Required to be able to read out the MCP3208 chip!)
+    - set your own hostname
+    - set your wifi settings (not necessary if you are using an UTP, connection)
+    - set localisation options as preferred
+    - set interfacing options
+        - enable SSH
+        - enable SPI (Required to be able to read out the MCP3208 chip!)
  7. You can set a static IP to the PI so your device is easier to find. I personally prefer to set a reserved IP for the MAC-address of the PI into my DHCP server.
  8. Exit the Raspbian config tool and reboot. From this point on, if you enabled SSH, you can disconnect the keyboard and screen and access the pi using SSH from another computer.
  9. Update the system packages with 'sudo apt-get update'
