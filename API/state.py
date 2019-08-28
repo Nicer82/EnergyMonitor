@@ -28,9 +28,12 @@ class State(Resource):
                 return statepointdata, 200
         return "point not found", 404
     def put(self, point):
-        # fetch the values from the post data
-        newstatepointdata = json.loads(request.data.decode('ascii'))
-        return self.registerState(newstatepointdata)
+        try:
+            # fetch the values from the post data
+            newstatepointdata = json.loads(request.data.decode('ascii'))
+            return self.registerState(newstatepointdata)
+        except Exception as error:
+            return error, 500
     def registerState(self, newstatepointdata):
         # update in case the point already exists
         for statepointdata in statedata:
