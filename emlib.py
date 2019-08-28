@@ -69,3 +69,12 @@ class AdcReader():
             nextRead += sampleReadTime
 
         return data
+    
+    def simulateSineWave(self, peaksampleidx, peaksamplevalue, samplesperwave, wavestoread):
+        data = []
+        
+        # Loop through the total number of samples to take
+        for si in range(samplesperwave*wavestoread):
+            data.append(round(math.sin((si+samplesperwave/4-peaksampleidx)/samplesperwave*2*math.pi)*peaksamplevalue))
+        
+        return data
