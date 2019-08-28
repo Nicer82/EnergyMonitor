@@ -49,7 +49,6 @@ class State(Resource):
                 
         # insert in case the point doesn't already exist
         statedata.append(newstatepointdata)
-        print(statedata)
         return newstatepointdata, 201
     def updatevolume(self, statepointdata, prevtime):
         # Calculate the volume data for the current state (part 1)
