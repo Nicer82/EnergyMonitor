@@ -1,10 +1,7 @@
 # Monitoring Energy with your Raspberry Pi
-
-The centerpiece of the design is an MCP3208 analog-to-digital controller, which used SPI to communicate with the RPi.
-
+The centerpiece of the design is an MCP3208 analog-to-digital converter, which uses SPI to communicate with the RPi.
 You will need a device or service running a MySQL database to store the volumes measured by the Energymonitor.
-
-on the RPI, two pieces of software are running:
+On the RPi, two pieces of software are running:
 - collector.py: reads out the MCP3208 continuously and uploads the current state to:
 - API/state.py: a RESTful API webservice using Flask that can return the last state, calculates the volume and uploads the volume to a MySQL database
 
@@ -14,8 +11,8 @@ The Energy Monitor can be ran in two modes:
 - without voltage measurement, using the voltage measurement form another device. current and power will always be positive using this mode
 
 If current flow direction is not important for you (the flow direction is only oen direction), You could skip the whole measurement of the voltage and hardcode the average voltage for your network in the VoltageService class, but because voltages can fluctuate a lot, it is way more accurate to use the actual voltage for power calculations.
-### 1.1 RPI power source
-I learned during this project that the power source you are using to power the RPI is very important to output a stable DC voltage (5-5.3V) that can deliver enough amps (+3A). The more stable this is, the more accurate your readings will be. I disassembled an IKEA-branded USB charger, which works very well and gave me the most accurate results.
+### 1.1 RPi power source
+I learned during this project that the power source you are using to power the RPi is very important to output a stable DC voltage (5-5.3V) that can deliver enough amps (+3A). The more stable this is, the more accurate your readings will be. I disassembled an IKEA-branded USB charger, which works very well and gave me the most accurate results.
 ### 1.2 Wiring schema for a current measurement channel
 Below wiring schemes is what I used. If you are measuring multiple wires, you will need to multiply these circuits and connect them to different channels of the MCP3208.
 #### 1.2.1 Component list
@@ -28,7 +25,7 @@ Below wiring schemes is what I used. If you are measuring multiple wires, you wi
 TBD
 #### 1.3.2 Schema
 TBD
-## 2. RPI Installation instructions
+## 2. RPi Installation instructions
 Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 ### 2.1 Raspbian setup
 1. Download the latest image of Raspbian Lite, available at raspberrypi.org/downloads
@@ -63,7 +60,7 @@ Configuration is stored in the config.json file. There is a section for the coll
         - SamplesPerWave: The number of samples you want to take from one sine wave (pos and neg). The higher this number, the more accurate the measurement is but the more CPU time is consumed. 60 is about the maximum for a RPI where the python code can stil catch up. (in a 50 Hz network, this is one sample per channel every 0.333 millisecond!)
         - WavesToRead: The number of sine waves you want to read for one state update. The higher this number, the more accurate the state will be, but the more time there will be between state updates. if set to 50, this means a state update every second (WavesToRead / Frequency = state update time in seconds)
         - Frequency: The Frequency in Hz for the electricity network. In Europe, this is 50, in North America this is 60.
-        - CalibrationFactor_Power: The calibration factor for the power calculations. Compare the results of the monitor with an accurate power measurement device and increase this value when its too low, decrease when its too high. The used resistors, capacitors, RPI power shource and wiring might require you to adjust this parameter.
+        - CalibrationFactor_Power: The calibration factor for the power calculations. Compare the results of the monitor with an accurate power measurement device and increase this value when its too low, decrease when its too high. The used resistors, capacitors, RPi power shource and wiring might require you to adjust this parameter.
         - CalibrationFactor_Voltage: same as the above, but for the voltage results.
         - VoltageService: RESTful API service where you want to fetch the voltage from.
             - In case you run the monitor with voltage measurement, leave this empty and provide the VoltageChannels below for your wires.
