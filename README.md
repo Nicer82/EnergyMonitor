@@ -1,16 +1,19 @@
 # Monitoring Energy with your Raspberry Pi
 First of all: a big thank you to the guys at OpenEnergyMonitor, Almost all of the knowledge and information is comming from their very informative website https://learn.openenergymonitor.org. I would strongly encourage you to take your time and learn before you start building on this project.
 
-The centerpiece of the design is an MCP3208 analog-to-digital converter, which uses SPI to communicate with the RPi.
+The strength of this project is that you can combine multiple devices and centralize all information in one database. A big advantage is also that no data is written onto the SD cards of the RPI devices. As we all know, these wear out fast with heavy writing so the device would fail quite fast. Instead, all data is kept in memory and only made persistent in a centralized MySQL Database.
+
+The centerpiece of the design is an MCP3208 analog-to-digital converter chip, which uses SPI to communicate with the RPi.
 You will need a device or service running a MySQL database to store the volumes measured by the Energymonitor.
 On the RPi, two pieces of software are running:
 - collector.py: reads out the MCP3208 continuously and uploads the current state to:
 - API/state.py: a RESTful API webservice using Flask that can return the last state, calculates the volume and uploads the volume to a MySQL database
 
+The MySQL database can run on any device or even in the cloud if you like. I personally used a MariaDB instance on my Synology server, simply because I already had that one. The end point of this project is this MySQL Database containing all the measurd data. A front-end app to visualize and consult that data goes beyond the scope of this project and depends on what you are actually measuring.
 ## 1. Hardware setup
 The Energy Monitor can be ran in two modes:
 - with voltage measurement: in this case you can also determine the flow direction of the current. 
-- without voltage measurement, using the voltage measurement form another device. current and power will always be positive using this mode
+- without voltage measurement, using the voltage measurement form another EnergyMonitor device. Current and power will always be positive using this mode
 
 If current flow direction is not important for you (the flow direction is only oen direction), You could skip the whole measurement of the voltage and hardcode the average voltage for your network in the VoltageService class, but because voltages can fluctuate a lot, it is way more accurate to use the actual voltage for power calculations.
 ### 1.1 RPi power source
