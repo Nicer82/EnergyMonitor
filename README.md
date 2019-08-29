@@ -67,5 +67,8 @@ Configuration is stored in the config.json file. There is a section for the coll
         - VolumeDbPassword: MySQL Password.
 ### Setting up the API webservice (lighttpd webserver)
 
+TBD
+
 ## MySQL DB setup instructions
 
+To create the required table(s) on your MySQL Database, you can use the script db.sql
