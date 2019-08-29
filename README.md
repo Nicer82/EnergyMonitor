@@ -8,7 +8,7 @@ on the RPI, two pieces of software are running:
 - collector.py: reads out the MCP3208 continuously and uploads the current state to:
 - API/state.py: a RESTful API webservice using Flask that can return the last state, calculates the volume and uploads the volume to a MySQL database
 
-## Hardware setup
+1. Hardware setup
 The Energy Monitor can be ran in two modes:
 - with voltage measurement: in this case you can also determine the flow direction of the current. 
 - without voltage measurement, using the voltage measurement form another device. current and power will always be positive using this mode
