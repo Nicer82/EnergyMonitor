@@ -8,16 +8,16 @@ on the RPI, two pieces of software are running:
 - collector.py: reads out the MCP3208 continuously and uploads the current state to:
 - API/state.py: a RESTful API webservice using Flask that can return the last state, calculates the volume and uploads the volume to a MySQL database
 
-1. Hardware setup
+## 1. Hardware setup
 The Energy Monitor can be ran in two modes:
 - with voltage measurement: in this case you can also determine the flow direction of the current. 
 - without voltage measurement, using the voltage measurement form another device. current and power will always be positive using this mode
 
 If current flow direction is not important for you (the flow direction is only oen direction), You could skip the whole measurement of the voltage and hardcode the average voltage for your network in the VoltageService class, but because voltages can fluctuate a lot, it is way more accurate to use the actual voltage for power calculations.
 
-## RPI Installation instructions
+## 2. RPI Installation instructions
 Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
-### Raspbian setup
+### 2.1 Raspbian setup
 1. Download the latest image of Raspbian Lite, available at raspberrypi.org/downloads
 2. Flash the image to a fresh micro SD card (I used balenaEtcher)
 3. Plug the SD card into the raspberry PI together with a keyboard, screen and power
@@ -35,13 +35,13 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
  8. Exit the Raspbian config tool and reboot. From this point on, if you enabled SSH, you can disconnect the keyboard and screen and access the pi using SSH from another computer.
  9. Update the system packages with 'sudo apt-get update'
 
-### Install dependent software
+### 2.2 Install dependent software
 - sudo apt-get -y install python3 python3-pip git screen
 - sudo pip3 install spidev mysql-connector-python
-### Install the source code of this project
+### 2.3 Install the source code of this project
 - git clone https://github.com/Nicer82/EnergyMonitor
 - cd EnergyMonitor
-#### Config file
+#### 2.3.1 Config file
 Configuration is stored in the config.json file. There is a section for the collector and one for the Api. Edit the settings according to your needs
 - open the file with 'sudo nano config.json'
 - Edit the settings according to your setup:
@@ -65,10 +65,10 @@ Configuration is stored in the config.json file. There is a section for the coll
         - VolumeDbName: Database name that contains the VolumeData table.
         - VolumeDbUser: MySQL Username.
         - VolumeDbPassword: MySQL Password.
-### Setting up the API webservice (lighttpd webserver)
+#### 2.3.2 Setting up the API webservice (lighttpd webserver)
 
 TBD
 
-## MySQL DB setup instructions
+## 3. MySQL DB setup instructions
 
 To create the required table(s) on your MySQL Database, you can use the script db.sql
