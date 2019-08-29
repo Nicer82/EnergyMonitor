@@ -1,4 +1,6 @@
 # Monitoring Energy with your Raspberry Pi
+First of all: a big thank you to the guys at OpenEnergyMonitor, Almost all of the knowledge and information is comming from their very informative website https://learn.openenergymonitor.org. I would strongly encourage you to take your time and learn before you start building on this project.
+
 The centerpiece of the design is an MCP3208 analog-to-digital converter, which uses SPI to communicate with the RPi.
 You will need a device or service running a MySQL database to store the volumes measured by the Energymonitor.
 On the RPi, two pieces of software are running:
