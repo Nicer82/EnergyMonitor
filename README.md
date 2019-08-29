@@ -14,7 +14,20 @@ The Energy Monitor can be ran in two modes:
 - without voltage measurement, using the voltage measurement form another device. current and power will always be positive using this mode
 
 If current flow direction is not important for you (the flow direction is only oen direction), You could skip the whole measurement of the voltage and hardcode the average voltage for your network in the VoltageService class, but because voltages can fluctuate a lot, it is way more accurate to use the actual voltage for power calculations.
-
+### 1.1 RPI power source
+I learned during this project that the power source you are using to power the RPI is very important to output a stable DC voltage (5-5.3V) that can deliver enough amps (+3A). The more stable this is, the more accurate your readings will be. I disassembled an IKEA-branded USB charger, which works very well and gave me the most accurate results.
+### 1.2 Wiring schema for a current measurement channel
+Below wiring schemes is what I used. If you are measuring multiple wires, you will need to multiply these circuits and connect them to different channels of the MCP3208.
+#### 1.2.1 Component list
+TBD
+#### 1.2.2 Schema
+TBD
+### 1.3 Wiring schema for a voltage measurement channel
+Below wiring schemes is what I used. If you are measuring multiple wires, you will need to multiply these circuits and connect them to different channels of the MCP3208.
+#### 1.3.1 Component list
+TBD
+#### 1.3.2 Schema
+TBD
 ## 2. RPI Installation instructions
 Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 ### 2.1 Raspbian setup
@@ -66,9 +79,6 @@ Configuration is stored in the config.json file. There is a section for the coll
         - VolumeDbUser: MySQL Username.
         - VolumeDbPassword: MySQL Password.
 #### 2.3.2 Setting up the API webservice (lighttpd webserver)
-
 TBD
-
 ## 3. MySQL DB setup instructions
-
 To create the required table(s) on your MySQL Database, you can use the script db.sql
