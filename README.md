@@ -8,6 +8,13 @@ on the RPI, two pieces of software are running:
 - collector.py: reads out the MCP3208 continuously and uploads the current state to:
 - API/state.py: a RESTful API webservice using Flask that can return the last state, calculates the volume and uploads the volume to a MySQL database
 
+## Hardware setup
+The Energy Monitor can be ran in two modes:
+- with voltage measurement: in this case you can also determine the flow direction of the current. 
+- without voltage measurement, using the voltage measurement form another device. current and power will always be positive using this mode
+
+If current flow direction is not important for you (the flow direction is only oen direction), You could skip the whole measurement of the voltage and hardcode the average voltage for your network in the VoltageService class, but because voltages can fluctuate a lot, it is way more accurate to use the actual voltage for power calculations.
+
 ## RPI Installation instructions
 Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 ### Raspbian setup
@@ -36,9 +43,28 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 - cd EnergyMonitor
 #### Config file
 Configuration is stored in the config.json file. There is a section for the collector and one for the Api. Edit the settings according to your needs
-- sudo nano config.json
-- Edit the point name (logical name for the point you are measuring, for instance: Mains, SolarGarage,SolarHome, ...
-- Set the number of phases you want to read
+- open the file with 'sudo nano config.json'
+- Edit the settings according to your setup:
+    - Collector
+        - Point: logical name for the point you are measuring, for instance: Mains, SolarGarage,SolarHome, ...
+        - SamplesPerWave: The number of samples you want to take from one sine wave (pos and neg). The higher this number, the more accurate the measurement is but the more CPU time is consumed. 60 is about the maximum for a RPI where the python code can stil catch up. (in a 50 Hz network, this is one sample per channel every 0.333 millisecond!)
+        - WavesToRead: The number of sine waves you want to read for one state update. The higher this number, the more accurate the state will be, but the more time there will be between state updates. if set to 50, this means a state update every second (WavesToRead / Frequency = state update time in seconds)
+        - Frequency: The Frequency in Hz for the electricity network. In Europe, this is 50, in North America this is 60.
+        - CalibrationFactor_Power: The calibration factor for the power calculations. Compare the results of the monitor with an accurate power measurement device and increase this value when its too low, decrease when its too high. The used resistors, capacitors, RPI power shource and wiring might require you to adjust this parameter.
+        - CalibrationFactor_Voltage: same as the above, but for the voltage results.
+        - VoltageService: RESTful API service where you want to fetch the voltage from.
+            - In case you run the monitor with voltage measurement, leave this empty and provide the VoltageChannels below for your wires.
+            - In case you run the monitor without voltage measurement, fill in the state service url of the device that measures the voltage for your wires.
+        - CurrentChannels: a list of the wires you are measuring the current for. Easiest is to name the wires according to their color. The channel is an integer value from 0-7, pointing the the channel index of the MCP3208.
+        - VoltageChannels: a list of the wires you are measuring the voltage for. Shoudl only be filled in when you run the monitor with voltage measurement. Each measured current channel should have a corresponding voltage channel.
+    - Api
+        - Port: The TCP port on which the Restful API service should run to collect and report the last state.
+        - VolumeDataSeconds: the time interval how frequent a VolumeData record should be written.
+        - VolumeDbHost: Host name of the machine running the MySQL database to keep the VolumeData.
+        - VolumeDbPort: TCP port where MySQL is running.
+        - VolumeDbName: Database name that contains the VolumeData table.
+        - VolumeDbUser: MySQL Username.
+        - VolumeDbPassword: MySQL Password.
 ### Setting up the API webservice (lighttpd webserver)
 
 ## MySQL DB setup instructions
