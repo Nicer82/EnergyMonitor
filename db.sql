@@ -1,8 +1,8 @@
-# Database: `EnergyMonitor`
+-- Database: `EnergyMonitor`
 CREATE DATABASE IF NOT EXISTS `EnergyMonitor` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `EnergyMonitor`;
 
-# Table: `VolumeData`
+-- Table: `VolumeData`
 CREATE TABLE `VolumeData` (
   `TimeStamp` datetime NOT NULL,
   `Point` varchar(10) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE `VolumeData` (
   `TotalMinW` int(11) GENERATED ALWAYS AS (case when `UsageMaxW` > 0 then -`UsageMaxW` else `SupplyMinW` end) VIRTUAL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# Indexes for table `VolumeData`
+-- Indexes for table `VolumeData`
 ALTER TABLE `VolumeData`
   ADD PRIMARY KEY (`TimeStamp`,`Point`),
   ADD KEY `PointTimestampIdx` (`Point`,`TimeStamp`);
