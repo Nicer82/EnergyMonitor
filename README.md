@@ -37,7 +37,10 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 2. Flash the image to a fresh micro SD card (I used balenaEtcher)
 3. Plug the SD card into the raspberry PI together with a keyboard, screen and power
 4. Wait for Raspbian to do its initial configuration. Once you get to the login prompt, log in with user 'pi', password 'raspbian'.
-5. Open the Raspbian config tool with 'sudo raspi-config'
+5. Open the Raspbian config tool 
+    ```sh
+    sudo raspi-config
+    ```
 6. The following stuff depends on your preferences and type of Raspberry PI, but you will probably want to perform some basic setup like:
     - change the default password
     - set your own hostname
@@ -48,18 +51,27 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
         - enable SPI (Required to be able to read out the MCP3208 chip!)
  7. You can set a static IP to the PI so your device is easier to find. I personally prefer to set a reserved IP for the MAC-address of the PI into my DHCP server.
  8. Exit the Raspbian config tool and reboot. From this point on, if you enabled SSH, you can disconnect the keyboard and screen and access the pi using SSH from another computer.
- 9. Update the system packages with 'sudo apt-get update'
-
+ 9. Update the system packages
+    ```sh
+    sudo apt-get update
+    ```
 ### 2.2 Install dependent software
-- sudo apt-get -y install python3 python3-pip git screen lighttpd
-- sudo pip3 install spidev mysql-connector-python flask flask_restful
+```sh
+sudo apt-get -y install python3 python3-pip git screen lighttpd
+sudo pip3 install spidev mysql-connector-python flask flask_restful
+```
 ### 2.3 Install the source code of this project
-- git clone https://github.com/Nicer82/EnergyMonitor
-- cd EnergyMonitor
+```sh
+git clone https://github.com/Nicer82/EnergyMonitor
+cd EnergyMonitor
+```
 #### 2.3.1 Config file
 Configuration is stored in the config.json file. There is a section for the collector and one for the Api. Edit the settings according to your needs
-- open the file with 'sudo nano config.json'
-- Edit the settings according to your setup:
+1. Open the file
+```sh
+sudo nano config.json
+```
+2.Edit the settings according to your setup:
     - Collector
         - Point: logical name for the point you are measuring, for instance: Mains, SolarGarage,SolarHome, ...
         - SamplesPerWave: The number of samples you want to take from one sine wave (pos and neg). The higher this number, the more accurate the measurement is but the more CPU time is consumed. 60 is about the maximum for a RPI where the python code can stil catch up. (in a 50 Hz network, this is one sample per channel every 0.333 millisecond!)
@@ -83,7 +95,7 @@ Configuration is stored in the config.json file. There is a section for the coll
 #### 2.3.2 Setting up the API webservice (lighttpd webserver)
 1. Open the lighttpd config file
     ```sh
-    $ sudo nano /etc/lighttpd/lighttpd.conf
+    sudo nano /etc/lighttpd/lighttpd.conf
     ```
 2. Add the lines marked with # EM to the config file and save it:
     ```sh
@@ -156,19 +168,19 @@ Configuration is stored in the config.json file. There is a section for the coll
     ```
 3. Allow execution on state.py
     ```sh
-    $ sudo chmod 775 /home/pi/EnergyMonitor/API/state.py
+    sudo chmod 775 /home/pi/EnergyMonitor/API/state.py
     ```
 4. Allow writing the lighttpd cache location
     ```sh
-    $ sudo chmod 775 /var/cache/lighttpd
+    sudo chmod 775 /var/cache/lighttpd
     ```
 5. Restart the lighttpd service
     ```sh
-    $ sudo systemctl restart lighttpd
+    sudo systemctl restart lighttpd
     ```
 6. Validate a succesful start 
     ```sh
-    $ systemctl status lighttpd.service
+    systemctl status lighttpd.service
     ```
 
 #### 2.3.3 Set collector.py to start at boot
