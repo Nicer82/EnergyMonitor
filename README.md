@@ -36,7 +36,7 @@ Tested with a Raspberry Pi Model 3B+. Should work on other RPi's as well.
 1. Download the latest image of Raspbian Lite, available at raspberrypi.org/downloads
 2. Flash the image to a fresh micro SD card (I used balenaEtcher)
 3. Plug the SD card into the raspberry PI together with a keyboard, screen and power
-4. Wait for Raspbian to do its initial configuration. Once you get to the login prompt, log in with user 'pi', password 'raspbian'.
+4. Wait for Raspbian to do its initial configuration. Once you get to the login prompt, log in with user 'pi', password 'raspberry'.
 5. Open the Raspbian config tool 
     ```sh
     sudo raspi-config
