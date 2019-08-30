@@ -82,7 +82,7 @@ Configuration is stored in the config.json file. There is a section for the coll
         - VolumeDbPassword: MySQL Password.
 #### 2.3.2 Setting up the API webservice (lighttpd webserver)
 - Open the lighttpd config file
-```
+```sh
 $ sudo nano /etc/lighttpd/lighttpd.conf
 ```
 - Add the lines 'in bold' to the config file and save it:
@@ -157,25 +157,25 @@ fastcgi.server = (
    "^/favicon.ico$" => "/static/favicon.ico",
 ```
 - Allow execution on state.py
-```
+```sh
 $ sudo chmod 775 /home/pi/EnergyMonitor/API/state.py
 ```
 - Allow writing the lighttpd cache location
-```
+```sh
 $ sudo chmod 775 /var/cache/lighttpd
 ```
 - Restart the lighttpd service
-```
+```sh
 $ sudo systemctl restart lighttpd
 ```
 - Validate a succesful start 
-```
+```sh
 $ systemctl status lighttpd.service
 ```
 
 #### 2.3.3 Set collector.py to start at boot
 You need to add a startup command to the /etc/rc.local file to run the collector at boot. I prefer to run it using screen, so you can resume the screen afterwards in case of issues.
-```
+```sh
 sudo nano /etc/rc.local
 ```
 
