@@ -7,7 +7,7 @@ import emlib
 ADC_SAMPLESPERWAVE = 10 # If set to more then 400 with one channel, the code can't keep up, so that is about the max samples per wave
 ADC_ACWAVESTOREAD = 50
 AC_FREQUENCY = 50
-CHANNELS = [1]
+CHANNELS = [7]
 
 # Create the reader
 reader = emlib.AdcReader()
