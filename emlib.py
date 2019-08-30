@@ -123,7 +123,7 @@ class VoltageService:
             wave = values[i*self._samplesperwave:(i+1)*self._samplesperwave]
             maxidx, maxvalue = max(enumerate(wave), key=operator.itemgetter(1))
             indexes.append(maxidx)
-
+        print(round(statistics.mean(indexes)))
         return round(statistics.mean(indexes)) 
 
     def wireVoltageData(self, wirecolor, currentData):
