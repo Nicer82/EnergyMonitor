@@ -170,15 +170,11 @@ sudo nano config.json
     ```sh
     sudo chmod 775 /home/pi/EnergyMonitor/API/state.py
     ```
-4. Allow writing the lighttpd cache location
-    ```sh
-    sudo chmod 775 /var/cache/lighttpd
-    ```
-5. Restart the lighttpd service
+4. Restart the lighttpd service
     ```sh
     sudo systemctl restart lighttpd
     ```
-6. Validate a succesful start 
+5. Validate a succesful start 
     ```sh
     systemctl status lighttpd.service
     ```
