@@ -16,7 +16,7 @@ CHANNELS = [0]
 spi = spidev.SpiDev()
 spi.open(0,0)
 channel=0
-response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
+response = spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
 print(response)
 
 while(False):
