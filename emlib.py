@@ -130,10 +130,10 @@ class VoltageService:
         return self.simulateSineWave(peaksampleidx=self.calcPeakSampleIdx(currentData),peaksamplevalue = round(self.voltage[wirecolor]/self._calibrationfactor*math.sqrt(2)))
         
     def simulateSineWave(self, peaksampleidx, peaksamplevalue):
-        data = []
+        ret = []
         
         # Loop through the total number of samples to take
         for si in range(self._samplesperwave*self._wavestoread):
-            data.append(round(math.sin((si+self._samplesperwave/4-peaksampleidx)/self._samplesperwave*2*math.pi)*peaksamplevalue))
+            ret.append(round(math.sin((si+self._samplesperwave/4-peaksampleidx)/self._samplesperwave*2*math.pi)*peaksamplevalue))
         
-        return data
+        return ret
