@@ -16,7 +16,7 @@ while(True):
     ### Read the channels
     data = reader.readSineWave(CHANNELS, ADC_SAMPLESPERWAVE, ADC_ACWAVESTOREAD, AC_FREQUENCY)
 
-    for i in data[0]:
+    for i in range(len(data[0])):
         line = []
         for channeldataidx in range(len(data)):
             line.append(data[channeldataidx][i])
