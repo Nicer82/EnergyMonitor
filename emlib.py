@@ -70,11 +70,11 @@ class AdcReader():
                 if(channel == lastChannel):
                     delay = int((nextRead-time.perf_counter())*1000000)
                     if(delay > 0): 
-                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 1000000, delay) 
+                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, delay) 
                     else:
-                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 1000000)
+                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
                 else:
-                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 1000000)
+                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
 
                 data[ci].append(((response[1] & 15) << 8) + response[2])
         
