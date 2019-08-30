@@ -177,8 +177,10 @@ You need to add a startup command to the /etc/rc.local file to run the collector
     ```sh
     sudo nano /etc/rc.local
     ```
-2. Add this line to the file and save it:
+2. Add these lines to the file and the end just before the last line 'exit 0' and save it:
     ```sh
+    cd /home/pi/EnergyMonitor
+    su pi -c "screen -dm -S EnergyMonitor python3 collector.py"
     ```
 3. Reboot the RPi
     ```sh
