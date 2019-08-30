@@ -83,14 +83,26 @@ Configuration is stored in the config.json file. There is a section for the coll
 #### 2.3.2 Setting up the API webservice (lighttpd webserver)
 - Open the lighttpd config file
 ```
-sudo nano /etc/lighttpd/lighttpd.conf
+$ sudo nano /etc/lighttpd/lighttpd.conf
 ```
 - Add these lines to the config file and save it:
 TBD
-- Allow execution on state.py with 'sudo chmod 775 /home/pi/EnergyMonitor/API/state.py'
-- Allow writing the lighttpd cache location with 'sudo chmod 775 /var/cache/lighttpd'
-- Restart the lighttpd service with 'sudo systemctl restart lighttpd'
-- Validate a succesful start with 'systemctl status lighttpd.service'
+- Allow execution on state.py
+```
+$ sudo chmod 775 /home/pi/EnergyMonitor/API/state.py
+```
+- Allow writing the lighttpd cache location
+```
+$ sudo chmod 775 /var/cache/lighttpd
+```
+- Restart the lighttpd service
+```
+$ sudo systemctl restart lighttpd
+```
+- Validate a succesful start 
+```
+$ systemctl status lighttpd.service
+```
 
 #### 2.3.3 Set collector.py to start at boot
 You need to add a startup command to the /etc/rc.local file to run the collector at boot. I prefer to run it using screen, so you can resume the screen afterwards in case of issues.
