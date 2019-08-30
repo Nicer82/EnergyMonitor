@@ -15,8 +15,8 @@ def postStates():
         while(statePost):
             try:
                 # temp for debugging
-                print("POST: {}".format(statePost))
-                break;
+                #print("POST: {}".format(statePost))
+                #break;
             
                 # Get the current IP
                 ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
