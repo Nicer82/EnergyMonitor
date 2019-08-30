@@ -95,10 +95,10 @@ while(True):
                 #print('{};{}'.format(data[currentidxs[wirecolor]][reading],voltageData[reading]))
                 powerdata.append(data[currentidxs[wirecolor]][reading] * voltageData[reading])
             
-            print(len(data[currentidxs[wirecolor]]))
-            print(len(voltageData))
-            print(len(powerdata))
             
+            print(voltageService.calcPeakSampleIdx(data[currentidxs[wirecolor]]));
+            print(voltageService.calcPeakSampleIdx(voltageData));
+                  
             wirepower = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
             power.append(wirepower)
 
