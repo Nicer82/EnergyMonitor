@@ -65,7 +65,7 @@ statePostQueue = Queue()
 statePostThread = None
 
 # Infinite loop
-if(True):
+while(True):
     try:
         ### Read the channels
         data = reader.readSineWave(channels,config["Collector"]["SamplesPerWave"],config["Collector"]["WavesToRead"],config["Collector"]["Frequency"])
