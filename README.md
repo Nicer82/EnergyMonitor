@@ -85,15 +85,15 @@ Configuration is stored in the config.json file. There is a section for the coll
 ```
 $ sudo nano /etc/lighttpd/lighttpd.conf
 ```
-- Add these lines to the config file and save it:
+- Add the lines *in bold* to the config file and save it:
 ```
 server.modules = (
         "mod_indexfile",
         "mod_access",
         "mod_alias",
         "mod_redirect",
-        "mod_fastcgi",
-        "mod_rewrite"
+        *"mod_fastcgi",*
+        *"mod_rewrite"*
 )
 
 server.document-root        = "/var/www/html"
