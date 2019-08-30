@@ -13,6 +13,8 @@ CHANNELS = [0]
 reader = emlib.AdcReader()
 
 while(True):
+    print(time.perf_counter())
+    
     ### Read the channels
     data = reader.readSineWave(CHANNELS, ADC_SAMPLESPERWAVE, ADC_ACWAVESTOREAD, AC_FREQUENCY)
 
