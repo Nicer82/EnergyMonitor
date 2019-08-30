@@ -85,15 +85,14 @@ Configuration is stored in the config.json file. There is a section for the coll
 ```sh
 $ sudo nano /etc/lighttpd/lighttpd.conf
 ```
-- Add the lines 'in bold' to the config file and save it:
+- Add the lines marked with # EM to the config file and save it:
 ```sh
 server.modules = (
         "mod_indexfile",
         "mod_access",
         "mod_alias",
         "mod_redirect",
-        *"mod_fastcgi",*
-        *"mod_rewrite"*
+        "mod_fastcgi" # EM
 )
 
 server.document-root        = "/var/www/html"
@@ -140,7 +139,7 @@ server.modules += (
         "mod_dirlisting",
         "mod_staticfile",
 )
-
+# EM >
 fastcgi.server = (
     "/state" =>
     (
@@ -152,9 +151,7 @@ fastcgi.server = (
         )
     )
 )
-
- url.rewrite-once = (
-   "^/favicon.ico$" => "/static/favicon.ico",
+# EM <
 ```
 - Allow execution on state.py
 ```sh
