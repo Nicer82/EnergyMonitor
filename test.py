@@ -2,6 +2,7 @@ import time
 import statistics
 import math
 import emlib
+import spidev
 
 # Settings
 ADC_SAMPLESPERWAVE = 10 # If set to more then 400 with one channel, the code can't keep up, so that is about the max samples per wave
@@ -10,9 +11,15 @@ AC_FREQUENCY = 50
 CHANNELS = [0]
 
 # Create the reader
-reader = emlib.AdcReader()
+#reader = emlib.AdcReader()
 
-while(True):
+spi = spidev.SpiDev()
+spi.open(0,0)
+channel=0
+response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
+print(response)
+
+while(False):
     print(time.perf_counter())
     
     ### Read the channels
