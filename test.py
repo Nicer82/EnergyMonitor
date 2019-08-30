@@ -5,21 +5,22 @@ import emlib
 
 # Settings
 ADC_SAMPLESPERWAVE = 60 # If set to more then 400 with one channel, the code can't keep up, so that is about the max samples per wave
-ADC_ACWAVESTOREAD = 50
+ADC_ACWAVESTOREAD = 10
 AC_FREQUENCY = 50
-CHANNELS = [0,1,2,3,4,5]
-CALIBRATIONFACTOR = [0.004064,0.004064,0.004064]
-CALIBRATIONFACTOR_V = [0.2454,0.2454,0.2454]
+CHANNELS = [0]
 
 # Create the reader
 reader = emlib.AdcReader()
 
-if(True):
+while(True):
     ### Read the channels
     data = reader.readSineWave(CHANNELS, ADC_SAMPLESPERWAVE, ADC_ACWAVESTOREAD, AC_FREQUENCY)
 
-    #for d in data[0]:
-    #    print(d)
+    for i in data[0]:
+        line = []
+        for channeldataidx in range(len(data)):
+            line.append(data[channeldataidx][i])
+        print(';'.join(str(x) for x in line))
         
     ### Normalize the captured data
     for i in range(len(data)):
