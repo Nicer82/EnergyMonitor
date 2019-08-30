@@ -155,7 +155,7 @@ fastcgi.server = (
 ```
 - Allow execution on state.py
 ```sh
-$ sudo chmod 775 /home/pi/EnergyMonitor/API/state.py
+        $ sudo chmod 775 /home/pi/EnergyMonitor/API/state.py
 ```
 - Allow writing the lighttpd cache location
 ```sh
