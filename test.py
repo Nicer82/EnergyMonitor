@@ -14,7 +14,7 @@ CHANNELS = [0]
 #reader = emlib.AdcReader()
 
 spi = spidev.SpiDev()
-spi.open(0,1)
+spi.open(1,0)
 channel=0
 response = spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 1000000)
 print(response)
