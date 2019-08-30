@@ -65,7 +65,7 @@ statePostQueue = Queue()
 statePostThread = None
 
 # Infinite loop
-while(True):
+if(True):
     try:
         ### Read the channels
         data = reader.readSineWave(channels,config["Collector"]["SamplesPerWave"],config["Collector"]["WavesToRead"],config["Collector"]["Frequency"])
@@ -73,7 +73,7 @@ while(True):
         ### Normalize the captured data
         for i in range(len(data)):
             data[i] = emlib.normalize(data[i])
-
+        
         ### Calculate the power
         power = []
         voltage = []
@@ -90,7 +90,9 @@ while(True):
             else:
                 voltageData = data[voltageidxs[wirecolor]]
 
+            print('Current;Voltage')
             for reading in range(len(data[currentidxs[wirecolor]])):
+                print('{};{}'.format(data[currentidxs[wirecolor]][reading],voltageData[reading]))
                 powerdata.append(data[currentidxs[wirecolor]][reading] * voltageData[reading])
             
             wirepower = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
