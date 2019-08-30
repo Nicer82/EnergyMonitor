@@ -71,7 +71,7 @@ Configuration is stored in the config.json file. There is a section for the coll
 ```sh
 sudo nano config.json
 ```
-2.Edit the settings according to your setup:
+2. Edit the settings according to your setup:
     - Collector
         - Point: logical name for the point you are measuring, for instance: Mains, SolarGarage,SolarHome, ...
         - SamplesPerWave: The number of samples you want to take from one sine wave (pos and neg). The higher this number, the more accurate the measurement is but the more CPU time is consumed. 60 is about the maximum for a RPI where the python code can stil catch up. (in a 50 Hz network, this is one sample per channel every 0.333 millisecond!)
