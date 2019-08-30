@@ -82,7 +82,7 @@ Configuration is stored in the config.json file. There is a section for the coll
         - VolumeDbPassword: MySQL Password.
 #### 2.3.2 Setting up the API webservice (lighttpd webserver)
 - Open the lighttpd config file
-````
+```
 sudo nano /etc/lighttpd/lighttpd.conf
 ```
 - Add these lines to the config file and save it:
