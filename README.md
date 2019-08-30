@@ -86,7 +86,76 @@ Configuration is stored in the config.json file. There is a section for the coll
 $ sudo nano /etc/lighttpd/lighttpd.conf
 ```
 - Add these lines to the config file and save it:
-TBD
+```
+server.modules = (
+        "mod_indexfile",
+        "mod_access",
+        "mod_alias",
+        "mod_redirect",
+        "mod_fastcgi",
+        "mod_rewrite"
+)
+
+server.document-root        = "/var/www/html"
+server.upload-dirs          = ( "/var/cache/lighttpd/uploads" )
+server.errorlog             = "/var/log/lighttpd/error.log"
+server.pid-file             = "/var/run/lighttpd.pid"
+server.username             = "www-data"
+server.groupname            = "www-data"
+server.port                 = 80
+
+# strict parsing and normalization of URL for consistency and security
+# https://redmine.lighttpd.net/projects/lighttpd/wiki/Server_http-parseoptsDetails
+# (might need to explicitly set "url-path-2f-decode" = "disable"
+#  if a specific application is encoding URLs inside url-path)
+server.http-parseopts = (
+  "header-strict"           => "enable",# default
+  "host-strict"             => "enable",# default
+  "host-normalize"          => "enable",# default
+  "url-normalize-unreserved"=> "enable",# recommended highly
+  "url-normalize-required"  => "enable",# recommended
+  "url-ctrls-reject"        => "enable",# recommended
+  "url-path-2f-decode"      => "enable",# recommended highly (unless breaks app)
+ #"url-path-2f-reject"      => "enable",
+  "url-path-dotseg-remove"  => "enable",# recommended highly (unless breaks app)
+ #"url-path-dotseg-reject"  => "enable",
+ #"url-query-20-plus"       => "enable",# consistency in query string
+)
+
+index-file.names            = ( "index.php", "index.html" )
+url.access-deny             = ( "~", ".inc" )
+static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
+
+compress.cache-dir          = "/var/cache/lighttpd/compress/"
+compress.filetype           = ( "application/javascript", "text/css", "text/html", "text/plain" )
+
+# default listening port for IPv6 falls back to the IPv4 port
+include_shell "/usr/share/lighttpd/use-ipv6.pl " + server.port
+include_shell "/usr/share/lighttpd/create-mime.conf.pl"
+include "/etc/lighttpd/conf-enabled/*.conf"
+
+#server.compat-module-load   = "disable"
+server.modules += (
+        "mod_compress",
+        "mod_dirlisting",
+        "mod_staticfile",
+)
+
+fastcgi.server = (
+    "/state" =>
+    (
+        (
+         "socket" => "/tmp/fastcgi.python.socket",
+         "bin-path" => "/home/pi/EnergyMonitor/API/state.py",
+         "check-local" => "disable",
+         "max-procs" => 1,
+        )
+    )
+)
+
+ url.rewrite-once = (
+   "^/favicon.ico$" => "/static/favicon.ico",
+```
 - Allow execution on state.py
 ```
 $ sudo chmod 775 /home/pi/EnergyMonitor/API/state.py
@@ -106,7 +175,10 @@ $ systemctl status lighttpd.service
 
 #### 2.3.3 Set collector.py to start at boot
 You need to add a startup command to the /etc/rc.local file to run the collector at boot. I prefer to run it using screen, so you can resume the screen afterwards in case of issues.
-- sudo nano /etc/rc.local
+```
+sudo nano /etc/rc.local
+```
+
 - TBD
 ## 3. MySQL DB setup instructions
 To create the required table(s) on your MySQL Database, you can use the script db.sql
