@@ -65,7 +65,8 @@ statePostQueue = Queue()
 statePostThread = None
 
 # Infinite loop
-while(True):
+#while(True):
+for x in range(5):
     try:
         ### Read the channels
         data = reader.readSineWave(channels,config["Collector"]["SamplesPerWave"],config["Collector"]["WavesToRead"],config["Collector"]["Frequency"])
@@ -90,15 +91,13 @@ while(True):
             else:
                 voltageData = data[voltageidxs[wirecolor]]
 
-            #print('Current;Voltage')
+            if(x==4):
+                print('Current;Voltage')
             for reading in range(len(data[currentidxs[wirecolor]])):
-                #print('{};{}'.format(data[currentidxs[wirecolor]][reading],voltageData[reading]))
+                if(x==4):
+                    print('{};{}'.format(data[currentidxs[wirecolor]][reading],voltageData[reading]))
                 powerdata.append(data[currentidxs[wirecolor]][reading] * voltageData[reading])
             
-            
-            print(voltageService.calcPeakSampleIdx(data[currentidxs[wirecolor]]));
-            print(voltageService.calcPeakSampleIdx(voltageData));
-                  
             wirepower = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
             power.append(wirepower)
 
