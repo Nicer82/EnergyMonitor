@@ -85,8 +85,8 @@ Configuration is stored in the config.json file. There is a section for the coll
 ```
 $ sudo nano /etc/lighttpd/lighttpd.conf
 ```
-- Add the lines *in bold* to the config file and save it:
-```
+- Add the lines 'in bold' to the config file and save it:
+```sh
 server.modules = (
         "mod_indexfile",
         "mod_access",
