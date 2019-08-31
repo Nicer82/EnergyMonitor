@@ -8,7 +8,7 @@ import spidev
 ADC_SAMPLESPERWAVE = 16 # If set to more then 400 with one channel, the code can't keep up, so that is about the max samples per wave
 ADC_ACWAVESTOREAD = 50
 AC_FREQUENCY = 50
-CHANNELS = [0,1]
+CHANNELS = [0,1,2,3,4,5,6,7]
 
 # Create the reader
 reader = emlib.AdcReader()
