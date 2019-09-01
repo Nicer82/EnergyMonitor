@@ -73,7 +73,7 @@ class AdcReader():
                         response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, delay) 
                     else:
                         response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
-                        countNoDelay++
+                        countNoDelay += 1
                 else:
                     response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
 
