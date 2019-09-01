@@ -59,7 +59,7 @@ class AdcReader():
         nextRead = start + sampleReadTime
         lastChannel = channels[len(channels)-1]
         channelIndexes = range(len(channels))
-
+        countNoDelay = 0
         # Loop through the total number of samples to take
         for si in range(samplesperwave*wavestoread):
             # Read all the requested channels
@@ -73,6 +73,7 @@ class AdcReader():
                         response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000, delay) 
                     else:
                         response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
+                        countNoDelay++
                 else:
                     response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
 
@@ -80,7 +81,10 @@ class AdcReader():
         
             # Set the next read time for the next iteration
             nextRead += sampleReadTime
-
+            
+            if(countNoDelay > 0):
+                print('WARNING: Sampling was too late in {}/{} samples ({}%). Try reducing samplesperwave.'.format(countNoDelay,samplesperwave*wavestoread,countNoDelay/(samplesperwave*wavestoread)*100))
+            
         return data
     
 class VoltageService:
