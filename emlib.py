@@ -54,12 +54,15 @@ class AdcReader():
         for channel in channels:
             data.append([])
         
-        start = time.perf_counter()
-        sampleReadTime = 1/(samplesperwave*frequency)
-        nextRead = start + sampleReadTime
         lastChannel = channels[len(channels)-1]
         channelIndexes = range(len(channels))
         countSampleTooLate = 0
+        
+        time.sleep(1)
+        start = time.perf_counter()
+        sampleReadTime = 1/(samplesperwave*frequency)
+        nextRead = start + sampleReadTime
+        
         # Loop through the total number of samples to take
         for si in range(samplesperwave*wavestoread):
             # Read all the requested channels
