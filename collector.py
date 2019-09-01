@@ -108,10 +108,16 @@ while(True):
             jsondata[wirecolor]['current'] = round(wirecurrent,3)
             jsondata[wirecolor]['voltage'] = round(wirevoltage,1)
             jsondata[wirecolor]['power'] = round(wirepower,4)
+            
+            if(wirepower<0):
+                for reading in range(len(data[currentidxs[wirecolor]])):
+                    print('{};{}'.format(data[currentidxs[wirecolor]][reading],voltageData[reading])
 
         jsondata['current'] = round(sum(current),3)
         jsondata['voltage'] = round(statistics.mean(voltage),1)
         jsondata['power'] = round(sum(power))
+        
+        
         
         # post the new state to the state device
         statePostQueue.put(jsondata.copy())
