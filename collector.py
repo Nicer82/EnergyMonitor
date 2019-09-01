@@ -109,6 +109,7 @@ while(True):
             jsondata[wirecolor]['voltage'] = round(wirevoltage,1)
             jsondata[wirecolor]['power'] = round(wirepower,4)
             
+            #temp for debugging
             if(wirepower<0):
                 for reading in range(len(data[currentidxs[wirecolor]])):
                     print('{};{}'.format(data[currentidxs[wirecolor]][reading],voltageData[reading]))
