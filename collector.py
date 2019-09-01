@@ -93,7 +93,7 @@ while(True):
                 voltageData = data[voltageidxs[wirecolor]]
 
             for reading in range(len(data[currentidxs[wirecolor]])):
-                f.write('{};{};{};{}\r\n'.format(jsondata['time'],wirecolor,data[currentidxs[wirecolor]][reading] * voltageData[reading])) # temp
+                f.write('{};{};{};{}\r\n'.format(jsondata['time'],wirecolor,data[currentidxs[wirecolor]][reading],voltageData[reading])) # temp
                 powerdata.append(data[currentidxs[wirecolor]][reading] * voltageData[reading])
             
             wirepower = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
