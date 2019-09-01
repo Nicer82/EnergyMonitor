@@ -57,7 +57,7 @@ class AdcReader():
         lastChannel = channels[len(channels)-1]
         channelIndexes = range(len(channels))
         countSampleTooLate = 0
-        
+        samplestoolate = []
         time.sleep(1)
         start = time.perf_counter()
         sampleReadTime = 1/(samplesperwave*frequency)
@@ -79,6 +79,7 @@ class AdcReader():
                         # We consider a sample as too late in case it comes more than half a read time too late.
                         if(-delay > sampleReadTime*1000000/2):
                             countSampleTooLate += 1
+                            samplestoolate.append(si)
                 else:
                     response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 1000000)
 
@@ -89,6 +90,7 @@ class AdcReader():
             
         if(countSampleTooLate > 0):
             print('WARNING: Sampling was too late in {}/{} samples ({}%). Try reducing samplesperwave.'.format(countSampleTooLate,samplesperwave*wavestoread,round(countSampleTooLate/(samplesperwave*wavestoread)*100,3)))
+            print('Samples that were too late: {}'.format(samplestoolate))
             
         return data
     
