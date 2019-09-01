@@ -127,7 +127,7 @@ class VoltageService:
         return round(statistics.mean(indexes)) 
 
     def wireVoltageData(self, wirecolor, currentData):
-        peakCurrentValue = max(currentData)
+        peakCurrentValue = rootmeansquare(currentData)/(1/math.sqrt(2))
         peakVoltageValue = self.voltage[wirecolor]/self._calibrationfactor*math.sqrt(2)
         ret = []
         for value in currentData:
