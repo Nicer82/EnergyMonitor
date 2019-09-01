@@ -2,7 +2,7 @@
   "Collector":
   {
     "Point": "Mains",
-    "SamplesPerWave": 48,
+    "SamplesPerWave": 32,
     "WavesToRead": 50,
     "Frequency": 50,
     "CalibrationFactor_Power": 0.0045232,
