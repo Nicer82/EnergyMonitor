@@ -127,13 +127,13 @@ class VoltageService:
         return round(statistics.mean(indexes)) 
 
     def wireVoltageData(self, wirecolor, currentData):
-        peakCurrentValue = rootmeansquare(currentData)/(1/math.sqrt(2))
-        peakVoltageValue = self.voltage[wirecolor]/self._calibrationfactor*math.sqrt(2)
-        ret = []
-        for value in currentData:
-            ret.append(round(value/peakCurrentValue*peakVoltageValue))
-        return ret;
-        #return self.simulateSineWave(peaksampleidx=self.calcPeakSampleIdx(currentData),peaksamplevalue = round(self.voltage[wirecolor]/self._calibrationfactor*math.sqrt(2)))
+        #peakCurrentValue = rootmeansquare(currentData)/(1/math.sqrt(2))
+        #peakVoltageValue = self.voltage[wirecolor]/self._calibrationfactor*math.sqrt(2)
+        #ret = []
+        #for value in currentData:
+        #    ret.append(round(value/peakCurrentValue*peakVoltageValue))
+        #return ret;
+        return self.simulateSineWave(peaksampleidx=self.calcPeakSampleIdx(currentData),peaksamplevalue = round(self.voltage[wirecolor]/self._calibrationfactor*math.sqrt(2)))
         
     def simulateSineWave(self, peaksampleidx, peaksamplevalue):
         ret = []
