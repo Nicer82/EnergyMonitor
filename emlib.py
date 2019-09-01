@@ -74,8 +74,8 @@ class AdcReader():
                     else:
                         response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
                         # We consider a sample as too late in case it comes more than half a read time too late.
-                        if(-delay > sampleReadTime*1000000/2)
-                        countSampleTooLate += 1
+                        if(-delay > sampleReadTime*1000000/2):
+                            countSampleTooLate += 1
                 else:
                     response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 2000000)
 
