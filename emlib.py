@@ -82,8 +82,8 @@ class AdcReader():
             # Set the next read time for the next iteration
             nextRead += sampleReadTime
             
-            if(countNoDelay > 0):
-                print('WARNING: Sampling was too late in {}/{} samples ({}%). Try reducing samplesperwave.'.format(countNoDelay,samplesperwave*wavestoread,countNoDelay/(samplesperwave*wavestoread)*100))
+        if(countNoDelay > 0):
+            print('WARNING: Sampling was too late in {}/{} samples ({}%). Try reducing samplesperwave.'.format(countNoDelay,samplesperwave*wavestoread,countNoDelay/(samplesperwave*wavestoread)*100))
             
         return data
     
