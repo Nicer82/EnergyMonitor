@@ -57,8 +57,9 @@ class AdcReader():
         lastChannel = channels[len(channels)-1]
         channelIndexes = range(len(channels))
         countSampleTooLate = 0
-        samplestoolate = []
-        time.sleep(1)
+
+        # wait 100 ms before starting to reduce the amount of samples that are too late
+        time.sleep(0.1)
         start = time.perf_counter()
         sampleReadTime = 1/(samplesperwave*frequency)
         nextRead = start + sampleReadTime
@@ -73,15 +74,14 @@ class AdcReader():
                 if(channel == lastChannel):
                     delay = int((nextRead-time.perf_counter())*1000000)
                     if(delay > 0): 
-                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 1000000, delay) 
+                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 4000000, delay) 
                     else:
-                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 1000000)
+                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 4000000)
                         # We consider a sample as too late in case it comes more than half a read time too late.
                         if(-delay > sampleReadTime*1000000/2):
                             countSampleTooLate += 1
-                            samplestoolate.append(si)
                 else:
-                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 1000000)
+                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 4000000)
 
                 data[ci].append(((response[1] & 15) << 8) + response[2])
         
@@ -90,7 +90,6 @@ class AdcReader():
             
         if(countSampleTooLate > 0):
             print('WARNING: Sampling was too late in {}/{} samples ({}%). Try reducing samplesperwave.'.format(countSampleTooLate,samplesperwave*wavestoread,round(countSampleTooLate/(samplesperwave*wavestoread)*100,3)))
-            print('Samples that were too late: {}'.format(samplestoolate))
             
         return data
     
