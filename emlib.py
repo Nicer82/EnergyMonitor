@@ -74,14 +74,14 @@ class AdcReader():
                 if(channel == lastChannel):
                     delay = int((nextRead-time.perf_counter())*1000000)
                     if(delay > 0): 
-                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 4000000, delay) 
+                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 200000, delay) 
                     else:
-                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 4000000)
+                        response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 200000)
                         # We consider a sample as too late in case it comes more than half a read time too late.
                         if(-delay > sampleReadTime*1000000/2):
                             countSampleTooLate += 1
                 else:
-                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 4000000)
+                    response = self.spi.xfer2([6+((4&channel)>>2),(3&channel)<<6,0], 200000)
 
                 data[ci].append(((response[1] & 15) << 8) + response[2])
         
