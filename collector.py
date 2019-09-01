@@ -125,7 +125,7 @@ while(True):
         
     except Exception as e:
         # temp for debugging
-        #raise 
+        raise 
 
         logging.exception("Exception occurred, waiting 10 seconds before continueing")
 
