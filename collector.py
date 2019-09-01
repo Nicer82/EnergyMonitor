@@ -15,8 +15,8 @@ def postStates():
         while(statePost):
             try:
                 # temp for debugging
-                #print("POST: {}".format(statePost))
-                #break;
+                print("POST: {}".format(statePost))
+                break;
             
                 # Get the current IP
                 ip = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
@@ -82,8 +82,6 @@ while(True):
         jsondata['point'] = config["Collector"]["Point"]
         jsondata['time'] = time.time()
         
-        f= open("/home/pi/dstemp/EnergyMonitor.log","a+") #temp
-        
         for wirecolor in config["Collector"]["CurrentChannels"]:
             powerdata = []                            
 
@@ -93,7 +91,6 @@ while(True):
                 voltageData = data[voltageidxs[wirecolor]]
 
             for reading in range(len(data[currentidxs[wirecolor]])):
-                f.write('{};{};{};{}\r\n'.format(jsondata['time'],wirecolor,data[currentidxs[wirecolor]][reading],voltageData[reading])) # temp
                 powerdata.append(data[currentidxs[wirecolor]][reading] * voltageData[reading])
             
             wirepower = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
@@ -112,7 +109,6 @@ while(True):
             jsondata[wirecolor]['voltage'] = round(wirevoltage,1)
             jsondata[wirecolor]['power'] = round(wirepower,4)
 
-        f.close() # temp
         jsondata['current'] = round(sum(current),3)
         jsondata['voltage'] = round(statistics.mean(voltage),1)
         jsondata['power'] = round(sum(power))
