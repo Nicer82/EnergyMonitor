@@ -114,10 +114,11 @@ while(True):
         jsondata['power'] = round(sum(power))
         
         # post the new state to the state device
-        statePostQueue.put(jsondata.copy())
-        if(not statePostThread or not statePostThread.is_alive()):
-            statePostThread = threading.Thread(target=postStates)
-            statePostThread.start()
+        #statePostQueue.put(jsondata.copy())
+        #if(not statePostThread or not statePostThread.is_alive()):
+        #    statePostThread = threading.Thread(target=postStates)
+        #    statePostThread.start()
+        postStates()
         
     except Exception as e:
         # temp for debugging
