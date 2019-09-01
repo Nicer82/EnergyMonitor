@@ -111,7 +111,7 @@ while(True):
             
             if(wirepower<0):
                 for reading in range(len(data[currentidxs[wirecolor]])):
-                    print('{};{}'.format(data[currentidxs[wirecolor]][reading],voltageData[reading])
+                    print('{};{}'.format(data[currentidxs[wirecolor]][reading],voltageData[reading]))
 
         jsondata['current'] = round(sum(current),3)
         jsondata['voltage'] = round(statistics.mean(voltage),1)
