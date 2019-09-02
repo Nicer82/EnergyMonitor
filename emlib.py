@@ -137,7 +137,7 @@ class VoltageService:
             indexes.append(maxidx)
         
         # return the index that occurred the most in the list
-        return max(set(indexes),key=List.count)
+        return max(set(indexes),key=indexes.count)
 
     def wireVoltageData(self, wirecolor, currentData):
         #peakCurrentValue = rootmeansquare(currentData)/(1/math.sqrt(2))
