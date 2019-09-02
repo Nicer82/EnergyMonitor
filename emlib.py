@@ -91,7 +91,7 @@ class AdcReader():
             nextRead += sampleReadTime
             
         # Print a warning to the screen if sampling was too late in more then 1% of the samples
-        if(countSampleTooLate/(samplesperwave*wavestoread) > 1):
+        if(countSampleTooLate/(samplesperwave*wavestoread) > 0.01):
             print('WARNING: Sampling was too late in {}/{} samples ({}%). Try reducing samplesperwave.'.format(countSampleTooLate,samplesperwave*wavestoread,round(countSampleTooLate/(samplesperwave*wavestoread)*100,3)))
             
         return data
