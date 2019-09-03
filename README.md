@@ -19,15 +19,25 @@ If current flow direction is not important for you (the flow direction is only o
 ### 1.1 RPi power source
 I learned during this project that the power source you are using to power the RPi is very important to output a stable DC voltage (5-5.3V) that can deliver enough amps (+3A). The more stable this is, the more accurate your readings will be. I disassembled an IKEA-branded USB charger, which works very well and gave me the most accurate results.
 ### 1.2 Wiring schema for a current measurement channel
-Below wiring schemes is what I used. If you are measuring multiple wires, you will need to multiply these circuits and connect them to different channels of the MCP3208.
-#### 1.2.1 Component list
-TBD
+Below wiring schemes is what I used. If you are using a different kind of current sensor, you might need a different burden resistor.
+
+If you are measuring multiple wires, you will need to multiply these circuits and connect them to different channels of the MCP3208.
+#### 1.2.1 Parts list
+- 1 x non-invasive split core current sensor. I used a 30A sensor from ECHUN Electronic (ECS1030-L59).
+- 1 x 10µF 50V capacitor
+- 2 x 470kΩ resistor
+- TBD
 #### 1.2.2 Schema
 TBD
 ### 1.3 Wiring schema for a voltage measurement channel
-Below wiring schemes is what I used. If you are measuring multiple wires, you will need to multiply these circuits and connect them to different channels of the MCP3208.
-#### 1.3.1 Component list
-TBD
+Below wiring schemes is what I used. I live in Europe where the mains is 230V. If you have a different mains voltage or want to use a different kind of AC-AC adapter, you might need different resistors.
+
+If you are measuring multiple wires, you will need to multiply these circuits and connect them to different channels of the MCP3208.
+#### 1.3.1 Parts list
+- 1 x 230V - 9V AC-AC adapter
+- 1 x 10µF 50V capacitor
+- 2 x 470kΩ resistor
+- TBD
 #### 1.3.2 Schema
 TBD
 ## 2. RPi Installation instructions
