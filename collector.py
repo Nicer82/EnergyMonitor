@@ -94,16 +94,24 @@ while(True):
                 powerdata.append(data[currentidxs[wirecolor]][reading] * voltageData[reading])
             
             wirepower = statistics.mean(powerdata)*config["Collector"]["CalibrationFactor_Power"]
-            power.append(wirepower)
-
+            
             if(voltageService):
                 wirevoltage = voltageService.voltage[wirecolor]
+                # In case we are not measuring voltage, we can't determine the current flow and power is always a positive number. 
+                # We are assuming current only flows in one direction.
+                # However for instance an inverter which is idle consumes a couple of watts, which would be counted as Supply but is actually Usage.
+                # To at least not see this as Supply, omit power values lower then 10 Watt.
+                if(wirepower < 10):
+                    wirepower = 0
             else:
                 wirevoltage = emlib.rootmeansquare(voltageData)*config["Collector"]["CalibrationFactor_Voltage"]
-
-            voltage.append(wirevoltage)
+            
             wirecurrent = wirepower / wirevoltage
+                
+            power.append(wirepower)
+            voltage.append(wirevoltage)
             current.append(wirecurrent)
+            
             jsondata[wirecolor] = {}
             jsondata[wirecolor]['current'] = round(wirecurrent,3)
             jsondata[wirecolor]['voltage'] = round(wirevoltage,1)
