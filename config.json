@@ -5,7 +5,7 @@
     "SamplesPerWave": 60,
     "WavesToRead": 50,
     "Frequency": 50,
-    "CalibrationFactor_Power": 0.0045232,
+    "CalibrationFactor_Power": 0.004494,
     "CalibrationFactor_Voltage": 0.2527,
     "VoltageService": "",
     "CurrentChannels":
