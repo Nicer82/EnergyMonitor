@@ -1,5 +1,5 @@
 # To roll out the service, execute:
-# cp /home/pi/EnergyMonitor/collector.service /etc/systemd/system/collector.service
+# sudo cp /home/pi/EnergyMonitor/collector.service /etc/systemd/system/collector.service
 # sudo systemctl daemon-reload
 # sudo systemctl enable collector.service
 # sudo systemctl start collector.service
@@ -8,7 +8,7 @@ Description='EnergyMonitor Collector'
 
 [Service]
 Type=simple
-ExecStart=python3 /home/pi/EnergyMonitor/collector.py
+ExecStart=/urs/bin/python3 /home/pi/EnergyMonitor/collector.py
 Restart=always
 
 [Install]
