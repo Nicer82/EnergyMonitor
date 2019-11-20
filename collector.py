@@ -29,7 +29,7 @@ def postStates():
                 time.sleep(5) # wait 5 seconds after an error to not overwhelm the attempts
 
 # Read configuration
-with open(os.path.join(os.getcwd(),'config.json')) as json_data:
+with open(os.path.join(os.path.dirname(__file__),'config.json')) as json_data:
     config = json.load(json_data)
     channels = []
     currentidxs = {}
