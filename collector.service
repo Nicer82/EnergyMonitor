@@ -1,0 +1,10 @@
+[Unit]
+Description='EnergyMonitor Collector'
+
+[Service]
+Type=simple
+ExecStart=/home/pi/EnergyMonitor/collector.py
+Restart=always
+
+[Install]
+WantedBy=default.target
