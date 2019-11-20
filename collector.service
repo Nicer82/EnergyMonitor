@@ -3,7 +3,7 @@ Description='EnergyMonitor Collector'
 
 [Service]
 Type=simple
-ExecStart=/home/pi/EnergyMonitor/collector.py
+ExecStart=python3 /home/pi/EnergyMonitor/collector.py
 Restart=always
 
 [Install]
